@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit Your Future Requirements</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+
+    <style>
+      /* ========== GLOBAL RESET ========== */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* ========== WRAPPER SECTION ========== */
+      .req-section {
+        width: 100%;
+        padding: 60px 20px;
+        margin-top: 70px;
+      }
+
+      /* ========== MAIN CARD ========== */
+      .req-card {
+        background: white;
+        border-radius: 14px;
+        padding: 50px 60px;
+        max-width: 950px;
+        width: 100%;
+        margin: auto;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .req-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+      }
+
+      /* ========== HEADER ========== */
+      .req-head {
+        color: black;
+        text-align: center;
+        padding: 16px 10px;
+        font-size: 22px;
+        font-weight: 600;
+        border-radius: 10px;
+        margin-bottom: 35px;
+        letter-spacing: 0.3px;
+      }
+
+      /* ========== FORM GRID ========== */
+      form {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 30px;
+      }
+
+      label {
+        font-size: 14px;
+        color: black;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        font-size: 14px;
+        border: 1px solid black;
+        background: white;
+        border-radius: 8px;
+        color: black;
+        transition: all 0.25s ease;
+      }
+
+      input::placeholder {
+        color: black;
+      }
+
+      input:focus {
+        border-color: #3b82f6;
+
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        outline: none;
+      }
+
+      /* ========== SUBMIT BUTTON ========== */
+      button {
+        grid-column: span 2;
+        background: #1e5af9;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 13px 0;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 30%;
+        margin: 10px auto 0;
+        display: block;
+      }
+
+      button:hover {
+        background: #1747d4;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(30, 90, 249, 0.35);
+      }
+
+      /* ========== SUCCESS MESSAGE ========== */
+      .success-message {
+        grid-column: span 2;
+        text-align: center;
+        color: #4ade80;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+      .nav-links button {
+        margin: auto;
+      }
+      .nav-links {
+        align-items: center;
+      }
+
+      /* ====== MOBILE VERSION ====== */
+      @media (max-width: 768px) {
+        form {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    {% include 'NavBar.html' %}
+
+    <style>
+      .menu-btn {
+        color: black;
+      }
+      .btn{
+          color:black;
+          
+      }
+    </style>
+
+    <section class="req-section">
+      <div class="req-card">
+        <div class="req-head">Submit Your Future Requirements</div>
+
+        {% if messages %} {% for message in messages %}
+        <p class="success-message">{{ message }}</p>
+        {% endfor %} {% endif %}
+
+        <form method="POST" action="">
+          {% csrf_token %}
+          <div>
+            <label>What type of property looking for</label>
+            <input
+              type="text"
+              name="property_type"
+              placeholder="e.g., Apartment, Villa"
+            
+            />
+          </div>
+          <div>
+            <label>Extent</label>
+            <input type="text" name="extent" placeholder="e.g., 1200 sqft" />
+          </div>
+          <div>
+            <label>Type of BHK</label>
+            <input type="text" name="bhk_type" placeholder="e.g., 2 BHK" />
+          </div>
+          <div>
+            <label>Facing</label>
+            <input type="text" name="facing" placeholder="e.g., East, North" />
+          </div>
+          <div>
+            <label>Budget</label>
+            <input type="text" name="budget" placeholder="e.g., ₹50 Lakhs" />
+          </div>
+          <div>
+            <label>Location</label>
+            <input type="text" name="location" placeholder="e.g., Hyderabad" />
+          </div>
+          <div>
+            <label>City</label>
+            <input type="text" name="city" placeholder="e.g., Bengaluru" />
+          </div>
+          <div>
+            <label>State</label>
+            <input type="text" name="state" placeholder="e.g., Karnataka" />
+          </div>
+          <div>
+            <label>Type of Approval</label>
+            <input
+              type="text"
+              name="approval_type"
+              placeholder="e.g., HMDA, DTCP"
+              
+            />
+          </div>
+          <div>
+            <label>Project Name</label>
+            <input
+              type="text"
+              name="project_name"
+              placeholder="e.g., Green Meadows"
+              
+            />
+          </div>
+          <div style="grid-column: span 2">
+            <label>Any Company Name</label>
+            <input
+              type="text"
+              name="company_name"
+              placeholder="e.g., ABC Constructions"
+              
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+    {% include 'footer.html' %}
+  </body>
+</html>

@@ -1,0 +1,875 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Add Project</title>
+
+<style>
+ 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ========================= */
+/* 🌐 BODY */
+/* ========================= */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  color: #1f2937;
+}
+
+/* ========================= */
+/* 📦 CONTAINER */
+/* ========================= */
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 15px;
+  margin-top: 70px;
+}
+
+/* ========================= */
+/* 🧾 CARD */
+/* ========================= */
+.form-card {
+  width: 100%;
+  max-width: 750px;
+  background: #fff;
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  transition: 0.3s;
+}
+
+/* ========================= */
+/* 🔄 STEPS */
+/* ========================= */
+.step { display: none; }
+.step.active { display: block; }
+
+/* ========================= */
+/* 🔤 HEADINGS */
+/* ========================= */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* ========================= */
+/* 🏷 LABELS */
+/* ========================= */
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+small {
+  display: block;
+  margin-bottom: 10px;
+  color: #6b7280;
+}
+
+/* ========================= */
+/* 🧾 INPUTS */
+/* ========================= */
+input, select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 16px;
+  background: #f9fafb;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+input:focus, select:focus {
+  border-color: #6366f1;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+  outline: none;
+}
+
+/* ========================= */
+/* 🔘 BUTTONS */
+/* ========================= */
+button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.next-btn {
+  background: #6366f1;
+  color: #fff;
+}
+
+.next-btn:hover {
+  background: #4f46e5;
+}
+
+.back-btn {
+  background: #e5e7eb;
+}
+
+.submit-btn {
+  background: #22c55e;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: #16a34a;
+}
+
+/* ========================= */
+/* 📐 BUTTON ROW */
+/* ========================= */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ========================= */
+/* 📍 NEARBY SECTION */
+/* ========================= */
+.nearby-box {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+
+  overflow: visible;  
+}
+
+.nearby-item {
+  position: relative;
+  margin-bottom: 12px;
+}
+ 
+.nearby-item input {
+  width: 100%;
+  padding: 12px 50px 12px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+
+.remove-nearby-btn {
+    position: absolute;
+    right: 20px;
+    top: 0;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    color: black;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 30px;        
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+}
+
+/* Hide first remove button */
+.nearby-item:first-child .remove-nearby-btn{
+  display: none;
+}
+ 
+ .add-nearby-btn  {
+  display: inline-block;    
+  margin-top: 10px;
+  background: #6366f1;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ========================= */
+/* 🏊 AMENITIES */
+/* ========================= */
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.amenity-card {
+  background: #f9fafb;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: 0.2s;
+}
+
+.amenity-card input {
+  accent-color: #6366f1;   /* modern checkbox color */
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.amenity-card:hover {
+  background: #eef2ff;
+}
+
+.amenity-card input:checked + span {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+/* ========================= */
+/* 🖼 PREVIEW */
+/* ========================= */
+.preview-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.preview-box img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+/* ========================= */
+/* 📱 TABLET */
+/* ========================= */
+@media (max-width: 768px) {
+  .form-card {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  input, select {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .btn-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .next-btn, .back-btn {
+    width: 100%;
+  }
+
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .preview-box img {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+/* ========================= */
+/* 📱 MOBILE */
+/* ========================= */
+@media (max-width: 480px) {
+
+  .container {
+    padding: 15px 10px;
+  }
+
+  .form-card {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  .amenities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-box img {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* 🔥 FIX for mobile overlap */
+  .nearby-item input {
+    padding: 10px 45px 10px 10px;
+    margin-bottom:0px;
+  }
+
+  .remove-nearby-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 25px;
+  }
+}
+
+/* ========================= */
+/* 💻 LARGE SCREEN */
+/* ========================= */
+@media (min-width: 1200px) {
+  .form-card {
+    max-width: 850px;
+    padding: 40px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+{% include 'NavBar.html' %}
+
+<div class="container">
+<div class="form-card">
+
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+
+<!-- STEP 1 -->
+<div id="step1" class="step active">
+<h2>Project Info</h2>
+
+<label>Project Name</label>
+<input type="text" name="project_name" placeholder="e.g. Green Valley Residency" required>
+
+<label>Established Year</label>
+<input type="number" name="estbalis_year" placeholder="e.g. 2022" required>
+
+<label>Type of Project</label>
+<input type="text" name="type_of_project" placeholder="e.g. Apartment / Villa" required>
+
+<label>Project Address</label>
+<input type="text" name="project_address" placeholder="e.g. Kukatpally, Hyderabad" required>
+
+<!-- MAP SAME -->
+<label>Select Location on Map</label>
+<input type="text" id="search_location" placeholder="Search area or landmark..." />
+<div id="map" style="height:400px; margin-top:10px;"></div>
+
+<input type="hidden" name="latitude" id="id_latitude">
+<input type="hidden" name="longitude" id="id_longitude">
+<input type="hidden" name="location_url" id="id_location_url">
+<br>
+<label class="section-label">Nearby Places</label>
+<small class="hint">Add at least one nearby place</small>
+
+<div class="nearby-box">
+  <div id="nearby-container">
+
+    <div class="nearby-item">
+      <input type="text" name="nearby_locations[]" placeholder="e.g. School (1 km)" required>
+      <button type="button" class="remove-nearby-btn" onclick="removeField(this)"><i class="fa-solid fa-trash"></i></button>
+    </div>
+
+  </div>
+
+  <button type="button" class="add-nearby-btn" onclick="addNearbyField()">+ Add Nearby</button>
+</div>
+
+<label>Number of Units</label>
+<input type="number" name="number_of_units" placeholder="e.g. 120" required>
+
+<div class="btn-row">
+<div></div>
+<button type="button" class="next-btn" onclick="goToStep(2)">Next →</button>
+</div>
+</div>
+
+<!-- STEP 2 -->
+<div id="step2" class="step">
+<h2>Specifications</h2>
+
+<label>Available Units</label>
+<input type="text" name="available_units" placeholder="e.g. 2BHK, 3BHK">
+
+<label>Available Facings</label>
+<input type="text" name="available_facing" placeholder="e.g. East, West">
+
+<label>Available Sizes</label>
+<input type="text" name="available_sizes" placeholder="e.g. 1200 - 1800 sqft">
+
+<label>Project Position</label>
+<select name="position" id="positionSelect" required>
+<option value="">Select Position</option>
+<option value="READY">Ready to Move</option>
+<option value="UNDER">Under Construction</option>
+</select>
+
+<div id="constructionTimeBox" style="display:none">
+<label>Construction Time</label>
+<input type="text" name="construction_time" id="constructionTimeInput" placeholder="e.g. 1 Year">
+</div>
+
+<label>RERA Approved</label>
+<select name="rera_approved">
+<option value="">Select</option>
+<option value="True">Yes</option>
+<option value="False">No</option>
+</select>
+
+<label>Amenities</label>
+
+<div class="amenities-grid">
+  <label class="amenity-card">
+    <input type="checkbox" name="select_amenities" value="Swimming Pool">
+    <span>  Swimming Pool</span>
+  </label>
+
+  <label class="amenity-card">
+    <input type="checkbox" name="select_amenities" value="Gym">
+    <span>  Gym</span>
+  </label>
+
+  <label class="amenity-card">
+    <input type="checkbox" name="select_amenities" value="Playground">
+    <span>  Playground</span>
+  </label>
+
+  <label class="amenity-card">
+    <input type="checkbox" name="select_amenities" value="Park">
+    <span>  Park</span>
+  </label>
+
+  <label class="amenity-card">
+    <input type="checkbox" name="select_amenities" value="Club House">
+    <span>  Club House</span>
+  </label>
+</div>
+
+<label>Highlights</label>
+<input type="text" name="highlights" placeholder="e.g. Near Metro Station">
+
+<label>Type of Approval</label>
+<input type="text" name="type_of_approval" placeholder="e.g. HMDA Approved">
+
+<label>Total Project Extent</label>
+<input type="text" name="total_project_area" placeholder="e.g. 3 Acres">
+
+<label>Contact Info</label>
+<input type="number" name="contact_info" placeholder="e.g. 9876543210" required>
+
+<label>Pricing</label>
+<input type="number" name="pricing" placeholder="e.g. 4500000" required>
+
+<div class="btn-row">
+<button type="button" class="back-btn" onclick="goToStep(1)">← Back</button>
+<button type="button" class="next-btn" onclick="goToStep(3)">Next →</button>
+</div>
+</div>
+
+<!-- STEP 3 (UNCHANGED) -->
+<div id="step3" class="step">
+<h2>Upload Files</h2>
+
+<label>Upload Images (Max 10)</label>
+<input type="file" name="image" id="imageInput" multiple accept="image/*">
+<div id="imagePreview" class="preview-box"></div>
+
+<label>Upload Videos</label>
+<input type="file" name="video" id="videoInput" multiple required>
+<div id="videoPreview" class="preview-box"></div>
+
+<label>Upload Documents</label>
+<input type="file" name="document" id="docInput" multiple required>
+<div id="docPreview" class="preview-box"></div>
+
+<div class="btn-row">
+<button type="button" class="back-btn" onclick="goToStep(2)">← Back</button>
+</div>
+
+<button type="submit" class="submit-btn">Submit Project</button>
+</div>
+
+</form>
+</div>
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+  document.getElementById("imageInput").addEventListener("change", function () {
+  const preview = document.getElementById("imagePreview");
+  preview.innerHTML = "";
+
+  if (this.files.length > 10) {
+    alert("You can upload maximum 10 images");
+    this.value = "";
+    return;
+  }
+
+  Array.from(this.files).forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+      let img = document.createElement("img");
+      img.src = e.target.result;
+      preview.appendChild(img);
+    };
+
+    reader.readAsDataURL(file);
+  });
+});
+// Add new nearby field
+function addNearbyField() {
+  const container = document.getElementById("nearby-container");
+
+  const div = document.createElement("div");
+  div.classList.add("nearby-item");
+
+  div.innerHTML = `
+    <input type="text" name="nearby_locations[]" placeholder="e.g. Hospital (2 km)" required>
+    <button type="button" class="remove-nearby-btn" onclick="removeField(this)">✕</button>
+  `;
+
+  container.appendChild(div);
+
+  updateRemoveButtons();
+}
+
+// Remove field
+function removeField(btn) {
+  const container = document.getElementById("nearby-container");
+  const item = btn.parentElement;
+
+  if (container.children.length > 1) {
+    item.remove();
+  } else {
+    alert("At least one nearby place is required");
+  }
+
+  updateRemoveButtons();
+}
+
+// Hide remove button for first field
+function updateRemoveButtons() {
+  const items = document.querySelectorAll(".nearby-item");
+
+  items.forEach((item, index) => {
+    const btn = item.querySelector(".remove-nearby-btn");
+
+    if (index === 0) {
+      btn.style.display = "none"; // hide first
+    } else {
+      btn.style.display = "block";
+    }
+  });
+}
+
+// Validate nearby fields before moving step
+function validateNearby() {
+  const inputs = document.querySelectorAll(
+    "#nearby-container input[name='nearby_locations[]']"
+  );
+
+  let valid = false;
+
+  inputs.forEach(input => {
+    if (input.value.trim() !== "") {
+      valid = true;
+    }
+  });
+
+  if (!valid) {
+    alert("Please add at least one nearby place");
+    return false;
+  }
+
+  return true;
+}
+
+// Initialize on page load
+document.addEventListener("DOMContentLoaded", function () {
+  updateRemoveButtons();
+});
+</script>
+ 
+    <script>
+      /**
+       * goToStep(stepNumber, requiredFields)
+       * - stepNumber: 1,2,3...
+       * - requiredFields: optional array of identifiers (id or name). If provided we try to validate them.
+       *                    If none of these identifiers are found, we fall back to validating
+       *                    all elements with [required] inside the currently visible step.
+       */
+      function goToStep(stepNumber, requiredFields) {
+        // helper: find element by id OR by name
+        function findField(identifier) {
+          if (!identifier) return null;
+          let el = document.getElementById(identifier);
+          if (el) return el;
+          // try by name (first match)
+          el = document.querySelector(
+            '[name="' + CSS.escape(identifier) + '"]',
+          );
+          if (el) return el;
+          return null;
+        }
+
+        // clear previous validation styles
+        function clearValidation(stepEl) {
+          (stepEl.querySelectorAll("input,textarea,select") || []).forEach(
+            (f) => {
+              f.style.border = "";
+            },
+          );
+        }
+
+        // Get current visible step (the one with class 'active')
+        const currentStepEl =
+          document.querySelector(".step.active") ||
+          document.getElementById("step" + stepNumber);
+        if (!currentStepEl) return;
+
+        // Build list of fields to validate
+        let toValidate = [];
+
+        if (Array.isArray(requiredFields) && requiredFields.length > 0) {
+          // try to map passed identifiers to actual elements
+          requiredFields.forEach((idOrName) => {
+            const fld = findField(idOrName);
+            if (fld) toValidate.push(fld);
+          });
+        }
+
+        // If no valid fields were found from requiredFields, fallback to required attributes inside current step
+        if (toValidate.length === 0) {
+          const requiredEls = currentStepEl.querySelectorAll(
+            "input[required], textarea[required], select[required]",
+          );
+          requiredEls.forEach((e) => toValidate.push(e));
+        }
+
+        // Validate: make sure required fields are non-empty (for checkboxes/radios handle separately)
+        let valid = true;
+        let firstInvalid = null;
+
+        // clear previous validation styles for current step
+        clearValidation(currentStepEl);
+
+        toValidate.forEach((field) => {
+          // Skip validation for disabled hidden fields
+          if (field.disabled || field.type === "hidden") return;
+
+          let empty = false;
+          if (field.type === "checkbox" || field.type === "radio") {
+            // for checkboxes/radios: ensure at least one in same name group is checked
+            const name = field.name;
+            if (name) {
+              const group = document.querySelectorAll(
+                '[name="' + CSS.escape(name) + '"]',
+              );
+              let anyChecked = false;
+              group.forEach((g) => {
+                if (g.checked) anyChecked = true;
+              });
+              if (!anyChecked) empty = true;
+            } else {
+              if (!field.checked) empty = true;
+            }
+          } else {
+            const val = (field.value || "").trim();
+            if (val === "") empty = true;
+          }
+
+          if (empty) {
+            valid = false;
+            field.style.border = "2px solid #e74c3c";
+            if (!firstInvalid) firstInvalid = field;
+          }
+        });
+
+        if (!valid) {
+          // focus first invalid and do not move
+          if (firstInvalid && typeof firstInvalid.focus === "function")
+            firstInvalid.focus();
+          return; // stop — do not move to next step
+        }
+
+        // Passed validation — toggle active class on steps
+        document
+          .querySelectorAll(".step")
+          .forEach((s) => s.classList.remove("active"));
+        const target = document.getElementById("step" + stepNumber);
+        if (target) {
+          target.classList.add("active");
+          // optional: scroll into view on small screens
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    </script>
+
+    <script>
+      document
+        .getElementById("positionSelect")
+        .addEventListener("change", function () {
+          let value = this.value;
+          let box = document.getElementById("constructionTimeBox");
+          let input = document.getElementById("constructionTimeInput");
+
+          if (value === "UNDER") {
+            box.style.display = "block";
+            input.required = true;
+          } else {
+            box.style.display = "none";
+            input.required = false;
+            input.value = ""; // clear if not needed
+          }
+        });
+    </script>
+    
+      <!-- maps google -->
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB92MLJIMGxSEXfAgLGObcO0OpVV6w2VbY&libraries=places"></script>
+
+    <script>
+let map;
+let marker;
+let autocomplete;
+let geocoder;
+
+function initMap() {
+
+    const defaultLocation = { lat: 17.385044, lng: 78.486671 };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 13
+    });
+
+    geocoder = new google.maps.Geocoder();
+
+    marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true
+    });
+
+    autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById("search_location")
+    );
+
+    autocomplete.bindTo("bounds", map);
+
+    autocomplete.addListener("place_changed", function () {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+
+        const location = place.geometry.location;
+
+        map.setCenter(location);
+        map.setZoom(15);
+        marker.setPosition(location);
+
+        updateFields(location.lat(), location.lng(), place.formatted_address);
+    });
+
+    google.maps.event.addListener(marker, "dragend", function () {
+        const position = marker.getPosition();
+
+        geocoder.geocode({ location: position }, function (results, status) {
+            if (status === "OK" && results[0]) {
+
+                document.getElementById("search_location").value =
+                    results[0].formatted_address;
+
+                updateFields(position.lat(), position.lng(), results[0].formatted_address);
+            }
+        });
+    });
+
+    // Set default values
+    updateFields(defaultLocation.lat, defaultLocation.lng);
+}
+
+function updateFields(lat, lng, address = "") {
+
+    document.getElementById("id_latitude").value = lat;
+    document.getElementById("id_longitude").value = lng;
+
+    if (address) {
+        const locationInput = document.querySelector("input[name='project_address']");
+        if (locationInput) {
+            locationInput.value = address;
+        }
+    }
+
+    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    document.getElementById("id_location_url").value = mapUrl;
+}
+
+window.onload = initMap;
+
+
+function validateFinalStep() {
+    const imageInput = document.getElementById("imageInput");
+    const videoInput = document.getElementById("videoInput");
+
+    let valid = true;
+
+    if (imageInput.files.length === 0) {
+        alert("Please upload at least one image.");
+        imageInput.style.border = "2px solid red";
+        valid = false;
+    }
+
+    if (videoInput.files.length === 0) {
+        alert("Please upload at least one video.");
+        videoInput.style.border = "2px solid red";
+        valid = false;
+    }
+
+    return valid;  
+}
+</script>
+
+  
+  </body>
+</html>

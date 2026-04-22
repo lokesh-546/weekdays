@@ -1,0 +1,1231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Registration</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+      }
+      .register-form-container {
+        width: 100%;
+        max-width: 450px;
+        background: #fff;
+        margin: 25px auto;
+        padding: 20px;
+        box-shadow: 0 0 10px #ccc;
+        border-radius: 10px;
+      }
+      .formHeading {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .role-field label {
+        font-size: 14px;
+      }
+
+      .register-form-container input,
+      .register-form-container select,
+      .register-form-container textarea {
+        width: 100%;
+        padding: 12px;
+        margin-top: 5px;
+        margin-bottom: 8px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      .profile-Photo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .profile-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto 10px;
+      }
+      .profile-Photo label {
+        background: #007bff;
+        color: white;
+        padding: 8px 18px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+      }
+      #id_profile_image_path {
+        display: none;
+      }
+      .otp-section {
+        margin-top: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .otp-btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 6px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .otp-btn:hover {
+        background: #0056b3;
+      }
+      .hidden {
+        display: none;
+      }
+      .error-messages p {
+        background: #ffdddd;
+        color: #d00;
+        padding: 8px 10px;
+        border-left: 4px solid red;
+        border-radius: 5px;
+      }
+      #role-container {
+        margin-top: 15px;
+      }
+      .role-field {
+        margin-top: 10px;
+        padding: 9px;
+        background: #fafafa;
+        border-radius: 8px;
+        border: 1px solid #eee;
+      }
+      #register-btn,
+      button[type="button"] {
+        width: 100%;
+        padding: 12px;
+        background: #28a745;
+        color: white;
+        border: none;
+        margin-top: 15px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      button[type="button"]:hover,
+      #register-btn:hover {
+        background: #218838;
+      }
+      button[onclick] {
+        background: #6c757d;
+      }
+      button[onclick]:hover {
+        background: #495057;
+      }
+      .otp-message {
+        margin-top: 8px;
+        font-size: 14px;
+        padding: 6px 10px;
+        border-radius: 5px;
+        display: none;
+      }
+      .otp-success {
+        background: #e6ffe6;
+        color: #0a7d00;
+        border-left: 4px solid #0a7d00;
+      }
+      .otp-error {
+        background: #ffe6e6;
+        color: #c20000;
+        border-left: 4px solid #c20000;
+      }
+      @media (max-width: 480px) {
+        .register-form-container {
+          padding: 10px;
+        }
+        .profile-preview {
+          width: 100px;
+          height: 100px;
+        }
+        .otp-btn {
+          width: 100%;
+          font-size: 14px;
+          padding: 9px;
+        }
+        input,
+        select,
+        textarea {
+          font-size: 16px;
+          padding: 10px;
+        }
+        button {
+          font-size: 15px;
+          padding: 11px;
+        }
+      }
+      .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 19px;
+      }
+      .login-link a {
+        color: #4b7bec;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 20px;
+      }
+      .image-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        border: none;
+      }
+
+      .profile-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ðŸ”¥ FIX IMAGE FIT */
+        object-position: center;
+      }
+
+      /* Plus button */
+      .plus-icon {
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+        background: #007bff;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Hide file input */
+      #id_profile_image_path {
+        display: none;
+      }
+      .profile-Photo label.image-wrapper {
+        background: none !important;
+        padding: 0 !important;
+      }
+
+      .plus-icon {
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+      }
+
+      button,
+      .otp-btn {
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover,
+      .otp-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active,
+      .otp-btn:active {
+        transform: scale(0.98);
+      }
+
+      .register-form-container {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      }
+      @media (max-width: 480px) {
+        .image-wrapper {
+          width: 100px;
+          height: 100px;
+        }
+
+        .plus-icon {
+          width: 26px;
+          height: 26px;
+          font-size: 18px;
+        }
+      }
+
+      /* MOBILE FULL SCREEN FORM */
+      @media (max-width: 480px) {
+        body {
+          background: #fff; /* remove grey background */
+        }
+
+        .register-form-container {
+          max-width: 100%;
+          margin: 0;
+          padding: 15px;
+          border-radius: 0;
+          box-shadow: none; /* remove card effect */
+          background: #fff;
+        }
+      }
+      /* CENTER FORM FIELDS ON MOBILE */
+      @media (max-width: 480px) {
+        form {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .role-field,
+        .otp-section {
+          width: 100%;
+          max-width: 380px; /* ðŸ‘ˆ controls field width */
+        }
+
+        .register-form-container input,
+        .register-form-container select,
+        .register-form-container textarea,
+        .otp-btn,
+        #register-btn,
+        button[type="button"] {
+          width: 100%;
+        }
+
+        .profile-Photo {
+          margin-bottom: 30px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .register-form-container {
+          margin: 0; /* ðŸ”¥ IMPORTANT */
+          padding-top: 10px;
+        }
+      }
+      @media (max-width: 480px) {
+        .formHeading {
+          margin-bottom: 10px;
+        }
+
+        .profile-Photo {
+          margin-bottom: 15px;
+        }
+      }
+      .password-wrapper {
+        position: relative;
+      }
+
+      .password-wrapper input {
+        padding-right: 45px; /* space for eye icon */
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        font-size: 18px;
+        color: #6c757d;
+      }
+
+      .toggle-password:hover {
+        color: #000;
+      }
+      .otp-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      /* ðŸ”¥ FORCE phone + buttons to stay in same row */
+      .otp-row input {
+        width: auto !important;
+        flex: 1;
+        height: 46px !important ; /* SAME as button */
+        line-height: 46px !important;
+        padding: 0 12px !important;
+      }
+
+     .otp-icon-btn {
+        height: 46px !important;
+        min-width: 46px !important;
+        padding: 0px !important;
+        border-radius: 10px;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #28a745;
+        border: none;
+        color: white;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .otp-icon-btn {
+        background: #28a745;
+      }
+
+      .otp-icon-btn.verify {
+        background: #28a745;
+      }
+
+      .otp-icon-btn:hover {
+        opacity: 0.9;
+      }
+      /* OTP layout */
+      .otp-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* override global input width */
+      .otp-row input {
+        flex: 1;
+        width: auto !important;
+      }
+
+      /* OTP input below */
+      .otp-input {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      /* icon buttons */
+      .otp-icon-btn {
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+        border-radius: 10px;
+        background: #28a745;
+        border: none;
+        color: white;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="register-form-container">
+      <div style="display: flex; flex-direction: column; align-items: center">
+        <img src="{% static 'images/logo.jpg' %}" width="100px" />
+        <h1 class="formHeading">Register</h1>
+
+        {% if form.errors %}
+        <div class="error-messages">
+          {% for field, errors in form.errors.items %} {% for error in errors %}
+          <p class="error">{{ error }}</p>
+          {% endfor %} {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" id="register-form">
+          {% csrf_token %}
+
+          <!-- PROFILE IMAGE -->
+          <div class="profile-Photo">
+            <label for="id_profile_image_path" class="image-wrapper">
+              <img
+                src="{% static 'images/Default_profile_picture.jpeg' %}"
+                id="image-preview"
+                class="profile-preview"
+              />
+              <div class="plus-icon">+</div>
+            </label>
+            {{ form.profile_image_path }}
+          </div>
+
+          <div class="role-field">
+            <label>First Name</label>
+            <input
+              type="text"
+              id="first-name"
+              placeholder="Enter First Name"
+              required
+            />
+          </div>
+
+          <div class="role-field">
+            <label>Last Name</label>
+            <input
+              type="text"
+              id="last-name"
+              placeholder="Enter Last Name"
+              required
+            />
+          </div>
+
+          <!-- HIDDEN FULL NAME (Django field) -->
+          <div style="display: none">{{ form.username }}</div>
+
+          <div class="role-field">
+            <label>Email</label>
+            {{ form.email }}
+          </div>
+
+<div class="role-field password-field">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input type="password"
+           name="password1"
+           id="id_password1"
+           class="form-control"
+           placeholder="Min 8 chars (Ex:Abcdf2@123)"
+           required>
+    <i class="bi bi-eye toggle-password"
+       data-target="id_password1"></i>
+  </div>
+</div>
+
+<div class="role-field password-field">
+  <label>Confirm Password</label>
+  <div class="password-wrapper">
+    <input type="password"
+           name="password2"
+           id="id_password2"
+           class="form-control"
+           placeholder="Re-enter password"
+           required>
+    <i class="bi bi-eye toggle-password"
+       data-target="id_password2"></i>
+  </div>
+</div>
+
+          <div id="role-container" class="role-field">
+            <label>Select Role</label>
+            {{ form.role }}
+          </div>
+
+          <!-- SEPARATE FIELDS FOR USER ENTRY -->
+          <div class="role-field">
+            <label>About Us</label>
+            <input
+              type="text"
+              name="description"
+              placeholder="Enter Description"
+              required
+            />
+          </div>
+
+          <div class="role-field">
+            <label>Experience (Years)</label>
+            <input
+              type="number"
+              name="experience"
+              placeholder="Enter experience in Years"
+              required
+            />
+          </div>
+
+          <div class="role-field">
+            <label>Deals Completed</label>
+            <input type="text" name="deals" placeholder="Enter Deals" />
+          </div>
+
+            <div class="role-field" style="display: flex; gap: 3px">
+            <div>
+              <label>Locality</label>
+              <input
+                type="text"
+                id="loc-locality"
+                placeholder="Locality / Area"
+                required
+              />
+            </div>
+            <div>
+              <label>City</label>
+              <input type="text" id="loc-city" placeholder="City" required />
+            </div>
+          </div>
+
+                  <div class="role-field" style="display: flex; gap: 3px">
+            <div>
+              <label>State</label>
+              <input type="text" id="loc-state" placeholder="State" required />
+            </div>
+            <div>
+              <label>Country</label>
+              <input
+                type="text"
+                id="loc-country"
+                placeholder="Country"
+                required
+              />
+            </div>
+          </div>
+
+          <!-- ðŸ”’ HIDDEN LOCATION FIELD (Django) -->
+          <input type="hidden" name="location" id="id_location" />
+
+          <!-- PROFESSIONAL SPECIFIC CATEGORY -->
+          <div id="professional-fields" class="hidden role-field">
+            <label>Price</label>
+            <input type="text" value="4999" readonly />
+            <label>Category</label>
+            <select id="id_category" name="category"></select>
+          </div>
+
+          <!-- OWNER SPECIFIC CATEGORY -->
+          <div id="owner-fields" class="hidden role-field">
+            <label>Category</label>
+            <select id="id_category_owner" name="category_owner"></select>
+          </div>
+
+          <!-- MARKETER SPECIFIC CATEGORY AND PLAN -->
+          <div id="marketer-fields" class="hidden role-field">
+             <label>Marketing Category</label>
+
+<div class="dropdown-checkbox">
+  <button style="background-color: white; color: #000; border: 0.1px solid grey; padding:0%; " type="button" class="dropdown-btn" onclick="toggleMarketerDropdown()">
+    <p>Select Marketing Category ▼</p>
+  </button>
+
+  <div id="marketerDropdown" class="dropdown-content">
+    <ul class="company-category-checkbox">
+      {% for checkbox in form.marketer_category %}
+      <li>
+        <label>
+          {{ checkbox.tag }}
+          {{ checkbox.choice_label }}
+        </label>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="error-text">{{ form.marketer_category.errors }}</div>
+             <label>Choose Plan</label>
+<!-- Hidden input that will be submitted -->
+<input type="hidden" name="plan_type" id="selected-plan">
+<div class="plan-cards">
+
+  <!-- EXPERT -->
+  <div class="plan-card expert" data-value="MARKETER_EXPORT">
+    <h4>Experts</h4>
+    <ul class="plan-features short">
+      <li>✔ Only 5 properties</li>
+      <li>✔ Only 5 reels</li>
+      <li>✔ Direct leads</li>
+    </ul>
+
+    <ul class="plan-features full hidden">
+      <li>✔ Only 5 properties (Rent & Sale)</li>
+      <li>✔ Only 5 reels posting</li>
+      <li>✔ Direct leads</li>
+      <li>✔ Direct customer reach</li>
+      <li>✔ Profile promotion</li>
+    </ul>
+
+    <button type="button" class="read-more-btn">Read More</button>
+  </div>
+
+  <!-- EXPERT PRO -->
+  <div class="plan-card pro" data-value="MARKETER_EXPORT_PRO">
+    <h4>Experts Pro</h4>
+    <ul class="plan-features short">
+      <li>✔ 10 properties</li>
+      <li>✔ 10 reels</li>
+      <li>✔ Direct leads</li>
+    </ul>
+
+    <ul class="plan-features full hidden">
+      <li>✔ 10 properties per month</li>
+      <li>✔ 10 reels per month</li>
+      <li>✔ Direct leads</li>
+      <li>✔ Direct customer reach</li>
+      <li>✔ Profile promotion</li>
+      <li>✔ Easy agent & builder connections</li>
+    </ul>
+
+    <button type="button" class="read-more-btn">Read More</button>
+  </div>
+
+  <!-- PREMIUM -->
+  <div class="plan-card premium" data-value="MARKETER_EXPORT_PREMIUM">
+    <h4>Experts Premium</h4>
+    <ul class="plan-features short">
+      <li>✔ Unlimited listings</li>
+      <li>✔ Unlimited reels</li>
+      <li>✔ Profile promotion</li>
+    </ul>
+
+    <ul class="plan-features full hidden">
+      <li>✔ Unlimited property listings</li>
+      <li>✔ Unlimited reels listings</li>
+      <li>✔ Profile promotion on top</li>
+      <li>✔ More customer reach</li>
+      <li>✔ Easy agent & builder connections</li>
+      <li>✔ Specialized profile promotion</li>
+    </ul>
+
+    <button type="button" class="read-more-btn">Read More</button>
+  </div>
+
+</div>
+<script>
+  const cards = document.querySelectorAll(".plan-card");
+  const hiddenInput = document.getElementById("selected-plan");
+  const readBtns = document.querySelectorAll(".read-more-btn");
+
+  // Plan card selection
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      cards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      hiddenInput.value = card.dataset.value;
+    });
+  });
+
+  // Read more toggle
+  readBtns.forEach(btn => {
+    btn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      const card = this.closest(".plan-card");
+      const shortList = card.querySelector(".short");
+      const fullList = card.querySelector(".full");
+
+      shortList.classList.toggle("hidden");
+      fullList.classList.toggle("hidden");
+
+      this.textContent = fullList.classList.contains("hidden") 
+        ? "Read More" 
+        : "Show Less";
+    });
+  });
+
+  // Form submit validation
+  document.getElementById("register-form").addEventListener("submit", function(e) {
+    const role = document.getElementById("id_role").value;
+    const plan = document.getElementById("selected-plan").value;
+
+    if (role === "MARKETER" && !plan) {
+      e.preventDefault();
+      alert("Please select a marketing plan.");
+    }
+  });
+</script>
+
+
+ <style>
+  .plan-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.plan-card {
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: 0.25s;
+  background: #fff;
+}
+.plan-card ul{
+   list-style: none;
+   margin-left: -30px;
+}
+.plan-card h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.plan-card p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+/* SELECTED STATE */
+.plan-card.active {
+  border-color: #28a745;
+  background: #eafff1;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  .plan-cards {
+    grid-template-columns: 1fr;
+  }
+}
+.marketer-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.marketer-checkboxes label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.dropdown-checkbox {
+  position: relative;
+  max-width: 100%;
+  margin-bottom: 15px;
+}
+
+.dropdown-btn {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 10px 12px;
+}
+.dropdown-checkbox p{
+
+  margin-left: auto;
+}
+.company-category-checkbox {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.company-category-checkbox li {
+  margin-bottom: 8px;
+}
+
+.company-category-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  width: auto !important;
+}
+ </style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  const btn = document.querySelector(".dropdown-btn");
+  const dropdown = document.getElementById("marketerDropdown");
+
+  if (btn && dropdown) {
+
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      dropdown.style.display =
+        dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+
+  }
+
+});
+</script>
+ 
+
+          </div>
+
+          <div class="role-field">
+            <label>Referral Code (Optional)</label>
+            {{ form.referred_by_code }}
+          </div>
+
+          <div class="role-field">
+            <label>Phone Number</label>
+            <div class="otp-section">
+              <!-- PHONE + SEND OTP -->
+
+              <div class="otp-row">
+                {{ form.phone }}
+                
+                  <button
+                    type="button"
+                    id="send-otp-btn"
+                    class="otp-icon-btn"
+                    title="Send OTP"
+                  >
+                    Send OTP
+                  </button>
+                
+              </div>
+
+              <!-- OTP + VERIFY (HIDDEN INITIALLY) -->
+              <div class="otp-row hidden" id="otp-verify-row">
+                
+                  <input type="text" id="otp-input" placeholder="Enter OTP" />
+                
+                
+                  <button
+                    type="button"
+                    id="verify-otp-btn"
+                    class="otp-icon-btn verify"
+                    title="Verify OTP"
+                  >
+                    Verify Otp
+                  </button>
+                
+              </div>
+
+              <div id="otp-message" class="otp-message"></div>
+            </div>
+
+            <div id="otp-message" class="otp-message"></div>
+          </div>
+          <div>
+            <span
+              ><a href="{% url 'prop:terms' %}" style="color: blue; font-size: 0.8rem; margin-right: 30px;
+ 
+    text-decoration: none;"
+                >By registering you will agree our terms & conditions</a
+              ></span
+            >
+          </div>
+<input type="hidden" id="otp-verified" value="false">
+          <button type="submit" id="register-btn">Register</button>
+       
+
+          <p class="login-link">
+            If you already registered, <a href="/login/">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+    <script>
+      const fileInput = document.getElementById("id_profile_image_path");
+      const previewImg = document.getElementById("image-preview");
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) previewImg.src = URL.createObjectURL(file);
+      });
+
+      // =======================
+      // SEND OTP
+      // =======================
+      document
+        .getElementById("send-otp-btn")
+        .addEventListener("click", function () {
+          const phone = document.querySelector("input[name='phone']").value;
+          const msgBox = document.getElementById("otp-message");
+
+          msgBox.style.display = "none";
+          msgBox.className = "otp-message";
+
+          if (!phone) {
+            msgBox.style.display = "block";
+            msgBox.classList.add("otp-error");
+            msgBox.innerText = "Please enter your phone number.";
+            return;
+          }
+
+          fetch(`/otp/send/?phone=${phone}`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.error) {
+                msgBox.style.display = "block";
+                msgBox.classList.add("otp-error");
+                msgBox.innerText = data.error;
+                return;
+              }
+
+              document
+                .getElementById("otp-verify-row")
+                .classList.remove("hidden");
+
+              msgBox.style.display = "block";
+              msgBox.classList.add("otp-success");
+              msgBox.innerText = "OTP sent successfully!";
+            });
+        });
+
+      // =======================
+      // VERIFY OTP
+      // =======================
+      document
+        .getElementById("verify-otp-btn")
+        .addEventListener("click", function () {
+          const phone = document.querySelector("input[name='phone']").value;
+          const otp = document.getElementById("otp-input").value;
+          const msgBox = document.getElementById("otp-message");
+
+          fetch(`/otp/verify/?phone=${phone}&otp=${otp}`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.error) {
+                msgBox.style.display = "block";
+                msgBox.className = "otp-message otp-error";
+                msgBox.innerText = data.error;
+                return;
+              }
+
+              msgBox.style.display = "block";
+              msgBox.className = "otp-message otp-success";
+              msgBox.innerText = "OTP verified successfully!";
+              document.getElementById("otp-verified").value = "true";
+            });
+        });
+
+      // =======================
+      // BLOCK SUBMIT IF OTP NOT VERIFIED
+      // =======================
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", function (e) {
+          if (document.getElementById("otp-verified").value !== "true") {
+            e.preventDefault();
+            const msgBox = document.getElementById("otp-message");
+            msgBox.style.display = "block";
+            msgBox.className = "otp-message otp-error";
+            msgBox.innerText = "Please verify OTP before submitting!";
+          }
+        });
+    </script>
+
+    <script>
+      const roleSelect = document.getElementById("id_role");
+
+      const professional = document.getElementById("professional-fields");
+      const owner = document.getElementById("owner-fields");
+      const marketer = document.getElementById("marketer-fields");
+
+      const professionalOwnerCategories = [
+        "Plumber",
+        "Painter",
+        "Electrician",
+        "Constructor",
+        "Centring",
+        "Interior designer",
+        "Architecture",
+        "Civil engineer",
+        "Tiles works",
+        "Marble works",
+        "Grinate works",
+        "Wood works",
+        "Glass works",
+        "Steel railing works",
+        "Carpenter",
+        "Doozer works",
+        "JCB works",
+        "Borewells",
+        "Material supplier",
+      ];
+
+      const marketerCategories = [
+        "Plot",
+        "House",
+        "Flat",
+        "Villa",
+        "Farm",
+        "Lands",
+        "Developmentlands",
+      ];
+
+      // ============================
+      // SHOW/HIDE CATEGORY FIELDS
+      // ============================
+      function updateCategoryOptions(role) {
+        professional.classList.add("hidden");
+        owner.classList.add("hidden"); // ALWAYS hidden for owner
+        marketer.classList.add("hidden");
+
+        // PROFESSIONAL ONLY
+        if (role === "PROFESSIONAL") {
+          professional.classList.remove("hidden");
+
+          const sel = document.getElementById("id_category");
+          sel.innerHTML = '<option value="">Select Category</option>';
+          professionalOwnerCategories.forEach((c) => sel.add(new Option(c, c)));
+        }
+
+        // OWNER â†’ DO NOTHING (NO CATEGORY)
+        if (role === "OWNER") {
+          owner.classList.add("hidden"); // FORCE HIDE
+        }
+
+        // MARKETER ONLY
+        if (role === "MARKETER") {
+          marketer.classList.remove("hidden");
+
+          const sel = document.getElementById("id_marketer_category");
+          sel.innerHTML = '<option value="">Select Category</option>';
+          marketerCategories.forEach((c) => sel.add(new Option(c, c)));
+        }
+      }
+
+      // ============================
+      // HIDE/SHOW DESCRIPTION, EXPERIENCE, DEALS FOR OWNER
+      // ============================
+      function hideOwnerExtraFields(role) {
+        const descInput = document.querySelector("input[name='description']");
+
+        const expInput = document.querySelector("input[name='experience']");
+        const dealsInput = document.querySelector("input[name='deals']");
+
+        const desc = descInput.parentElement;
+        const exp = expInput.parentElement;
+        const deals = dealsInput.parentElement;
+
+        if (role === "OWNER") {
+          desc.classList.add("hidden");
+          exp.classList.add("hidden");
+          deals.classList.add("hidden");
+
+          descInput.removeAttribute("required");
+          expInput.removeAttribute("required");
+
+          descInput.value = "";
+          expInput.value = 0;
+          dealsInput.value = "";
+        } else {
+          desc.classList.remove("hidden");
+          exp.classList.remove("hidden");
+          deals.classList.remove("hidden");
+
+          descInput.setAttribute("required", "required");
+          expInput.setAttribute("required", "required");
+        }
+      }
+
+      // ============================
+      // EVENT LISTENERS
+      // ============================
+      roleSelect.addEventListener("change", () => {
+        updateCategoryOptions(roleSelect.value);
+        hideOwnerExtraFields(roleSelect.value);
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateCategoryOptions(roleSelect.value);
+        hideOwnerExtraFields(roleSelect.value);
+      });
+    </script>
+
+    <script>
+const firstNameInput = document.getElementById("first-name");
+const lastNameInput = document.getElementById("last-name");
+const usernameInput = document.getElementById("id_username");
+
+function updateFullName() {
+  const first = firstNameInput.value.trim().toLowerCase();
+  const last = lastNameInput.value.trim().toLowerCase();
+
+  if (!first && !last) {
+    usernameInput.value = "";
+    return;
+  }
+
+  // 🔥 Make username UNIQUE and not similar
+  const randomNum = Math.floor(Math.random() * 10000);
+
+  usernameInput.value = `${first}_${last}_${randomNum}`;
+}
+
+firstNameInput.addEventListener("input", updateFullName);
+lastNameInput.addEventListener("input", updateFullName);
+
+document
+  .getElementById("register-form")
+  .addEventListener("submit", updateFullName);
+</script>
+    <script>
+      const locLocality = document.getElementById("loc-locality");
+      const locCity = document.getElementById("loc-city");
+      const locState = document.getElementById("loc-state");
+      const locCountry = document.getElementById("loc-country");
+
+      const locationInput = document.getElementById("id_location");
+
+      function updateLocation() {
+        const parts = [
+          locLocality.value.trim(),
+          locCity.value.trim(),
+          locState.value.trim(),
+          locCountry.value.trim(),
+        ].filter(Boolean);
+
+        locationInput.value = parts.join(", ");
+      }
+
+      locLocality.addEventListener("input", updateLocation);
+      locCity.addEventListener("input", updateLocation);
+      locState.addEventListener("input", updateLocation);
+      locCountry.addEventListener("input", updateLocation);
+
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", updateLocation);
+    </script>
+    <script>
+      document.querySelectorAll(".toggle-password").forEach((icon) => {
+        icon.addEventListener("click", function () {
+          const input = document.getElementById(
+            this.getAttribute("data-target")
+          );
+
+          if (input.type === "password") {
+            input.type = "text";
+            this.classList.remove("bi-eye");
+            this.classList.add("bi-eye-slash");
+          } else {
+            input.type = "password";
+            this.classList.remove("bi-eye-slash");
+            this.classList.add("bi-eye");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

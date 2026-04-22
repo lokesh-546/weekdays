@@ -1,0 +1,361 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+<title>Available Users</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: #f3f4f6;
+}
+
+.page-wrapper {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 900px;
+  height: fit-content;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.chat-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* NEW wrapper behavior (doesn't affect layout) */
+.chat-search {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* make input container relative */
+.chat-search {
+  position: sticky;
+}
+
+.chat-search {
+  display: flex;
+  align-items: center;
+}
+
+/* icon inside input */
+.chat-search {
+  position: sticky;
+}
+
+/* ACTUAL FIX */
+.chat-search {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.chat-search i {
+  position: absolute;
+  margin-left: 12px;
+  color: gray;
+  pointer-events: none;
+}
+
+/* input styling update ONLY */
+.chat-search {
+  position: sticky;
+}
+
+/* input fix */
+.chat-search input {
+  width: 100%;
+  border: 1px solid grey;
+  outline: none;
+  padding: 8px 12px 8px 38px; /* space for icon */
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.filter-scroll {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  background: #f9fafb;
+  border-bottom: 1px solid #eee;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.filter-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+}
+
+.filter-chip.active {
+  background: #1D4384;
+  color: white;
+  border-color: #1D4384;
+}
+
+.chat-list {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.chat-list::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: 0.2s;
+}
+
+.chat-item:hover {
+  background: #f9fafb;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-name {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.chat-meta {
+  font-size: 12px;
+  color: gray;
+}
+
+.chat-right a {
+  font-size: 18px;
+  text-decoration: none;
+}
+
+ 
+
+@media (max-width: 768px) {
+  .chat-container {
+    max-width: 100%; 
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    height: 90%;
+  }
+
+  .floating-message-btn {
+    display: none !important;
+  }
+
+  .chat-name {
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-name {
+    font-size: 13px;
+    max-width: 140px;
+  }
+}
+
+@media (min-width: 769px) {
+  .chat-container {
+    max-width: 1000px;
+    border-radius: 12px;
+  }
+
+  .chat-name {
+    max-width: 420px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+{% include 'NavBar.html' %}
+
+<div class="page-wrapper">
+  <div class="chat-container">
+
+    <!-- SEARCH -->
+    <div class="chat-search">
+      <i class="bi bi-search"></i>
+      <input type="text" id="userSearch" placeholder="Search by name...">
+    </div>
+
+    <!-- FILTER -->
+    <div class="filter-scroll">
+      <button class="filter-chip active" data-plan="all">All</button>
+      <button class="filter-chip" data-plan="COMPANY_NORMAL">Companies</button>
+      <button class="filter-chip" data-plan="COMPANY_PRO">Pro</button>
+      <button class="filter-chip" data-plan="COMPANY_PREMIUM">Premium</button>
+      <button class="filter-chip" data-plan="MARKETER_EXPORT">Experts</button>
+      <button class="filter-chip" data-plan="MARKETER_EXPORT_PRO">Experts Pro</button>
+      <button class="filter-chip" data-plan="MARKETER_EXPORT_PREMIUM">Experts Premium</button>
+      <button class="filter-chip" data-plan="PROFESSIONAL_SINGLE">Construction</button>
+    </div>
+
+    <!-- USERS -->
+    <ul class="chat-list">
+      {% for item in users_sorted %}
+      {% with user=item.user %}
+      <li class="chat-item" data-plan="{{ item.plan_type }}">
+        <a href="{% url 'prop:start_chat_with_user' user.id %}" class="profile-link">
+          <img src="{{ user.profile_image_path.url|default:'/static/images/default-avatar.png' }}" class="avatar">
+          <div>
+            <div class="chat-name">{{ user.username }}</div>
+
+            {% if item.unread_count > 0 %}
+              <div class="chat-meta" style="color:green;">
+                {{ item.unread_count }} new message
+              </div>
+            {% elif item.last_message_time %}
+              <div class="chat-meta">
+                {{ item.last_message_time|date:"M d, H:i" }}
+              </div>
+            {% endif %}
+          </div>
+        </a>
+
+        <div class="chat-right">
+          <a href="{% url 'prop:start_chat_with_user' user.id %}"> </a>
+        </div>
+      </li>
+      {% endwith %}
+      {% endfor %}
+    </ul>
+
+  </div>
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+const searchInput = document.getElementById("userSearch");
+const filterBtns = document.querySelectorAll(".filter-chip");
+
+let activePlan = "all";
+let searchText = "";
+
+// Filter click
+filterBtns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterBtns.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activePlan = btn.dataset.plan;
+    applyFilters();
+  });
+});
+
+// Search typing
+searchInput.addEventListener("keyup", () => {
+  searchText = searchInput.value.toLowerCase();
+  applyFilters();
+});
+
+// Apply filter
+function applyFilters() {
+  const users = document.querySelectorAll(".chat-item");
+
+  users.forEach(u => {
+    const plan = u.dataset.plan;
+    const name = u.querySelector(".chat-name").innerText.toLowerCase();
+
+    const planMatch = (activePlan === "all" || plan === activePlan);
+    const nameMatch = name.includes(searchText);
+
+    u.style.display = (planMatch && nameMatch) ? "flex" : "none";
+  });
+}
+
+// Auto refresh users
+function refreshUsers() {
+  fetch(window.location.href)
+    .then(res => res.text())
+    .then(html => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+
+      const newList = doc.querySelector(".chat-list");
+      const oldList = document.querySelector(".chat-list");
+
+      if (newList && oldList) {
+        oldList.innerHTML = newList.innerHTML;
+        applyFilters();
+      }
+    });
+}
+
+setInterval(refreshUsers, 3000);
+</script>
+
+</body>
+</html>

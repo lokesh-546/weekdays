@@ -1,0 +1,681 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Reels</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+/* --- Base --- */
+body {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+/* --- Reels Grid --- */
+.reels-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 80px;
+    padding: 10px;
+}
+ 
+
+/* --- Reel Card --- */
+.reel-card {
+    position: relative;
+       z-index: 1;
+    border-radius: 14px;
+    overflow: visible;
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    cursor: pointer;
+    height: 170px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+.reel-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.reel-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+       pointer-events: auto;
+    z-index: 2;
+}
+
+/* --- Info Bubble --- */
+.reel-info {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+}
+
+.reel-info span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    background: rgba(37, 99, 235, 0.9);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 20px;
+}
+
+/* --- 3-dot menu --- */
+.more-menu {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 50;
+}
+
+.dots-btn {
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: 0.2s ease;
+}
+
+ 
+
+/* --- Dropdown --- */
+.dropdown-content {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    min-width: 120px;
+    padding: 6px 0;
+
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    z-index: 999;
+    animation: fadeIn 0.2s ease;
+}
+
+.dropdown-content button {
+    background: none;
+    border: none;
+    color: #e2e8f0;
+    padding: 10px 14px;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.dropdown-content button:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+.dropdown-content button:last-child {
+    color: #f87171;
+}
+.dropdown-content button:last-child:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+.dropdown-content button + button {
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* --- Modal --- */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 90vw;
+    max-width: 420px;
+    display: none;
+    flex-direction: column;
+    border-radius: 16px;
+    z-index: 9999;
+
+    background: linear-gradient(145deg, #1e293b, #020617);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    transition: all 0.25s ease;
+}
+
+.modal.active {
+    display: flex;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Dark background overlay */
+.modal::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: -1;
+}
+
+/* --- Video --- */
+.modal video {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Close Button FIXED --- */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 38px;
+    height: 38px;
+
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+
+    border: none;
+    border-radius: 50%;
+
+    color: #fff;
+    font-size: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    z-index: 10000;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: 0.2s ease;
+}
+
+.close-btn:hover {
+    background: rgba(239, 68, 68, 0.9);
+    transform: scale(1.1);
+}
+
+/* --- Modal Info --- */
+.modal-info {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+    background: rgba(15, 23, 42, 0.9);
+}
+
+/* --- Edit Modal --- */
+#editModal form {
+    background: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#editModal textarea,
+#editModal input {
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+/* Buttons */
+.save-btn {
+    background: #2563eb;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+}
+
+.cancel-btn {
+    background: #64748b;
+    color: #fff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+}
+
+/* --- Delete Modal --- */
+.delete-box {
+    padding: 20px;
+    text-align: center;
+}
+
+.delete-box h3 {
+    color: #fff;
+}
+
+.delete-box p {
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+.delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.delete-btn {
+    background: #ef4444;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+}
+
+.delete-btn:hover {
+    background: #dc2626;
+}
+
+/* --- Toast --- */
+#toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1e293b;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    display: none;
+}
+
+/* --- Animation --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Responsive --- */
+
+/* Small mobile */
+@media (max-width: 599px) {
+    .reels-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablets / large mobile (768px) */
+@media (min-width: 600px) and (max-width: 1023px) {
+    .reels-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .reel-card {
+        height: 200px;
+    }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+    .reels-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .reel-card {
+        height: 250px;
+    }
+}
+#popupVideo {
+    pointer-events: auto;
+}
+</style>
+</head>
+<body>
+{% include 'NavBar.html' %}
+
+{% if reel %}
+<div class="reels-container">
+    {% for i in reel %}
+    <div class="reel-card" id="reel-card-{{ i.id }}">
+<video 
+    src="{{ i.reel_url }}" 
+    muted 
+    loop
+    class="reel-video"
+    data-url="{{ i.reel_url }}"
+    data-likes="{{ i.likeCount|default:0 }}"
+    data-comments="{{ i.commentCount|default:0 }}"
+    data-views="{{ i.view_count|default:0 }}">
+</video>
+        <div class="reel-info">
+            <span><i class="bi bi-eye"></i> {{ i.view_count|default:0 }}</span> 
+        </div>
+
+        <div class="more-menu">
+            <button class="dots-btn" onclick="toggleDropdown({{ i.id }})">⠇</button>
+            <div class="dropdown-content" id="dropdown-{{ i.id }}">
+                <button onclick="openEditPopup({{ i.id }}, '{{ i.reel_url }}', '{{ i.description|escapejs }}', '{{ i.link|escapejs }}')">Edit</button>
+                <button onclick="openDeletePopup({{ i.id }})">Delete</button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="text-align:center;margin-top:100px;">No reels uploaded yet.</p>
+{% endif %}
+
+<!-- ✅ NEW POPUP (REPLACES OLD MODAL) -->
+<div id="reelModal" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.9);
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
+">
+  <div style="
+    position:relative;
+    width:90%;
+    max-width:420px;
+    background:#000;
+    border-radius:16px;
+    padding:10px;
+  ">
+
+    <!-- CLOSE BUTTON -->
+    <button id="closeBtn"  style="
+      position:absolute;
+      top:10px;
+      right:10px;
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      border:none;
+      background:rgba(0,0,0,0.7);
+      color:#fff;
+      font-size:18px;
+      cursor:pointer;
+      z-index:99999999;
+    ">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <!-- VIDEO -->
+    <video id="popupVideo" controls playsinline style="width:100%; border-radius:12px;"></video>
+
+    <!-- STATS -->
+    <div style="
+      display:flex;
+      justify-content:space-around;
+      color:#cbd5e1;
+      margin-top:8px;
+      font-size:13px;
+    ">
+      <span id="viewCount"></span>
+      <span id="likeCount"></span>
+      <span id="commentCount"></span>
+    </div>
+
+  </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal" id="editModal">
+  <form id="editForm" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <video id="editVideo" controls style="width:100%; border-radius:8px;"></video>
+    <label>Description:</label>
+    <textarea id="editDesc" name="description" placeholder="Enter description here"></textarea>
+    <label>Link:</label>
+    <input id="editLink" type="text" name="link" placeholder="Enter link here">
+    <div style="display:flex; justify-content:flex-end; gap:10px; width: fit-content;">
+      <button type="submit" class="save-btn">Save</button>
+      <button type="button" class="cancel-btn" onclick="closeEditPopup()">Cancel</button>
+    </div>
+  </form>
+</div>
+ 
+<!-- Delete Modal -->
+<div class="modal" id="deleteModal">
+    <div class="delete-box">
+        <h3>Delete Reel?</h3>
+        <p>Delete this reel permanently?</p>
+
+        <div class="delete-actions">
+            <button id="confirmDeleteBtn" class="delete-btn">Delete</button>
+            <button onclick="closeDeletePopup()" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+{% include 'footer.html' %}
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    let reelToDelete = null;
+
+    function showToast(message, success=true){
+        const toast = document.getElementById('toast');
+        toast.innerText = message;
+        toast.style.background = success ? '#1f8ef1' : '#ff6b6b';
+        toast.style.display = 'block';
+        setTimeout(()=> toast.style.display='none', 2000);
+    }
+    
+    document.getElementById("closeBtn").addEventListener("click", function(e) {
+        e.stopPropagation();
+        closeReel();
+    });
+    document.querySelector("#reelModal > div").addEventListener("click", function(e){
+        e.stopPropagation();
+    });
+    window.toggleDropdown = function(id) {
+        const dropdown = document.getElementById('dropdown-' + id);
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+            if(d.id !== 'dropdown-'+id) d.style.display = 'none';
+        });
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    /* ✅ NEW POPUP OPEN (REPLACES OLD MODAL) */
+window.openReel = function(url, likes, comments, views) {
+
+    const video = document.getElementById("popupVideo");
+
+    if (!url) return;
+
+    // ✅ FULL RESET (fixes 2nd click issue)
+    video.pause();
+    video.removeAttribute("src");   // 🔥 better than innerHTML
+    video.load();
+
+    // ✅ SET NEW VIDEO
+    video.src = url;
+    video.currentTime = 0;
+
+    video.muted = true;
+    video.autoplay = true;
+    video.playsInline = true;
+
+    video.load();
+
+    // ✅ PLAY
+    video.play().catch(err => console.log("Play error:", err));
+
+    // ✅ STATS
+    document.getElementById("viewCount").innerHTML =
+        '<i class="bi bi-eye"></i> ' + (views || 0);
+
+    document.getElementById("likeCount").innerHTML =
+        '<i class="bi bi-heart"></i> ' + (likes || 0);
+
+    document.getElementById("commentCount").innerHTML =
+        '<i class="bi bi-chat"></i> ' + (comments || 0);
+
+    // ✅ SHOW MODAL
+    document.getElementById("reelModal").style.display = "flex";
+}
+    /* ✅ CLOSE POPUP */
+window.closeReel = function(){
+    const video = document.getElementById("popupVideo");
+
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    document.getElementById("reelModal").style.display = "none";
+}
+
+    document.getElementById("popupVideo").addEventListener("click", function(e){
+        e.stopPropagation();
+    });
+    /* ✅ CLICK OUTSIDE CLOSE */
+    document.getElementById("reelModal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeReel();
+    }
+});
+
+    // ✅ EDIT
+    window.openEditPopup = function(id, videoUrl, description, link) {
+        document.querySelectorAll('.dropdown-content').forEach(d => d.style.display = 'none');
+
+        const modal = document.getElementById('editModal');
+        const video = document.getElementById('editVideo');
+        const descInput = document.getElementById('editDesc');
+        const linkInput = document.getElementById('editLink');
+        const form = document.getElementById('editForm');
+
+        video.src = videoUrl;
+        descInput.value = description && description !== "None" ? description : "";
+        linkInput.value = link && link !== "None" ? link : "";
+
+        form.action = "{% url 'prop:edit_reel' 0 %}".replace('0', id);
+
+        modal.classList.add('active');
+    }
+
+    window.closeEditPopup = function() {
+        document.getElementById('editModal').classList.remove('active');
+    }
+
+    // ✅ DELETE
+    window.openDeletePopup = function(id){
+        reelToDelete = id;
+        document.getElementById('deleteModal').classList.add('active');
+    }
+
+    window.closeDeletePopup = function(){
+        document.getElementById('deleteModal').classList.remove('active');
+        reelToDelete = null;
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function(){
+        if(!reelToDelete) return;
+
+        fetch("{% url 'prop:deleteReel' 0 %}".replace('0', reelToDelete), {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            if(data.success){
+                showToast('Reel deleted successfully!', true);
+
+                const card = document.getElementById('reel-card-' + reelToDelete);
+                if(card) card.remove();
+
+            } else {
+                showToast('Failed to delete reel.', false);
+            }
+
+            closeDeletePopup();
+        })
+        .catch(err=>{
+            showToast('Error deleting reel.', false);
+            closeDeletePopup();
+            console.error(err);
+        });
+    });
+
+    // ✅ EDIT SUBMIT
+    document.getElementById('editForm').addEventListener('submit', function(e){
+        e.preventDefault();
+
+        const form = e.target;
+        const data = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: data,
+            headers: {'X-Requested-With':'XMLHttpRequest'}
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success){
+                showToast('Reel updated successfully!', true);
+                closeEditPopup();
+                setTimeout(()=> location.reload(), 1000);
+            } else {
+                showToast('Failed to update reel.', false);
+                console.log(data.errors);
+            }
+        })
+        .catch(err => {
+            showToast('Error updating reel.', false);
+            console.error(err);
+        });
+    });
+
+    /* ✅ CLICK REEL → OPEN NEW POPUP */
+    document.querySelectorAll('.reel-video').forEach(videoElem => {
+        videoElem.addEventListener('click', function() {
+
+            const url = this.dataset.url;
+            const likes = parseInt(this.dataset.likes) || 0;
+            const comments = parseInt(this.dataset.comments) || 0;
+            const views = parseInt(this.dataset.views) || 0;
+            
+            console.log("VIDEO URL:", url);
+
+            openReel(url, likes, comments, views);
+
+        });
+    });
+
+});
+ 
+</script>
+</body>
+</html>

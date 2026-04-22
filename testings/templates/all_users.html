@@ -1,0 +1,1013 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>All Users</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        body { background: #f5f6fa; font-family: "Poppins", sans-serif; margin: 0; }
+
+        .container1 { width: 100%; margin: auto; padding: 20px; margin-top: 50px; gap: 50px; }
+
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+
+        .card 
+        { 
+        background: #ffffff; 
+        border-radius: 16px; 
+        padding: 10px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: 0.3s;
+        margin-bottom:10px;
+        text-align: center;
+        min-width:230px;
+          max-width: 250px;  }
+        
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card a { text-decoration: none; color: #222; }
+
+        .profile-img, .pro-img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 0px auto; }
+
+        .card-details { text-align: left; line-height:1.1rem; margin-top: 10px;  }
+
+         .card-details p{
+          color: black;
+          font-size: 12px;
+           margin: 6px;
+          }
+
+        .btn { display: block; width: 90%; margin: 15px auto 0 auto; padding: 12px; text-align: center; background: rgb(84, 84, 151); color: white; font-size: 16px; border-radius: 10px; text-decoration: none; transition: 0.3s; }
+
+        .btn:hover { background: #5a5a9d; }
+
+        h2 { text-align: center; margin: 10px 0; }
+
+        .location { font-size: 14px; color: #555; }
+        
+           .pac-container {
+        z-index: 100000 !important;
+      }
+
+
+        /* FILTER BOX */
+        .filter-box {
+            width: 330px;
+            padding: 8px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e3e6ec;
+            height: 350px;
+            position: fixed;
+            top: 10%;
+            left: 10px;
+            right:0;
+            
+            
+          
+            
+        }
+         .expert-bio {
+  font-size: 12px;
+  color: #000000;
+  margin: 8px 0px;
+  line-height: 1.4;
+  max-height: 40px;
+  overflow: hidden;
+}
+       
+        .filter-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-top: 10px;
+            font-size: 14px;
+            gap: 40px;
+        }
+
+        .apply-btn, .reset-btn {
+            width: 48%;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 20px;
+        }
+
+        .apply-btn { background: #2e8b35; color: white; border: none; }
+
+        .reset-btn { background: #233b8e; color: white; text-decoration: none; }
+
+        .main-layout { display: flex;  margin: 20px auto; gap: 25px; }
+
+        /* MOBILE FILTER BUTTON */
+        .filter-toggle-btn {
+            display: none;
+            background: #233b8e;
+            color: white;
+            padding: 8px;
+            border-radius: 10px;
+            width: fit-content;
+            margin: 0 ;
+            text-align: center;
+            font-size: 12px;
+        }
+       
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+
+            .main-layout {
+                display: block;
+                width: 100%;
+            }
+
+            .filter-box {
+                display: none;
+                width: 90%;
+                margin: 0px ;
+            }
+
+            .filter-toggle-btn {
+                display: block;
+            }
+
+            .grid {
+                grid-template-columns: 1fr !important;
+                gap:20px;
+                width: 100%;
+            }
+
+            .card { min-width:90%; margin: auto; }
+
+            .profile-img, .pro-img { width: 50px; height: 50px; }
+
+            h2 { font-size: 16px; }
+        }
+
+       .nav-links button{
+        margin: auto;
+       }
+       .nav-links{
+        align-items: center;
+       }
+  .single-line {
+    display: inline-block;      /* or block if you want full width */
+    max-width: 200px;           /* adjust to your layout */
+    white-space: nowrap;        /* keep on a single line */
+    overflow: hidden;           /* hide overflow */
+    text-overflow: ellipsis;    /* show ... */
+}
+
+
+    .contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.profile-container {
+    margin-left: 350px;
+}
+.contact-btn-main {
+  flex: 1;
+  height: 40px;
+  background: #4c3eb6;
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+/* 1024px Laptop Fix */
+@media (min-width: 992px) and (max-width: 1200px) {
+
+    .profile-container {
+        margin-left: 350px;   /* keep space for fixed filter */
+        width: calc(100% - 370px);
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .card {
+        min-width: 0;     /* remove forcing width */
+        max-width: 100%;  /* allow grid control */
+        width: 100%;
+    }
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+    .profile-container {
+           margin-left: 0px; 
+     }
+}
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #d6d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-btn-main i {
+  color: #ffffff !important;
+}
+
+.change{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  justify-content:center;
+  align-items:center;
+  margin-left:17px;
+
+  
+}
+ @media (max-width: 768px) {
+          .filter-box{
+             width: 95%;
+             padding:10px
+
+          }
+        }
+
+
+
+    </style>
+ 
+</head>
+
+<body>
+
+{% include 'NavBar.html' %}
+
+
+<div class="container1">
+
+    <!-- MOBILE FILTER BUTTON -->
+    <button class="filter-toggle-btn" onclick="toggleFilter()">Filter {{ category  }}</button>
+
+    <div class="main-layout">
+
+        <!-- FILTER FORM -->
+        <form method="GET" class="filter-box" id="filterBox">
+            <input type="hidden" name="category" value="{{ category }}">
+
+            <h3>Filter {{ category  }}
+                <span style="float:right; cursor:pointer; font-size:18px; display:none;" id="closeFilter" onclick="toggleFilter()">X</span>
+            </h3>
+            <br>
+
+            
+            <input type="text" name="name" placeholder="Search by name" value="{{ filters.name }}">
+
+            
+    <!-- CATEGORY DROPDOWN -->
+
+{% if category == "professional" %}
+<select name="user_category" style="width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-top: 10px;
+            font-size: 14px;">
+    <option value="">Select Category</option>
+    {% for value, label in PROFESSIONAL_CATEGORY_CHOICES %}
+    <option value="{{ value }}" {% if filters.user_category == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+</select>
+{% endif %}
+
+{% if "company" in category %}
+<select name="user_category" style="width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-top: 10px;
+            font-size: 14px;">
+    <option value="">Select Company Category</option>
+    {% for value, label in COMPANY_CATEGORY_CHOICES %}
+    <option value="{{ value }}" {% if filters.user_category == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+</select>
+{% endif %}
+
+{% if "marketer" in category %}
+<select name="user_category" style="width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            margin-top: 10px;
+            font-size: 14px;">
+    <option value="">Select Marketer Category</option>
+    {% for value, label in MARKETER_CATEGORY_CHOICES %}
+    <option value="{{ value }}" {% if filters.user_category == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+</select>
+{% endif %}
+
+
+
+
+
+
+             <input type="text" name="location" placeholder="location" value="{{ filters.location }}" id="locationSearch">
+          
+            <input type="text" name="experience" placeholder="Experience" value="{{ filters.experience }}">
+
+            <div style="display:flex; justify-content:space-between;">
+                <button type="submit" class="apply-btn">Apply</button>
+                <a href="?category={{ category }}" class="reset-btn">Reset</a>
+            </div>
+        </form>
+
+        <!-- USER LIST -->
+        <div class="profile-container" style="width: 100%;">
+
+ {% if category == 'company' and company_normal %}
+    <h2>All Companies</h2>
+    <div class="grid">
+
+        {% for u in company_normal %}
+        <div class="card">
+
+            <!-- тЬЕ Wallpaper Added -->
+            {% if u.company_wallpaper_path %}
+                <div style="
+                    background-image:url('{{ u.company_wallpaper_path.url }}');
+                    width:100%; height:100px;
+                    background-size:cover;
+                    background-position:center;
+                    border-radius:10px 10px 0 0;">
+                </div>
+            {% else %}
+                <div style="width:100%; height:100px; background:#eee; border-radius:10px 10px 0 0;"></div>
+            {% endif %}
+
+            <a href="{% url 'prop:company_profile_with_id' u.id %}">
+
+                <!-- тЬЕ Profile Image (moved below wallpaper) -->
+                {% if u.company_logo_path %}
+                  <img src="{{ u.company_logo_path.url }}"
+                 class="profile-img"
+                 alt="{{ u.username }}"
+                 style="margin-top:5px;margin-left:10px;"/>
+                {% else %}
+                    <img src="{% static 'default.jpg' %}" class="profile-img" style="margin-top:-50px;margin-left:-10px;">
+                {% endif %}
+
+                <div class="card-details" style="line-height: 20px;"><br>
+                    <h5 style="margin-top:-60px ; margin-left:90px;">{{ u.username }}</h5>
+                    <p class="location" style="    margin: 25px 0px -15px 20px;">@{{ u.location }}</p>
+      
+                     <hr class="divider-red"  style="color: #e6e6e6;">
+                     <p>Established:<br> 
+                    <span>{{ u.experience }} yrs</span>
+                    </p>
+                    <p style="margin-left: 120px; margin-top: -39px;"> ongoing projects: 
+                    <span>  {{u.ongoing_projects}}</span><br>
+                    </p>
+                    <p> Specialized in:<br>
+                    <span> {{ u.category }}</span><br>
+                    </p>
+                    
+                    <span class="single-line"> {{ u.description }}</span>
+                </div>
+            </a>
+<div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+  <!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+    {% if category == 'company_pro' and company_pro %}
+    <h2>All Companies Pro</h2>
+    <div class="grid">
+
+        {% for u in company_pro %}
+        <div class="card">
+
+            <!-- тЬЕ Wallpaper Added -->
+            {% if u.company_wallpaper_path %}
+                <div style="
+                    background-image:url('{{ u.company_wallpaper_path.url }}');
+                    width:100%; height:100px;
+                    background-size:cover;
+                    background-position:center;
+                    border-radius:10px 10px 0 0;">
+                </div>
+            {% else %}
+                <div style="width:100%; height:100px; background:#eee; border-radius:10px 10px 0 0;"></div>
+            {% endif %}
+
+            <a href="{% url 'prop:company_profile_with_id' u.id %}">
+
+                <!-- тЬЕ Profile Image -->
+                {% if u.company_logo_path %}
+                     <img src="{{ u.company_logo_path.url }}"
+                 class="profile-img"
+                 alt="{{ u.username }}"
+                 style="margin-top:5px;margin-left:10px;"/>
+                {% else %}
+                    <img src="{% static 'default.jpg' %}" class="profile-img" style="margin-top:-50px;">
+                {% endif %}
+
+                <div class="card-details">
+                  <br>
+                   
+                    <h5 style="margin-top:-60px ; margin-left:90px;">{{ u.username }}</h5>
+                    <p class="location" style="    margin: 25px 0px -15px 20px;">@ {{ u.location }}</p>
+                    <br>
+                     <hr class="divider-red"  style="color:#e6e6e6;">
+                    <p>
+    Established: <br>
+    <span class="value">{{ u.experience }}</span>
+  </p>
+                    <p style="margin-left: 120px; margin-top: -30px;">
+    Ongoing projects:
+    <span class="value">{{ u.ongoing_projects }}</span>
+  </p>
+
+    <p>
+    Specialized in:<br>
+    <span class="value">{{ u.category }}</span>
+  </p>
+                    <p class="single-line">{{ u.description }}</p> 
+                </div>
+                
+            </a>
+          
+
+          <div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+<!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+{% if category == 'company_premium' and company_premium %}
+<h2>All Companies Premium</h2>
+<div class="grid">
+
+    {% for u in company_premium %}
+    <div class="card">
+
+        
+        <!-- ✅ Wallpaper Added -->
+        {% if u.company_wallpaper_path %}
+            <div style="
+                background-image:url('{{ u.company_wallpaper_path.url }}');
+                width:100%; height:100px;
+                background-size:cover;
+                background-position:center;
+                border-radius:10px 10px 0 0;">
+            </div>
+        {% else %}
+            <div style="width:100%; height:100px; background:#eee; border-radius:10px 10px 0 0;"></div>
+        {% endif %}
+
+        <a href="{% url 'prop:company_profile_with_id' u.id %}">
+
+            {% if u.company_logo_path %}
+                <img src="{{ u.company_logo_path.url }}"
+                     class="profile-img"
+                     alt="{{ u.username }}"
+                     style="margin-top:5px;margin-left:10px;"/>
+            {% else %}
+                <img src="{% static 'default.jpg' %}" 
+                     class="profile-img" 
+                     style="margin-top:-50px;">
+            {% endif %}
+
+            <div class="card-details">
+                <br>
+                <h5 style="margin-top: -60px; margin-left: 90px;">{{ u.username }}</h5>
+                <p class="location" style="    margin: 25px 0px -15px 20px;">@ {{ u.location }}</p>
+                <br>
+                <hr class="divider-red" style="color:#e6e6e6;">
+
+                <p>
+                    Established: <br>
+                    <span class="value">{{ u.experience }}</span>
+                </p>
+
+                <p style="margin-left: 120px; margin-top: -30px;">
+                    Ongoing projects:
+                    <span class="value">{{ u.ongoing_projects }}</span>
+                </p>
+
+                <p>
+                    Specialized in:<br>
+                    <span class="value">{{ u.category }}</span>
+                </p>
+
+                <p class="single-line">{{ u.description }}</p> 
+            </div>
+        </a>
+
+        <div class="contact-actions">
+
+            <!-- CALL -->
+            <a
+              href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+              class="contact-btn-main"
+              {% if user.is_authenticated %}
+                onclick="profileLead(event, {{ u.id }})"
+              {% endif %}
+            >
+              <i class="bi bi-telephone-fill"></i>
+            </a>
+
+            <!-- SHARE -->
+            <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+              <i class="bi bi-share-fill"></i>
+            </button>
+
+            <!-- CHAT -->
+            <a
+              href="{% if user.is_authenticated %}
+                    {% url 'prop:start_chat_with_user' u.id %}
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+            {% if category == 'marketer' and marketer_export %}
+            <h2>All Marketing Experts</h2>
+            <div class="grid">
+                {% for u in marketer_export %}
+               <div class="card" style="margin-bottom:20px;">
+                    <a href="{% url 'prop:user_detail' u.id %}">
+                    <div style="display:flex; align-items:center;flex-direction:row;gap:10px;">
+                    <span ><img src="{{ u.profile_image_path.url }}" class="profile-img">
+</span>
+                    <span><h5>{{ u.username |truncatechars:20}}</h5> 
+                      <p style="font-size:10px;">⭐⭐⭐</p>
+                    </span>
+                    
+                    </div>
+                                                <div class="card-details">
+                                                <span class="location" style="font-size:13px; margin-left: 20px;">@ {{ u.location|truncatechars:25|lower|capfirst }}</span>
+                                                <hr style="border:0; border-top:1px solid #e6e6e6;">
+                                                <div class="change">
+                            
+                            
+                            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
+                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
+                            
+                            </div>
+                        </div>
+                                           <div class="expert-bio">
+  {{ u.description|default:"No description available"|truncatechars:35  }}
+</div>
+                    </a>
+                       <div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+<!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+               
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if category == 'marketer_pro' and marketer_export_pro %}
+            <h2>All Marketing Experts Pro</h2>
+            <div class="grid">
+                {% for u in marketer_export_pro %}
+                <div class="card">
+                    <a href="{% url 'prop:user_detail' u.id %}">
+                    <div style="display:flex; align-items:center;flex-direction:row;gap:10px;">
+                    <span ><img src="{{ u.profile_image_path.url }}" class="profile-img">
+                        </span>
+                    <span><h5>{{ u.username |truncatechars:20}}</h5> 
+                      <p style="font-size:10px;">⭐⭐⭐⭐</p>
+                    </span>
+                    
+                         </div>
+                   <div class="card-details">
+                   <span class="location" style="font-size:13px; margin-left: 20px;">@ {{ u.location|truncatechars:25|lower|capfirst }}</span>                  <hr style="border:0; border-top:1px solid #e6e6e6;">
+                        <div class="change">
+                            
+
+                            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
+                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
+                            
+                            </div>
+                        </div>
+                                           <div class="expert-bio">
+  {{ u.description|default:"No description available"|truncatechars:35  }}
+</div>
+                    </a>
+            <div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+<!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
+            {% if category == 'marketer_premium' and marketer_export_premium %}
+            <h2>All Marketing Experts Premium</h2>
+            <div class="grid">
+                {% for u in marketer_export_premium %}
+                <div class="card">
+                    <a href="{% url 'prop:user_detail' u.id %}">
+                    <div style="display:flex; align-items:center;flex-direction:row;gap:10px;">
+                    <span ><img src="{{ u.profile_image_path.url }}" class="profile-img">
+                        </span>
+                    <span><h5>{{ u.username |truncatechars:20}}</h5>
+                    <p style="font-size:10px;">⭐⭐⭐⭐⭐</p>
+                    </span>
+                    
+                         </div>
+                   <div class="card-details">
+                   <span class="location" style="font-size:13px; margin-left: 20px;">@ {{ u.location|truncatechars:25|lower|capfirst }}</span>                  <hr style="border:0; border-top:1px solid #e6e6e6;">
+                        <div class="change">
+                            
+
+                            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
+                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
+                            
+                            </div>
+                        </div>
+                                           <div class="expert-bio">
+  {{ u.description|default:"No description available"|truncatechars:35  }}
+</div>
+                    </a>
+            <div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+<!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+
+
+            {% if category == 'professional' and professional_users %}
+            <h2>All Construction Professionals</h2>
+            <div class="grid">
+                {% for u in professional_users %}
+                <div class="card">
+                    <a href="{% url 'prop:user_detail' u.id %}">
+                        <div>
+                        <div style="display:flex; align-items:center;flex-direction:row;gap:10px;">
+                    <span ><img src="{{ u.profile_image_path.url }}" class="profile-img">
+</span>
+                    <span style="line-height:15px;"><h5>{{ u.username |truncatechars:20}}</h5>
+                    <p style="font-size:10px;">{{u.category}}</p>
+                    </span>
+                    
+                    </div>
+                        <div class="card-details">
+                           <span class="location" style="font-size:13px;">@ {{ u.location|truncatechars:25|lower|capfirst }}</span>
+                                                <hr style="border:0; border-top:1px solid #e6e6e6;">
+                                                <div class="change">
+                            
+                            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
+                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px; line-height: 1;">{{ u.deals }}</p></div>
+                         
+                            </div>
+                        </div>
+                                                  <div class="expert-bio">
+  {{ u.description|default:"No description available"|truncatechars:35  }}
+</div>
+                    </a>
+             <div class="contact-actions">
+
+  <!-- CALL -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="contact-btn-main"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill"></i>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+<!-- CHAT -->
+<a
+              href="{% if user.is_authenticated %}
+               {% url 'prop:start_chat_with_user' u.id %}
+              
+                    {% else %}
+                    {% url 'prop:login' %}
+                    {% endif %}"
+              class="icon-btn"
+              title="Chat"
+            >
+              <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+            </a>
+
+</div>
+
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+
+ 
+<!-- FILTER TOGGLE SCRIPT -->
+<script>
+function toggleFilter() {
+    const filterBox = document.getElementById("filterBox");
+    const closeBtn = document.getElementById("closeFilter");
+
+    if (filterBox.style.display === "block") {
+        filterBox.style.display = "none";
+        closeBtn.style.display = "none";
+    } else {
+        filterBox.style.display = "block";
+        closeBtn.style.display = "inline";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+         setTimeout(initAutocomplete, 300);
+    }
+}
+</script>
+<script>
+function shareProfile(id) {
+  if (navigator.share) {
+    navigator.share({
+      title: "User Profile",
+      text: "Check out this profile",
+      url: window.location.origin + "/user/" + id,
+    });
+  } else {
+    navigator.clipboard.writeText(
+      window.location.origin + "/user/" + id
+    );
+    alert("Profile link copied!");
+  }
+}
+</script>
+
+<script src="{% static 'js/Leads.js' %}"></script>
+<br><br>
+
+
+
+<script>
+let autocompleteInitialized = false;
+
+function initAutocomplete() {
+  if (autocompleteInitialized) return;
+
+  const input = document.getElementById("locationSearch");
+  if (!input) return;
+
+  if (!window.google || !google.maps || !google.maps.places) {
+    console.warn("Google Maps not loaded yet");
+    return;
+  }
+
+  const autocomplete = new google.maps.places.Autocomplete(input, {
+    types: ["(cities)"],
+    componentRestrictions: { country: "in" },
+  });
+
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+    if (!place.address_components) return;
+
+    let city = "";
+
+    place.address_components.forEach((component) => {
+      if (component.types.includes("locality")) {
+        city = component.long_name;
+      }
+      if (!city && component.types.includes("administrative_area_level_2")) {
+        city = component.long_name;
+      }
+    });
+
+    input.value = city;
+  });
+
+  autocompleteInitialized = true;
+}
+
+// called by Google callback
+function onGoogleMapsLoaded() {
+  initAutocomplete(); // desktop works immediately
+}
+</script>
+
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqk0zEZL46G-ppnMd5794tXdFb4LFz0oA&libraries=places&callback=onGoogleMapsLoaded"
+      async
+      defer
+    ></script>
+
+{% include 'footer.html' %}
+
+</body>
+</html>

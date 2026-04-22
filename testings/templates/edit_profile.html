@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Profile</title>
+
+<style>
+body {
+    font-family: "Poppins", sans-serif;
+    background: #f2f4f8;
+    margin: 0;
+    padding: 0;
+}
+.profile-container {
+    width: 50%;
+    margin: 50px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,0,0,0.1);
+    margin-top: 100px;
+}
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+.profile-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ccc;
+}
+.upload-btn {
+    padding: 10px 18px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.upload-btn:hover { background: #0056b3; }
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 5px; }
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+textarea { resize: vertical; }
+
+.btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 20px auto 0;
+    width: 50%;
+    max-width: 200px;
+    text-align: center;
+    text-decoration: none;
+}
+.btn:hover { background-color: #0056b3; }
+
+@media (max-width: 950px) { .profile-container { width: 90%; } .btn { width: 70%; } }
+@media (max-width: 500px) { .profile-container { width: 95%; } .profile-img { width: 110px; height: 110px; } .btn { width: 100%; } }
+</style>
+</head>
+<body>
+
+{% include 'NavBar.html' %}
+
+<div class="profile-container">
+    <h2 style="text-align:center; margin-bottom:25px;">Edit Profile</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+ 
+<!-- Profile Image -->
+<div class="profile-header">
+    <img src="{% if user.profile_image_path %}{{ user.profile_image_path.url }}{% else %}{% static 'images/Default_profile_picture.jpeg' %}{% endif %}" 
+         class="profile-img" id="profilePreview" alt="Profile Image">
+    <button type="button" id="uploadBtn" class="upload-btn">Upload Image</button>
+    <input type="file" id="imageInput" name="profile_image_path" accept="image/*" style="display:none;">
+</div>
+
+        <!-- Common fields -->
+        <div class="form-group">
+            <label for="id_phone">Phone</label>
+            {{ form.phone|default_if_none:"" }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_location">Location</label>
+            {{ form.location|default_if_none:"" }}
+        </div>
+
+        <div class="form-group">
+            <label for="id_description">Description</label>
+            {{ form.description|default_if_none:"" }}
+        </div>
+
+        <!-- Role-based fields -->
+        {% if user.role == "MARKETER" %}
+        <div class="form-group">
+            <label for="id_deals">Clients / Deals</label>
+            {{ form.deals|default_if_none:"" }}
+        </div>
+        <div class="form-group">
+            <label for="id_experience">Experience (Years)</label>
+            {{ form.experience|default_if_none:"" }}
+        </div>
+        {% endif %}
+
+        {% if user.role == "PROFESSIONAL" %}
+        <div class="form-group">
+            <label for="id_marketer_category">Category</label>
+            {{ form.marketer_category|default_if_none:"" }}
+        </div>
+        <div class="form-group">
+            <label for="id_deals">Clients</label>
+            {{ form.deals|default_if_none:"" }}
+        </div>
+        <div class="form-group">
+            <label for="id_experience">Experience (Years)</label>
+            {{ form.experience|default_if_none:"" }}
+        </div>
+        {% endif %}
+
+        {% if user.role == "COMPANY" %}
+        <div class="form-group">
+            <label for="id_company_category">Company Category</label>
+            {{ form.company_category|default_if_none:"" }}
+        </div>
+        {% endif %}
+
+        <!-- Buttons -->
+        <button type="submit" class="btn">Save Changes</button>
+        <a href="{% url 'prop:update_plans' %}" class="btn">Change Role</a>
+
+    </form>
+</div>
+
+{% include 'footer.html' %}
+
+<script>
+const uploadBtn = document.getElementById("uploadBtn");
+const imageInput = document.getElementById("imageInput");
+const profilePreview = document.getElementById("profilePreview");
+
+uploadBtn.addEventListener("click", function () {
+    imageInput.click();
+});
+
+imageInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) { profilePreview.src = event.target.result; };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1485 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+
+    <style>
+       html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+     body {
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    margin: 0;
+    padding: 0;
+}
+body.modal-open {
+    overflow: hidden;
+}
+
+/* MAIN CONTAINER */
+.container {
+    width: 90%;
+    margin: auto;
+    padding: 30px;
+    margin-top: 50px;
+}
+
+/* OWNER NAME */
+.owner-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* INFO BOXES */
+.info-box-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.info-box {
+    flex: 1;
+    min-width: 150px;
+    padding: 15px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: white;
+    text-align: center;
+}
+
+.label {
+    font-size: 13px;
+    color: black;
+}
+
+/* SECTION TITLE */
+.section-title {
+    font-size: 22px;
+   
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-left: 0%;
+}
+
+/* AMENITIES */
+.amenities-list {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.amenity-pill {
+    padding: 7px 14px;
+    background: #eaf3ff;
+    border: 1px solid #d3e3ff;
+    border-radius: 20px;
+}
+
+/* PRICE BOX */
+.price-box {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.price-box small {
+    display: block;
+    font-size: 13px;
+    color: black;
+    margin-top: 5px;
+}
+
+/* IMAGE (DESKTOP DEFAULT) */
+.left img {
+    width: 40%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/* VIDEO */
+.video-box video {
+    width: 16%;
+    height: 16%;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    margin-right: 10%;
+}
+
+/* CONTACT BUTTON */
+.contact-btn {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.contact-btn button {
+    background: #0d6efd;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ------------------------------------------------ */
+/*               MOBILE VERSION                     */
+/* ------------------------------------------------ */
+@media (max-width: 768px) {
+
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .owner-name {
+        font-size: 26px;
+        text-align: center;
+    }
+
+    .info-box-row {
+        flex-direction: column;
+    }
+
+    .section-title {
+        text-align: left;
+        font-size: 20px;
+        margin-left: 0%;
+    }
+
+    .left img {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .video-box video {
+        width: 100%;
+        height: auto;
+    }
+
+    .contact-btn {
+        text-align: center;
+    }
+
+    .contact-btn button {
+        width: 70%;
+        padding: 10px;
+        font-size: 18px;
+    }
+
+            .footer {
+    display: none !important;
+}
+   
+}
+
+        /* Main big image */
+        .main-image-box {
+          width: 100%;
+          height: 420px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 15px;
+        }
+
+        #mainImage {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 12px;
+          cursor: pointer;
+        }
+
+        /* Thumbnail row */
+        .thumbnail-row {
+          display: flex;
+          gap: 8px;
+          white-space: nowrap;
+          overflow-x: auto; /* allow sliding */
+          overflow-y: hidden;
+          width: 100%; /* ⭐ Full width */
+          padding-bottom: 5px;
+          scrollbar-width: none; /* hide scrollbar - firefox */
+        }
+
+        .thumbnail-row::-webkit-scrollbar {
+          display: none; /* hide scrollbar - chrome */
+        }
+
+        .thumb {
+          width: 35px;
+          height: 35px;
+          border-radius: 8px;
+          object-fit: cover;
+          cursor: pointer;
+          opacity: 0.8;
+          transition: 0.2s;
+        }
+
+        .thumb:hover {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+
+        .thumb.active {
+          border: 2px solid #0d6efd;
+          opacity: 1;
+        }
+
+        /* Fullscreen modal */
+        .modal {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.9);
+          z-index: 9999;
+        }
+
+        .modal-content {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+
+        #modalImage {
+          max-width: 95%;
+          max-height: 95vh;
+          border-radius: 12px;
+        }
+
+        /* Arrows */
+        .prev,
+        .next {
+          cursor: pointer;
+          position: absolute;
+          top: 50%;
+          font-size: 60px;
+          color: white;
+          padding: 10px;
+          transform: translateY(-50%);
+        }
+
+        .prev {
+          left: 20px;
+        }
+        .next {
+          right: 20px;
+        }
+
+        /* Close button */
+        .close {
+          position: absolute;
+          top: 20px;
+          right: 40px;
+          color: white;
+          font-size: 40px;
+          cursor: pointer;
+        }
+        .thumbnail-row {
+          height: 120px;
+          width: 300px;
+        }
+        .mainImage {
+          height: 90%;
+        }
+
+        @media (max-width: 768px) {
+          .main-image-box {
+            height: 300px; /* Slightly smaller on mobile */
+          }
+
+          .thumb {
+            width: 10px;
+            height: 5px;
+          }
+          .thumbnail-row {
+            width: 210px;
+            height: 80px;
+          }
+        
+     
+.info-box-row {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+        }
+        }
+
+
+
+        /* INFO GRID - replaces info-box-row flex */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(150px, 1fr)); /* responsive 5 per row max */
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* INFO BOX */
+.info-box {
+    background: #f7f7f7;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* LEFT IMAGE */
+.left img {
+    width: 100%;
+    max-width: 600px; /* optional max width */
+    height: auto;
+    border-radius: 12px;
+}
+
+/* MOBILE FIX */
+@media(max-width: 768px){
+    .info-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* 2-3 per row on mobile */
+    }
+    
+    .left img {
+        width: 100%;
+    }
+}
+.ben {
+    margin-right: 20px;
+    padding-right: 5%;   /* shifts content from the right edge */
+    padding-left: 5%;    /* optional, to keep left and right aligned */
+}
+
+.amenities-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.amenity-pill {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+/* Grid container */
+
+
+/* Mobile view: 2 columns */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 boxes per row */
+    }
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    {% include 'NavBar.html' %}
+  
+
+<div class="container">
+
+    <!-- PROPERTY IMAGE (SAFE) -->
+    <div class="left">
+       <div class="left">
+        <!-- ===================== PROPERTY IMAGES ===================== -->
+        <!-- ===================== PROPERTY IMAGE GALLERY ===================== -->
+           <!-- ======================= PROGRESS BAR (START) ======================= -->
+      <style>
+        .progress-container {
+          width: 100%;
+          max-width: 700px;
+          margin: 30px auto;
+          position: fixed;
+          top:30px;
+          z-index: 1;
+        }
+
+        /* Grey main line */
+        .progress-line {
+          position: absolute;
+          top: 18px;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: #e0e0e0;
+          z-index: 0;
+        }
+
+        /* Green completed line */
+        .progress-fill {
+          position: absolute;
+          top: 18px;
+          left: 0;
+          height: 4px;
+          background: #28a745;
+          z-index: 1;
+          transition: width 0.4s;
+        }
+
+        /* Steps arranged horizontally */
+        .steps {
+          display: flex;
+          justify-content: space-between;
+          position: relative;
+          z-index: 2;
+        }
+
+        .step {
+          text-align: center;
+          width: 33%;
+        }
+
+        .circle {
+          width: 28px;
+          height: 28px;
+          background: #cfcfcf;
+          border-radius: 50%;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .active .circle {
+          background: #28a745;
+        }
+
+        .active .circle::after {
+          content: "✓";
+          color: white;
+          font-weight: bold;
+          position: absolute;
+          top: 4px;
+          left: 8px;
+        }
+
+        .label {
+          margin-top: 6px;
+          font-weight: bold;
+        }
+      </style>
+{% if request.user.is_authenticated and request.user.role == 'OWNER' and request.user == item.user %}
+      <div class="progress-container">
+        <!-- Grey Line -->
+        <div class="progress-line"></div>
+
+        <!-- Green Line Fill -->
+        <div
+          class="progress-fill"
+          style="width:
+       {% if item.is_verified and item.is_legal_verified and item.is_notSold %}100%
+       {% elif item.is_verified and item.is_legal_verified %}50%
+       {% elif item.is_verified %}0%
+       {% else %}0%
+       {% endif %}
+       ;"
+        ></div>
+
+        <!-- Steps -->
+        <div class="steps">
+          <div class="step {% if item.is_verified %}active{% endif %}">
+            <div class="circle"></div>
+            <div class="label">Technical Verification</div>
+          </div>
+
+          <div class="step {% if item.is_legal_verified %}active{% endif %}">
+            <div class="circle"></div>
+            <div class="label">Legal Verification</div>
+          </div>
+
+          <div class="step {% if item.is_notSold %}active{% endif %}">
+            <div class="circle"></div>
+            <div class="label">Sold Out</div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- ======================= PROGRESS BAR (END) ======================= -->
+
+<h3 class="section-title">
+    {{ item.projectName|default:item.landType }}
+</h3>
+
+        <!-- MAIN IMAGE VIEW -->
+        <div class="main-image-box">
+          <img
+            id="mainImage"
+            src="{% if item.image %}{{ item.image.url }}{% endif %}"
+          />
+        </div>
+
+        <!-- THUMBNAILS -->
+        <div class="thumbnail-row">
+          {% if item.image %}
+          <img
+            class="thumb"
+            src="{{ item.image.url }}"
+            data-full="{{ item.image.url }}"
+          />
+          {% endif %} {% if item.image1 %}
+          <img
+            class="thumb"
+            src="{{ item.image1.url }}"
+            data-full="{{ item.image1.url }}"
+          />
+          {% endif %} {% if item.image2 %}
+          <img
+            class="thumb"
+            src="{{ item.image2.url }}"
+            data-full="{{ item.image2.url }}"
+          />
+          {% endif %} {% if item.image3 %}
+          <img
+            class="thumb"
+            src="{{ item.image3.url }}"
+            data-full="{{ item.image3.url }}"
+          />
+          {% endif %} {% if item.image4 %}
+          <img
+            class="thumb"
+            src="{{ item.image4.url }}"
+            data-full="{{ item.image4.url }}"
+          />
+          {% endif %}
+        </div>
+
+        <!-- FULLSCREEN MODAL -->
+        <div id="imageModal" class="modal">
+          <span class="close">&times;</span>
+          <div class="modal-content">
+            <span class="prev">&#10094;</span>
+            <img id="modalImage" />
+            <span class="next">&#10095;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+    .info-box h3{
+        font-size:13px;
+        font-weight:300;
+    }
+        
+    </style>
+
+    <!-- PROPERTY DETAILS BASED ON TYPE -->
+<div class="info-grid">
+
+{% if item.selectProperty == "Plot" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Facing</p><h3>{{ item.facing }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Dimensions</p><h3>{{ item.dimensions }}</h3></div>
+
+{% elif item.selectProperty == "House" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">BHK</p><h3>{{ item.numberOfBHK }}</h3></div>
+<div class="info-box"><p class="label">Floors</p><h3>{{ item.numberOfFloors }}</h3></div>
+<div class="info-box"><p class="label">Facing</p><h3>{{ item.facing }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Dimensions</p><h3>{{ item.dimensions }}</h3></div>
+<div class="info-box"><p class="label">Built-up Area</p><h3>{{ item.builtUpArea }}</h3></div>
+<div class="info-box"><p class="label">Carpet Area</p><h3>{{ item.carpetArea }}</h3></div>
+<div class="info-box"><p class="label">Open Area</p><h3>{{ item.openArea }}</h3></div> 
+
+{% elif item.selectProperty == "Flat" %}
+
+<div class="info-box"><p class="label">Community Type</p><h3>{{ item.communityType }}</h3></div>
+<div class="info-box"><p class="label">Facing</p><h3>{{ item.facing }}</h3></div>
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Built-up Area</p><h3>{{ item.builtUpArea }}</h3></div>
+<div class="info-box"><p class="label">Carpet Area</p><h3>{{ item.carpetArea }}</h3></div>
+<div class="info-box"><p class="label">BHK</p><h3>{{ item.numberOfBHK }}</h3></div>
+<div class="info-box"><p class="label">Floor No</p><h3>{{ item.floorNo }}</h3></div>
+ 
+
+{% elif item.selectProperty == "Villa" %}
+
+<div class="info-box"><p class="label">Facing</p><h3>{{ item.facing }}</h3></div>
+<div class="info-box"><p class="label">Floors</p><h3>{{ item.numberOfFloors }}</h3></div>
+<div class="info-box"><p class="label">BHK</p><h3>{{ item.numberOfBHK }}</h3></div>
+<div class="info-box"><p class="label">Dimensions</p><h3>{{ item.dimensions }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Built-up Area</p><h3>{{ item.builtUpArea }}</h3></div>
+<div class="info-box"><p class="label">Open Area</p><h3>{{ item.openArea }}</h3></div>
+<div class="info-box"><p class="label">Rental Income</p><h3>{{ item.rentalIncome }}</h3></div>
+<div class="info-box"><p class="label">Furniture</p><h3>{{ item.furniture }}</h3></div>
+<div class="info-box"><p class="label">Deposit Amount</p><h3>{{ item.deposit }}</h3></div>
+
+{% elif item.selectProperty == "Farm" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Facing</p><h3>{{ item.facing }}</h3></div>
+<div class="info-box"><p class="label">Dimensions</p><h3>{{ item.dimensions }}</h3></div>
+
+{% elif item.selectProperty == "Lands" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Soil Type</p><h3>{{ item.soilType }}</h3></div>
+<div class="info-box"><p class="label">Water Source</p><h3>{{ item.waterSource }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Road Facing</p><h3>{{ item.roadFacing }}</h3></div>
+
+{% elif item.selectProperty == "Developmentlands" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Soil Type</p><h3>{{ item.soilType }}</h3></div>
+<div class="info-box"><p class="label">Zone</p><h3>{{ item.zone }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Development Type</p><h3>{{ item.developmentType }}</h3></div>
+<div class="info-box"><p class="label">Expected Advance</p><h3>{{ item.expectedAdvance }}</h3></div>
+<div class="info-box"><p class="label">Ratio</p><h3>{{ item.ratio }}</h3></div>
+<div class="info-box"><p class="label">Road Facing</p><h3>{{ item.roadFacing }}</h3></div>
+
+{% elif item.selectProperty == "Disputelands" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Soil Type</p><h3>{{ item.soilType }}</h3></div>
+<div class="info-box"><p class="label">Zone</p><h3>{{ item.zone }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Dispute Details</p><h3>{{ item.disputeDetails }}</h3></div>
+<div class="info-box"><p class="label">Problem Details</p><h3>{{ item.problemDetails }}</h3></div>
+<div class="info-box"><p class="label">Actual Price</p><h3>{{ item.actualPrice }}</h3></div>
+<div class="info-box"><p class="label">Sale Price</p><h3>{{ item.salePrice }}</h3></div>
+<div class="info-box"><p class="label">Road Facing</p><h3>{{ item.roadFacing }}</h3></div>
+
+{% elif item.selectProperty == "Commerciallands" %}
+
+<div class="info-box"><p class="label">Extent</p><h3>{{ item.extent }}</h3></div>
+<div class="info-box"><p class="label">Units</p><h3>{{ item.units }}</h3></div>
+<div class="info-box"><p class="label">Soil Type</p><h3>{{ item.soilType }}</h3></div>
+<div class="info-box"><p class="label">Water Source</p><h3>{{ item.waterSource }}</h3></div>
+<div class="info-box"><p class="label">Road Size</p><h3>{{ item.roadSize }}</h3></div>
+<div class="info-box"><p class="label">Road Facing</p><h3>{{ item.roadFacing }}</h3></div>
+{% endif %}
+
+
+    {% if item.selectProperty not in "Lands Farm Developmentlands Disputelands Commerciallands" %}
+    <div class="info-box">
+        <p class="label">RERA</p>
+        {% if item.reraApproved %}
+            <h3 style="color:green;">Approved</h3>
+        {% else %}
+            <h3 style="color:red;">Not Approved</h3>
+        {% endif %}
+    </div>
+
+    <div class="info-box">
+        <p class="label">Approval Type</p>
+        <h3>{{ item.approvalType }}</h3>
+    </div>
+{% endif %}
+
+<div class="info-box"><p class="label">Looking To</p><h3>{{ item.look }}</h3></div>
+
+
+    </div>
+    </div>
+
+
+  
+
+
+    <!-- PRICE -->
+    <div class="price-box">
+        ₹{{ item.price }}
+        <small>price</small>
+    </div>
+    
+    <style>
+        .section-title{
+            color:black;
+        }
+        
+/* ===== Nearby Places Wrapper (horizontal scroll like amenities) ===== */
+.nearby-wrapper {
+    overflow-x: auto;
+    margin-top: 6px;
+}
+
+/* hide scrollbar */
+.nearby-wrapper::-webkit-scrollbar {
+    display: none;
+}
+.nearby-wrapper {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* row container */
+.nearby-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: max-content;
+}
+
+/* each pill */
+.nearby-box {
+    padding: 5px 10px;
+    font-size: 13px;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+    color: #444;
+}
+    </style>
+    
+<div class="ben">
+<!-- HIGHLIGHTS -->
+<h3 class="section-title">Highlights</h3>
+{% if item.highlights %}
+    <p style="font-size: 15px;">{{ item.highlights }}</p>
+{% else %}
+    <p style="color: gray; font-style: italic;">No Highlights</p>
+{% endif %}
+<br>
+    <!-- AMENITIES -->
+    {% if item.selectProperty not in "Lands Farm Developmentlands Disputelands Commerciallands" %}
+    <h3 class="section-title">Amenities</h3>
+    <div class="amenities-list">
+        {% if item.amenities %}
+            {% for a in item.amenities %}
+                <div class="amenity-pill">{{ a }}</div>
+            {% endfor %}
+        {% else %}
+            <p style="color:gray;">No amenities listed</p>
+        {% endif %}
+    </div>
+{% endif %}
+<br>
+<h3 class="section-title">Address</h3>
+
+{% if item.address %}
+    <p>{{ item.address }}</p>
+{% else %}
+    <p style="color: gray; font-style: italic;">
+        Address was not added by user
+    </p>
+{% endif %}
+
+<h3 class="section-title">Nearby Places</h3>
+
+{% if item.nearby_places %}
+    <div class="nearby-wrapper">
+        <div class="nearby-container">
+
+            {% for place in item.nearby_places %}
+                <span class="nearby-box">{{ place }}</span>
+            {% endfor %}
+
+        </div>
+    </div>
+{% else %}
+    <span class="nearby-box nearby-empty" style="width: fit-content;">
+        No Nearby Places
+    </span>
+{% endif %}
+
+
+<!-- VIDEO (SAFE) -->
+    <h3 class="section-title" >Property Video</h3>
+    <div class="video-box" style="margin-right: 8%">
+        {% if item.video %}
+            <video controls>
+                <source src="{{ item.video.url }}" type="video/mp4">
+            </video>
+        {% else %}
+            <p style="color:gray;">No video uploaded</p>
+        {% endif %}
+    </div>
+
+  
+
+
+</div>
+
+<br>
+<div style="height:40px; margin-bottom:10px;">
+    {% if item.locationUrl %}
+        <a href="{{ item.locationUrl }}"
+           target="_blank"
+           class="map-btn">
+            📍 View on Google Maps
+        </a>
+    {% else %}
+        <button class="map-btn disabled" disabled>
+            📍 Location not provided
+        </button>
+    {% endif %}
+</div>
+
+<iframe
+    width="100%"
+    height="300"
+    style="border:0; border-radius:10px;"
+    loading="lazy"
+    allowfullscreen
+    src="{{ item.locationUrl }}&output=embed">
+</iframe>
+          
+          
+<style>
+  .map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 80%;
+}
+
+.map-btn:hover {
+    background: #084298;
+    transform: translateY(-1px);
+}
+
+.map-btn.disabled {
+    background: #d6d6d6;
+    color: #777;
+    cursor: not-allowed;
+}
+
+
+/* CONTACT + SHARE + SAVE ROW */
+.contact-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    margin-left:5px;
+    margin-bottom:5px
+    
+}
+
+/* CONTACT BUTTON */
+.contact-btn-main {
+    flex: 1;
+    height: 46px;
+    border-radius: 14px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    background: #d6d6d6;
+    cursor: pointer;
+}
+
+/* ICON BUTTONS */
+.icon-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: none;
+    background: #d6d6d6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* SHARE DROPDOWN */
+.icon-btn-wrapper {
+    position: relative;
+}
+
+
+
+/* SHARE WRAPPER */
+.icon-btn-wrapper {
+    position: relative;
+}
+
+
+
+/* SHARE ITEMS */
+.share-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.share-item:hover {
+    background: #f2f2f2;
+}
+
+
+/* SHARE WRAPPER */
+.share-wrapper {
+    position: relative;
+}
+
+/* SHARE BOX (CLICK ONLY) */
+.share-box {
+    display: none;
+    margin-left: 10px;
+    flex-direction: column;
+    position: absolute;
+    bottom: 55px;
+    left:40px
+    right: 0;
+
+    width: 260px;              /* ✅ mobile friendly */
+    max-width: 90vw;           /* ✅ never overflow screen */
+
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    z-index: 9999;
+}
+@media (max-width: 768px) {
+    .share-box {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 60px;
+    }
+}
+
+ .map-btn {
+     margin-left: 30%;
+     
+/* SHARE ITEMS */
+.share-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.share-item:hover {
+    background: #f2f2f2;
+}
+
+.phone-blue {
+    color: #0d6efd;   /* blue */
+    font-size: 18px;
+}
+
+.contact-btn-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #ccc;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.contact-btn-main:hover {
+    background: #f0f6ff;
+}
+
+</style>
+
+    <!-- CONTACT -->
+<div style="width:250px;margin-left:9% ">
+ <div class="contact-actions" >
+
+  <!-- CONTACT -->
+ 
+ 
+ <!-- CONTACT -->
+ <button
+    class="contact-btn-main" style="background-color:#0b5ed7; color: white;"
+    {% if user.is_authenticated %}
+      onclick="propertyLead(event, {{ item.user.id }}, {{ item.id }}, '{{ item.user.phone }}')"
+    {% else %}
+      onclick="window.location.href='{% url 'prop:login' %}'"
+    {% endif %}
+>
+    <i class="fa-solid fa-phone phone-blue"></i>
+    <span>Contact</span>
+</button>
+
+  <!-- SHARE -->
+<div class="icon-btn-wrapper share-wrapper">
+  <button class="icon-btn share-btn" style="color:#0d6efd;">
+    <i class="bi bi-share-fill"></i>
+  </button>
+
+  <div class="share-box">
+    <div class="share-item" data-type="whatsapp"> <i class="fab fa-whatsapp" style="color:#25D366"></i> <span>WhatsApp</span></div>
+    <div class="share-item" data-type="telegram"> <i class="fab fa-telegram" style="color:#0088cc"></i> <span>Telegram</span></div>
+    <div class="share-item" data-type="facebook"> <i class="fab fa-facebook" style="color:#1877f2"></i> <span>Facebook</span></div>
+    <div class="share-item" data-type="email"> <i class="fas fa-envelope" style="color:#555"></i> <span>Email</span></div>
+    <div class="share-item" data-type="instagram"> <i class="fab fa-instagram" style="color:#E4405F"></i> <span>Instagram</span></div>
+    <div class="share-item" data-type="copy"> <i class="fas fa-link" style="color:#333"></i> <span>Copy link</span></div>
+  </div>
+</div>
+
+
+
+  <!-- SAVE -->
+  <button class="icon-btn save-btn" onclick="toggleSave({{ item.id }}, this)">
+    <i class="bi bi-bookmark" style="color: #0d6efd;" ></i>
+  </button>
+  </div>
+</div>
+ 
+<div
+    class="user-header"
+    data-user-id="{{ item.user.id }}"
+    data-role="{{ item.user.role }}"
+>
+
+    {% if item.user.role != 'OWNER' %}
+    <!-- USER -->
+    <a href="{% url 'prop:user_detail' item.user.id %}" style="text-decoration:none; color:inherit;">
+    <img
+        src="{% if item.user.profile_image_path %}
+        {{ item.user.profile_image_path.url }}
+        {% else %}
+        {% static 'default.jpg' %}
+        {% endif %}"
+        class="user-avatar"
+        onclick="handleProfileClick(this.closest('.user-header'), event)"
+    />
+
+    <div class="user-name-wrapper">
+        <!-- NAME + TIME -->
+        <div
+            class="user-info"
+            onclick="handleProfileClick(this.closest('.user-header'), event)"
+        >
+            <span class="user-name">{{ item.user.username }}</span>
+            <span class="user-time">{{ item.created_date }}</span>
+        </div>
+</a>
+        <!-- VERIFIED -->
+        {% if item.is_verified %}
+        <img
+            src="{% static 'images/badge1.png' %}"
+            class="verified-badge"
+        />
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+            <button
+                class="chat-inline-btn animate"
+                onclick="window.location.href='{% url 'prop:login' %}'"
+            >
+                Message
+            </button>
+
+        {% elif item.user.role == "OWNER" %}
+            {# OWNER cannot be messaged #}
+
+        {% elif item.user == user %}
+            <button class="chat-inline-btn animate">Message</button>
+
+        {% else %}
+          <a href="{% url 'prop:start_chat_with_user' item.user.id %}?pre_message=Hi%20{{ item.user.username|urlencode }},%20I'm%20interested%20in%20your%20property%20{{ item.projectName|urlencode }}.%0AProperty%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:property_detail' item.id %}">
+    <button class="chat-inline-btn animate">Message</button>
+</a>
+        {% endif %}
+    </div>
+
+    {% endif %}   <!-- THIS WAS MISSING -->
+
+</div>
+<br>
+
+<style>
+    /* ===== USER HEADER (DESKTOP DEFAULT) ===== */
+.user-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    background: #fff;
+     
+    margin: 20px 0px 0px 10%;
+}
+
+/* LEFT SIDE (avatar + name + badge) */
+.user-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;              /* takes middle space */
+    min-width: 0;         /* prevents overflow */
+}
+
+/* AVATAR */
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #f1f1f1;
+    flex-shrink: 0;
+}
+
+/* NAME + TIME */
+.user-info {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-time {
+    font-size: 12px;
+    color: #777;
+}
+
+/* VERIFIED BADGE */
+.verified-badge {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+/* MESSAGE BUTTON (RIGHT SIDE) */
+/* MESSAGE BUTTON (LIKE IMAGE STYLE) */
+.chat-inline-btn {
+    background: #f5f5f5;          /* light grey */
+    color: #000;                  /* black text */
+    border: 1px solid #999;       /* subtle border */
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 6px;           /* small rounded corners */
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    transition: all 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.chat-inline-btn:hover {
+    background: #eaeaea;
+    border-color: #666;
+}
+
+/* ===== MOBILE VIEW (KEEP SAME ROW STRUCTURE) ===== */
+@media (max-width: 600px) {
+
+    .user-header {
+        flex-direction: row;   /* ❌ remove column */
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+                margin-left: 10px;
+    }
+
+    .user-name-wrapper {
+        flex: 1;
+        min-width: 0;
+    }
+
+    /* Avatar slightly smaller */
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Name handling */
+    .user-name {
+        font-size: 13px;
+        max-width: 120px;
+    }
+
+    .user-time {
+        font-size: 10px;
+    }
+
+    /* Button stays right (NOT full width) */
+    .chat-inline-btn {
+        width: auto;            
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 16px;
+    }
+    .floating-message-btn{
+        right: 5px;
+        width: 50px;
+        height: 50px;
+    }
+}
+</style>
+           {% include 'footer.html' %}
+           
+           <script>
+document.addEventListener("click", function (e) {
+    /* ---------- TOGGLE SHARE ---------- */
+    const shareBtn = e.target.closest(".share-btn");
+    if (shareBtn) {
+        e.stopPropagation();
+        const wrapper = shareBtn.closest(".share-wrapper");
+        const box = wrapper.querySelector(".share-box");
+        
+        // Close others if any
+        document.querySelectorAll(".share-box").forEach(b => {
+           if (b !== box) b.style.display = "none";
+        });
+
+        box.style.display = box.style.display === "flex" ? "none" : "flex";
+        return;
+    }
+
+    /* ---------- SHARE ACTION ---------- */
+    const item = e.target.closest(".share-item");
+    if (item) {
+        const type = item.dataset.type;
+        const url = window.location.href;
+
+        if (type === "whatsapp") {
+            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, "_blank");
+        }
+        else if (type === "facebook") {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, "_blank");
+        }
+        else if (type === "telegram") {
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, "_blank");
+        }
+        else if (type === "email") {
+            window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
+        }
+        else if (type === "instagram") {
+            window.open("https://www.instagram.com/", "_blank");
+        }
+        else if (type === "copy") {
+            navigator.clipboard.writeText(url);
+            alert("Link copied!");
+        }
+
+        item.closest(".share-box").style.display = "none";
+        return;
+    }
+
+    /* ---------- CLICK OUTSIDE CLOSE ---------- */
+    document.querySelectorAll(".share-box").forEach(b => b.style.display = "none");
+});
+</script>
+<script>
+  
+document.addEventListener("DOMContentLoaded", () => {
+    const mainImage = document.getElementById("mainImage");
+    const thumbnails = document.querySelectorAll(".thumb");
+
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    const nextBtn = document.querySelector(".next");
+    const prevBtn = document.querySelector(".prev");
+    const closeBtn = document.querySelector(".close");
+
+    let images = [];
+    thumbnails.forEach(t => images.push(t.dataset.full));
+    let currentIndex = 0;
+
+    // ✓ Thumbnail click: only change main image
+    thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener("click", () => {
+            mainImage.src = thumb.dataset.full;
+            currentIndex = index;
+
+            thumbnails.forEach(t => t.classList.remove("active"));
+            thumb.classList.add("active");
+        });
+    });
+
+    // ✓ Open modal ONLY on main image click
+    mainImage.addEventListener("click", () => {
+        modal.style.display = "flex";
+        modalImg.src = mainImage.src;
+    });
+
+    // Close button working
+    closeBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        modal.style.display = "none";
+    });
+
+    // Slider arrows
+    nextBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        modalImg.src = images[currentIndex];
+    });
+
+    prevBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        modalImg.src = images[currentIndex];
+    });
+
+    // Click background to close
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) modal.style.display = "none";
+    });
+
+    // Keyboard support
+    document.addEventListener("keydown", (e) => {
+        if (modal.style.display === "flex") {
+            if (e.key === "Escape") modal.style.display = "none";
+            if (e.key === "ArrowRight") nextBtn.click();
+            if (e.key === "ArrowLeft") prevBtn.click();
+        }
+    });
+});
+
+
+
+</script>
+
+<script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const mainImage = document.getElementById("mainImage");
+        const thumbnails = document.querySelectorAll(".thumb");
+
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const nextBtn = document.querySelector(".next");
+        const prevBtn = document.querySelector(".prev");
+        const closeBtn = document.querySelector(".close");
+
+        let images = [];
+        thumbnails.forEach((t) => images.push(t.dataset.full));
+        let currentIndex = 0;
+
+        // change main image on thumbnail click
+ 
+        function updateActiveThumbnail() {
+            thumbnails.forEach(t => t.classList.remove("active"));
+            if (thumbnails[currentIndex]) {
+                thumbnails[currentIndex].classList.add("active");
+            }
+        }
+ 
+        thumbnails.forEach((thumb, index) => {
+          thumb.addEventListener("click", () => {
+            mainImage.src = thumb.dataset.full;
+            currentIndex = index;
+
+            thumbnails.forEach((t) => t.classList.remove("active"));
+            thumb.classList.add("active");
+            updateActiveThumbnail();
+          });
+        });
+
+        // open modal on main image click
+ 
+        mainImage.addEventListener("click", () => {
+          modal.style.display = "block";
+          modal.style.display = "flex";
+          modalImg.src = images[currentIndex];
+          document.body.classList.add("modal-open");
+        });
+
+        function closeModal() {
+            modal.style.display = "none";
+            document.body.classList.remove("modal-open");
+        }
+ 
+        closeBtn.addEventListener("click", closeModal);
+ 
+        nextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex + 1) % images.length;
+            modalImg.src = images[currentIndex];
+        });
+
+        prevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            modalImg.src = images[currentIndex];
+        });
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Set initial active thumbnail
+        updateActiveThumbnail();
+      });
+
+function toggleSave(id, btn) {
+    fetch(`/save/${id}/`)
+        .then(res => res.json())
+        .then(data => {
+
+            const icon = btn.querySelector("i");
+            if (!icon) return;
+
+            if (data.status === "saved") {
+                icon.classList.remove("bi-bookmark");
+                icon.classList.add("bi-bookmark-fill");
+                icon.style.color = "#000";
+            } else {
+                icon.classList.remove("bi-bookmark-fill");
+                icon.classList.add("bi-bookmark");
+                icon.style.color = "#000";
+            }
+        })
+        .catch(err => console.error("Save failed", err));
+}
+
+
+    </script>
+<script src="{% static 'js/Leads.js' %}"></script>
+
+</body>
+</html>

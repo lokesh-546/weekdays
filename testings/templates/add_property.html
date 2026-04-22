@@ -1,0 +1,1749 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Property</title>
+  </head>
+  <body>
+
+      {% include 'NavBar.html' %}
+            <div class="week">
+  <img src="{% static 'images/front-view.jpeg' %}" alt="Property Image">
+    <div class="addProperty">
+      <style>
+
+            .week {
+  display: flex;
+  
+}
+
+.week img {
+  max-width: 100%;
+  height: auto;
+  margin-left: 40px;
+  margin-top: 100px;
+}
+
+/* =========================
+   HIDE LEFT IMAGE IN MOBILE
+========================= */
+@media (max-width: 600px) {
+
+  /* Hide only your images */
+  .week img {
+    display: none;
+  }
+
+  /* âœ… Allow ALL Google Map images */
+  #map img {
+    display: block !important;
+    max-width: none !important;
+  }
+
+}
+
+ /* ===========================
+   GLOBAL (SCOPED) STYLES
+=========================== */
+.addProperty {
+  height: 200%;
+  width: 99vw;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+/* ===========================
+   FORM
+=========================== */
+.addProperty form,
+.addProperty form .step {
+  margin-top: 100px;
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  padding: 35px 40px;
+  margin: 60px 0;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+/* Hide all steps by default */
+.addProperty .form-step {
+  display: none;
+}
+
+/* Show the active step */
+.addProperty .form-step.active {
+  display: block;
+}
+
+/* ===========================
+   HEADINGS
+=========================== */
+.addProperty h2 {
+  text-align: center;
+  color: #1e40af;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.addProperty h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: #374151;
+}
+
+/* ===========================
+   FORM SECTIONS
+=========================== */
+.addProperty .form-section {
+  margin-bottom: 28px;
+}
+
+/* ===========================
+   OPTION BUTTONS
+=========================== */
+.addProperty .options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.addProperty .option {
+  flex: 1 1 calc(50% - 12px);
+  text-align: center;
+  padding: 14px 0;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background-color: #f1f5f9;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.addProperty .option:hover {
+  background-color: #e0f2fe;
+  border-color: #3b82f6;
+}
+
+.addProperty .option.active {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+
+/* ===========================
+   INPUTS & SELECTS
+=========================== */
+.addProperty input[type="text"],
+.addProperty input[type="number"],
+.addProperty input[type="file"],
+.addProperty select,
+.addProperty textarea {
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+  background-color: #f8fafc;
+  color: #1f2937;
+}
+
+.addProperty input:focus,
+.addProperty select:focus,
+.addProperty textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  
+}
+
+/* Custom style for input grid */
+.addProperty .input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: -10px;
+  column-gap: 32px;
+  row-gap: 16px;
+}
+
+/* ===========================
+   CHECKBOXES & LABELS
+=========================== */
+.addProperty label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: #1f2937;
+}
+
+.addProperty input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+.addProperty .buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.addProperty button {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.addProperty button.next,
+.addProperty button[type="submit"] {
+  background-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+.addProperty button.next:hover,
+.addProperty button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgba(59, 130, 246, 0.35);
+}
+
+.addProperty button[type="button"] {
+  background-color: #f1f5f9;
+  color: #1f2937;
+}
+
+.addProperty button[type="button"]:hover {
+  background-color: #e2e8f0;
+}
+
+.addProperty button:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* ===========================
+   STEP 3: FINAL DETAILS
+=========================== */
+#step-3 .form-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+#step-3 .form-field label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #374151;
+}
+
+#step-3 #addAmenityBtn {
+  padding: 6px 12px;
+  background-color: #0d6efd;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  min-width: 80px;
+}
+
+#step-3 #addAmenityBtn:hover {
+  background-color: #0951c9;
+}
+
+#step-3 #addedAmenitiesList {
+  margin-top: 10px;
+  padding-left: 18px;
+  list-style: disc;
+  color: #1f2937;
+}
+
+#step-3 .custom-amenity-container {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+#step-3 .custom-amenity-container input {
+  flex: 1;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 600px) {
+  .addProperty .option {
+    flex: 1 1 100%;
+  }
+  .addProperty .buttons {
+    flex-direction: column;
+  }
+  #step-3 .input-grid {
+    grid-template-columns: 1fr;
+  }
+  #step-3 .custom-amenity-container {
+    flex-direction: column;
+  }
+  #step-3 #addAmenityBtn {
+    width: 100%;
+  }
+}
+
+input.error,
+select.error,
+textarea.error {
+  border-color: #dc3545;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+}
+
+      </style>
+      <form method="post" id="addPropertyForm" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Step 1: Basic Info -->
+        <div class="form-step active" id="step-1">
+          <h2>Welcome {{ user.username|default:'User' }}</h2>
+          <div class="form-section">
+            <h3>Looking to</h3>
+            <div class="options">
+              {% for value, text in form.look.field.choices %}
+              <button
+                type="button"
+                class="option"
+                data-field="look"
+                data-value="{{ value }}"  required>
+                {{ text }}
+               
+              </button>
+              {% endfor %}
+            </div>
+            {{ form.look.as_hidden }}
+            <!-- Show Django error here -->
+            <span id="lookError" style="color:red; font-size:14px;"></span>
+          </div>
+
+          <div class="form-section">
+            <h3>What is your Property</h3>
+            <div class="options">
+              {% for value, text in form.selectProperty.field.choices %}
+              <button
+                type="button"
+                class="option"
+                data-field="selectProperty"
+                data-value="{{ value }}"
+              >
+                {{ text }}
+              </button>
+              {% endfor %}
+            </div>
+            {{ form.selectProperty.as_hidden }}
+             <span id="propertyError" style="color:red; font-size:14px;"></span>
+          </div>
+
+          <div class="buttons" style="justify-content: flex-end">
+            <button type="button" class="next" onclick="nextStep()">
+              Next &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Property Details -->
+        <div class="form-step" id="step-2">
+          <h2>Additional Information</h2>
+          <div class="input-grid">
+            <!-- Fields for Plot -->
+            <div class="conditional-fields" data-property-type="Plot">
+              <div class="form-field">
+                {{ form.projectName.label_tag }} {{ form.projectName  }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+    <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+</div>
+
+              <div class="form-field">
+                {{ form.facing.label_tag }} {{ form.facing }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.dimensions.label_tag }} {{ form.dimensions }}
+              </div>
+            </div>
+
+            <!-- Fields for House -->
+            <div class="conditional-fields" data-property-type="House">
+              <div class="form-field">
+                {{ form.projectName.label_tag }} {{ form.projectName }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field furniture-field">
+  <label>Furniture</label>
+  <select name="furniture" class="form-control">
+    <option value="">-- Select furniture --</option>
+    <option value="Furnished">Furnished</option>
+    <option value="Semi-Furnished">Semi-Furnished</option>
+    <option value="Unfurnished">Unfurnished</option>
+  </select>
+</div>
+              <div class="form-field">
+                {{ form.numberOfBHK.label_tag }} {{ form.numberOfBHK }}
+              </div>
+              <div class="form-field">
+                {{ form.numberOfFloors.label_tag }} {{ form.numberOfFloors }}
+              </div>
+              <div class="form-field">
+                {{ form.facing.label_tag }} {{ form.facing }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.dimensions.label_tag }} {{ form.dimensions }}
+              </div>
+              <div class="form-field">
+                {{ form.builtUpArea.label_tag }} {{ form.builtUpArea }}
+              </div>
+              <div class="form-field">
+                {{ form.carpetArea.label_tag }} {{ form.carpetArea }}
+              </div>
+              <div class="form-field">
+                {{ form.openArea.label_tag }} {{ form.openArea }}
+              </div>
+
+              <div class="form-field rental-income-field">
+                {{ form.rentalIncome.label_tag }} {{ form.rentalIncome }}
+              </div>
+              {% comment %} <div class="form-field">
+                {{ form.roadFacing.label_tag }} {{ form.roadFacing }}
+              </div> {% endcomment %}
+            </div>
+
+            <!-- Fields for Flat -->
+            <div class="conditional-fields" data-property-type="Flat">
+              <div class="form-field">
+                {{ form.projectName.label_tag }} {{ form.projectName }}
+              </div>
+              <div class="form-field">
+                {{ form.communityType.label_tag }} {{ form.communityType }}
+              </div>
+              <div class="form-field">
+                {{ form.facing.label_tag }} {{ form.facing }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field furniture-field">
+  <label>Furniture</label>
+  <select name="furniture" class="form-control">
+    <option value="">-- Select furniture --</option>
+    <option value="Furnished">Furnished</option>
+    <option value="Semi-Furnished">Semi-Furnished</option>
+    <option value="Unfurnished">Unfurnished</option>
+  </select>
+</div>
+              <div class="form-field">
+                {{ form.builtUpArea.label_tag }} {{ form.builtUpArea }}
+              </div>
+              <div class="form-field">
+                {{ form.carpetArea.label_tag }} {{ form.carpetArea }}
+              </div>
+              <div class="form-field">
+                {{ form.numberOfBHK.label_tag }} {{ form.numberOfBHK }}
+              </div>
+            
+            </div>
+
+            <!-- Fields for Villa -->
+            <div class="conditional-fields" data-property-type="Villa">
+              <div class="form-field">
+                {{ form.projectName.label_tag }} {{ form.projectName }}
+              </div>
+              <div class="form-field">
+                {{ form.facing.label_tag }} {{ form.facing }}
+              </div>
+              <div class="form-field">
+                {{ form.numberOfFloors.label_tag }} {{ form.numberOfFloors }}
+              </div>
+              <div class="form-field">
+                {{ form.numberOfBHK.label_tag }} {{ form.numberOfBHK }}
+              </div>
+              <div class="form-field">
+                {{ form.dimensions.label_tag }} {{ form.dimensions }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field furniture-field">
+  <label>Furniture</label>
+  <select name="furniture" class="form-control">
+    <option value="">-- Select furniture --</option>
+    <option value="Furnished">Furnished</option>
+    <option value="Semi-Furnished">Semi-Furnished</option>
+    <option value="Unfurnished">Unfurnished</option>
+  </select>
+</div>
+              <div class="form-field">
+                {{ form.builtUpArea.label_tag }} {{ form.builtUpArea }}
+              </div>
+              <div class="form-field">
+                {{ form.openArea.label_tag }} {{ form.openArea }}
+              </div>
+              <div class="form-field rental-income-field">
+                {{ form.rentalIncome.label_tag }} {{ form.rentalIncome }}
+              </div>
+            </div>
+
+            <!-- Fields for Farm -->
+            <div class="conditional-fields" data-property-type="Farm">
+              <div class="form-field">
+                {{ form.projectName.label_tag }} {{ form.projectName }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+                            <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+         <option value="GUNTAS">Guntas</option>
+    <option value="HECTARES">Hectares</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field">
+                {{ form.facing.label_tag }} {{ form.facing }}
+              </div>
+              <div class="form-field">
+                {{ form.dimensions.label_tag }} {{ form.dimensions }}
+              </div>
+            </div>
+
+            <!-- Fields for Lands -->
+            <div class="conditional-fields" data-property-type="Lands">
+              <div class="form-field">
+                {{ form.landType.label_tag }} {{ form.landType }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+         <option value="GUNTAS">Guntas</option>
+    <option value="HECTARES">Hectares</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field">
+                {{ form.soilType.label_tag }} {{ form.soilType }}
+              </div>
+              <div class="form-field">
+                {{ form.waterSource.label_tag }} {{ form.waterSource }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.roadFacing.label_tag }} {{ form.roadFacing }}
+              </div>
+            </div>
+
+            <!-- Fields for Developmentlands -->
+            <div
+              class="conditional-fields"
+              data-property-type="Developmentlands"
+            >
+              <div class="form-field">
+                {{ form.landType.label_tag }} {{ form.landType }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+               <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+         <option value="GUNTAS">Guntas</option>
+    <option value="HECTARES">Hectares</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+    </select>
+              </div>
+              <div class="form-field">
+                {{ form.soilType.label_tag }} {{ form.soilType }}
+              </div>
+              <div class="form-field">
+                {{ form.zone.label_tag }} {{ form.zone }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.developmentType.label_tag }} {{ form.developmentType }}
+              </div>
+              <div class="form-field">
+                {{ form.expectedAdvance.label_tag }} {{ form.expectedAdvance }}
+              </div>
+              <div class="form-field">
+                {{ form.ratio.label_tag }} {{ form.ratio }}
+              </div>
+              <div class="form-field">
+                {{ form.roadFacing.label_tag }} {{ form.roadFacing }}
+              </div>
+            </div>
+
+            <!-- Fields for Disputelands -->
+            <div class="conditional-fields" data-property-type="Disputelands">
+              <div class="form-field">
+                {{ form.landType.label_tag }} {{ form.landType }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+         <option value="GUNTAS">Guntas</option>
+    <option value="HECTARES">Hectares</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+
+    </select>
+              </div>
+              <div class="form-field">
+                {{ form.soilType.label_tag }} {{ form.soilType }}
+              </div>
+              <div class="form-field">
+                {{ form.zone.label_tag }} {{ form.zone }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.disputeDetails.label_tag }} {{ form.disputeDetails }}
+              </div>
+              <div class="form-field">
+                {{ form.problemDetails.label_tag }} {{ form.problemDetails }}
+              </div>
+              <div class="form-field">
+                {{ form.actualPrice.label_tag }} {{ form.actualPrice }}
+              </div>
+              <div class="form-field">
+                {{ form.salePrice.label_tag }} {{ form.salePrice }}
+              </div>
+              <div class="form-field">
+                {{ form.roadFacing.label_tag }} {{ form.roadFacing }}
+              </div>
+            </div>
+
+            <!-- Fields for Commerciallands -->
+            <div
+              class="conditional-fields"
+              data-property-type="Commerciallands"
+            >
+              <div class="form-field">
+                {{ form.landType.label_tag }} {{ form.landType }}
+              </div>
+              <div class="form-field">
+                {{ form.extent.label_tag }} {{ form.extent }}
+              </div>
+              <div class="form-field">
+                <label for="id_units">Units</label>
+    <select name="units" id="id_units" class="form-control">
+        <option value="">-- Select Unit --</option>
+        <option value="SQYD">SQYD</option>
+        <option value="SFT">SFT</option>
+         <option value="GUNTAS">Guntas</option>
+    <option value="HECTARES">Hectares</option>
+    </select>
+              </div>
+              <div class="form-field">
+                {{ form.soilType.label_tag }} {{ form.soilType }}
+              </div>
+              <div class="form-field">
+                {{ form.waterSource.label_tag }} {{ form.waterSource }}
+              </div>
+              <div class="form-field">
+                {{ form.roadSize.label_tag }} {{ form.roadSize }}
+              </div>
+              <div class="form-field">
+                {{ form.roadFacing.label_tag }} {{ form.roadFacing }}
+              </div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">&larr; Back</button>
+            <button type="button" class="next" onclick="nextStep()">
+              Next &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Final Details -->
+        <div class="form-step" id="step-3">
+          <h2>Final Details</h2>
+      <div class="input-grid">
+     <div id="reraSection">
+    <div class="form-field">
+        {{ form.reraApproved.label_tag }} {{ form.reraApproved }}
+    </div>
+    </div>
+
+    <div id="approvalTypeSection" class="form-field">
+        {{ form.approvalType.label_tag }} {{ form.approvalType }}
+    </div>
+
+    <!-- Predefined amenities -->
+    <div id="amenitiesSection">
+    <div class="form-field">
+        <label>{{ form.predefined_amenities.label_tag }}</label>
+        {{ form.predefined_amenities }}
+    </div>
+
+    <!-- Custom amenities with ADD button & display list -->
+    <div class="form-field">
+        <label>{{ form.custom_amenities_text.label_tag }}</label>
+<div style="display:flex; gap:8px;">
+    {{ form.custom_amenities_text }}
+    
+    <button type="button" id="addAmenityBtn" 
+        style="
+            padding:6px 12px;
+            background:#0d6efd; 
+            border:none; 
+            color:white; 
+            border-radius:100px;
+            cursor:pointer;
+            margin-bottom: 20px;
+            transition:0.3s ease;
+        "
+        onmouseover="this.style.background='#0951c9'"
+        onmouseout="this.style.background='#0d6efd'"
+    >
+        Add
+    </button>
+</div>
+</div>
+
+
+        <!-- Display added amenities below -->
+        <ul id="addedAmenitiesList" style="margin-top:10px;"></ul>
+    </div>
+     <style>
+ .form-field {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: stretch; /* important */
+                }
+
+                .form-field label {
+                  margin-bottom: 6px;
+                  font-weight: 500;
+                }
+
+                .form-field input,
+                .form-field textarea,
+                .form-field select {
+                  width: 100%;
+                }
+</style>
+
+    <div class="form-field">
+        {{ form.highlights.label_tag }} {{ form.highlights }}
+    </div>
+     <div class="form-field">
+      {{ form.address.label_tag }} {{ form.address }}
+    </div>
+   
+
+<div class="form-field">
+    <label>Select Location on Map:</label>
+    <input type="text" id="search_location" placeholder="Search location..." />
+    <div id="map" style="height:400px; width:100%; margin-top:10px;"></div>
+</div>
+
+<!-- Hidden fields to store selected coordinates and URL -->
+<input type="hidden" name="latitude" id="id_latitude">
+<input type="hidden" name="longitude" id="id_longitude">
+<input type="hidden" name="location" id="id_location">
+<input type="hidden" name="locationUrl" id="id_locationUrl">
+
+<!-- nearby location -------------------------------------------------------------------------->
+<style>
+  .nearby-box {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.section-label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.hint {
+    font-size: 12px;
+    color: #777;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* item wrapper */
+.nearby-item {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* input field */
+.nearby-input {
+    width: 100%;
+    padding: 10px 35px 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+}
+
+.nearby-input:focus {
+    border-color: #4a90e2;
+}
+
+/* X remove button */
+.remove-x {
+    position: absolute;
+    right: 10px;
+    top: 35%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 30px;
+    color: #999;
+    font-weight: bold;
+    user-select: none;
+}
+
+.remove-x:hover {
+    color: red;
+}
+
+/* add button */
+.add-btn {
+    margin-top: 5px;
+    padding: 8px 12px;
+    border: none;
+    background: #4a90e2;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #357bd8;
+}
+</style>
+<div class="nearby-box">
+
+  <label class="section-label">Nearby Places</label>
+  <small class="hint">Add at least one nearby place</small>
+
+  <div id="nearby-container">
+
+    <div class="nearby-item">
+      <input type="text" class="nearby-input" placeholder="e.g. School (1 km)" required>
+      <span class="remove-x" onclick="removeNearbyField(this)">×</span>
+    </div>
+
+  </div>
+
+  <button style="width: fit-content;" type="button" class="add-btn" onclick="addNearbyField()">+ Add Nearby</button>
+</div>
+
+<input type="hidden" name="nearby_places_text" id="nearby_places_text">
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.getElementById("nearby-container");
+    const hiddenField = document.getElementById("nearby_places_text");
+
+    let nearbyPlaces = [];
+
+    // =========================
+    // SYNC DATA
+    // =========================
+    function syncData() {
+        const inputs = container.querySelectorAll(".nearby-input");
+
+        nearbyPlaces = [];
+
+        inputs.forEach(inp => {
+            const val = inp.value.trim();
+            if (val) nearbyPlaces.push(val);
+        });
+
+        hiddenField.value = JSON.stringify(nearbyPlaces);
+    }
+
+    // =========================
+    // ADD FIELD
+    // =========================
+    window.addNearbyField = function () {
+        const div = document.createElement("div");
+        div.className = "nearby-item";
+
+        div.innerHTML = `
+            <input type="text" class="nearby-input" placeholder="e.g. School (1 km)" required>
+            <span class="remove-x" onclick="removeNearbyField(this)">×</span>
+        `;
+
+        container.appendChild(div);
+    }
+
+    // =========================
+    // REMOVE FIELD
+    // =========================
+    window.removeNearbyField = function (el) {
+        el.parentElement.remove();
+        syncData();
+    }
+
+    // =========================
+    // LIVE UPDATE
+    // =========================
+    container.addEventListener("input", syncData);
+
+    // =========================
+    // FORM SUBMIT SAFE SYNC
+    // =========================
+    const form = document.getElementById("addPropertyForm");
+
+    if (form) {
+        form.addEventListener("submit", function () {
+            syncData();
+        });
+    }
+
+    // =========================
+    // EDIT MODE LOAD DATA
+    // =========================
+    try {
+        if (hiddenField.value) {
+            nearbyPlaces = JSON.parse(hiddenField.value);
+
+            nearbyPlaces.forEach(val => {
+                const div = document.createElement("div");
+                div.className = "nearby-item";
+
+                div.innerHTML = `
+                    <input type="text" class="nearby-input" value="${val}">
+                    <span class="remove-x" onclick="removeNearbyField(this)">×</span>
+                `;
+
+                container.appendChild(div);
+            });
+        }
+    } catch (e) {
+        nearbyPlaces = [];
+    }
+
+    syncData();
+
+});
+</script>
+
+
+<div class="form-field deposit-field">
+    {{ form.deposit.label_tag }} {{ form.deposit }}
+</div>
+
+    <div class="form-field">
+        {{ form.price.label_tag }} {{ form.price }}
+    </div>
+
+</div>
+
+
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">&larr; Back</button>
+            <button type="button" class="next" onclick="nextStep()">
+              Next &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Media Upload -->
+        <div class="form-step" id="step-4">
+          <h2>Upload Media</h2>
+          <div class="input-grid">
+            <div class="form-field">
+              <span id="imageError" style="color:red; font-size:14px; display:none; margin-top:6px;"> 
+        Please upload at least one property image.
+    </span>
+                {{ form.image.label_tag }} {{ form.image }}
+<button type="button" id="addMoreImages"
+        style="margin-top:10px; background:#3b82f6; color:white; padding:8px 14px; border:none; border-radius:6px;">
+        + Add More
+    </button>
+    <div style="display:none;">
+    
+    {{ form.image1 }}
+     
+    {{ form.image2 }}
+    {{ form.image3 }}
+    {{ form.image4 }}
+</div>            </div>
+            <div class="form-field">
+         
+              {{ form.video.label_tag }} {{ form.video }}
+            </div>
+            {% if request.user.role == 'OWNER' %}
+            <div class="form-field">
+              {{ form.document.label_tag }} {{ form.document }}
+            </div>
+            {% endif %}
+          </div>
+          
+            <div class="form-field">
+    <label>Price</label>
+    <input type="text" value="{{ form.price.value|default:'17999' }}" readonly>
+</div>
+           
+          <div class="buttons">
+            <button type="button" onclick="prevStep()">&larr; Back</button>
+            <button type="submit" id="submitBtn">
+  <span id="btnText">Post Property</span>
+</button>
+
+
+          </div>
+        </div>
+
+        <!-- Step 4: Success Message (Optional) -->
+        <div class="form-step" id="step-5">
+          <h2>ðŸŽ‰ Property Added Successfully!</h2>
+          <p>Your property information has been saved and is pending review.</p>
+          <a href="{% url 'prop:home' %}" class="button next">Go to Home</a>
+        </div>
+      </form>
+    </div>
+
+    </div>
+<script>
+/* ==========================================================
+   MULTI-STEP FORM
+========================================================== */
+let currentStep = 1;
+const formSteps = document.querySelectorAll(".form-step");
+
+function showStep(stepNumber) {
+    formSteps.forEach((step, index) => {
+        step.classList.toggle("active", index + 1 === stepNumber);
+    });
+}
+
+function nextStep() {
+    if (currentStep === 1) {
+        const lookValue = document.querySelector('input[name="look"]').value;
+        const propValue = document.querySelector('input[name="selectProperty"]').value;
+
+        // Clear old errors
+        document.getElementById("lookError").innerText = "";
+        document.getElementById("propertyError").innerText = "";
+
+        let hasError = false;
+
+        if (!lookValue) {
+            document.getElementById("lookError").innerText = "Please select what you are looking to do.";
+            hasError = true;
+        }
+
+        if (!propValue) {
+            document.getElementById("propertyError").innerText = "Please select a property type.";
+            hasError = true;
+        }
+
+        if (hasError) return;
+    }
+
+    if (currentStep === 2) {
+    const activeFieldSet = document.querySelector(
+        "#step-2 .conditional-fields.active-fieldset"
+    );
+
+    if (activeFieldSet) {
+        const requiredFields = activeFieldSet.querySelectorAll(
+            "[data-required='true']:not(:disabled)"
+        );
+
+        if (!validateFields([...requiredFields])) return;
+    }
+}
+
+        // STEP 3 VALIDATION
+       if (currentStep === 3) {
+
+    const fields = [];
+
+    const approvalType = document.getElementById("id_approvalType");
+    const location = document.getElementById("id_location");
+    const price = document.getElementById("id_price");
+
+    // validate only if visible & enabled
+    if (approvalType && !approvalType.disabled && approvalType.offsetParent !== null) {
+        fields.push(approvalType);
+    }
+
+    if (location && !location.disabled) {
+        fields.push(location);
+    }
+
+    if (price && !price.disabled) {
+        fields.push(price);
+    }
+
+    if (!validateFields(fields)) return;
+}
+
+    if (currentStep < 4) {
+        currentStep++;
+        showStep(currentStep);
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+    }
+}
+
+
+/* ==========================================================
+   CONDITIONAL FIELDS FOR PROPERTY TYPE
+========================================================== */
+function updateConditionalFields(propertyType) {
+    const allConditionalFields = document.querySelectorAll("#step-2 .conditional-fields");
+
+    allConditionalFields.forEach((set) => {
+        const isMatch = set.dataset.propertyType === propertyType;
+        set.style.display = isMatch ? "block" : "none";
+        set.classList.toggle("active-fieldset", isMatch);
+
+        set.querySelectorAll("input, select, textarea").forEach((input) => {
+            input.disabled = !isMatch;
+        });
+    });
+}
+
+/* ==========================================================
+   OPTION BUTTON CLICK HANDLING
+========================================================== */
+
+function setupOptionButtons() {
+    document.querySelectorAll(".option").forEach((button) => {
+        button.addEventListener("click", () => {
+            const fieldName = button.dataset.field;
+            const fieldValue = button.dataset.value;
+
+            // Set hidden input value
+            document.querySelector(`input[name="${fieldName}"]`).value = fieldValue;
+
+            // Remove previous active selections
+            document.querySelectorAll(`.option[data-field="${fieldName}"]`)
+                .forEach((btn) => btn.classList.remove("active"));
+
+            // Activate clicked button
+            button.classList.add("active");
+
+            // Update property fields when property type changes
+            if (fieldName === "selectProperty") {
+                updateConditionalFields(fieldValue);
+                toggleReraSection(fieldValue); 
+                setRequiredFields(fieldValue);
+            }
+        });
+    });
+}
+
+/* ==========================================================
+   ENABLE FIELDS BEFORE SUBMIT
+========================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+    
+    setupOptionButtons();
+    showStep(currentStep);
+    updateConditionalFields(null);
+
+    const propertyForm = document.getElementById("addPropertyForm");
+
+    // ✅ REPLACE your OLD submit logic with this
+    propertyForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const btnText = document.getElementById("btnText");
+        btnText.innerText = "⏳ Posting...";
+ 
+        const imageInput = document.getElementById("id_image");
+
+        if (currentStep === 4 && imageInput.files.length === 0) {
+            imageError.style.display = "block";
+            showStep(4);
+            btnText.innerText = "Post Property";
+            return;
+        }
+
+        this.submit();
+    });
+
+});
+
+document.getElementById("addPropertyForm").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault();
+    }
+});
+/* ==========================================================
+   ADD CUSTOM AMENITIES SCRIPT
+========================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("id_custom_amenities_text");
+    const btn = document.getElementById("addAmenityBtn");
+    const list = document.getElementById("addedAmenitiesList");
+
+    btn.addEventListener("click", function () {
+        let value = input.value.trim();
+        if (value === "") return;
+
+        let items = value.split(",").map(a => a.trim()).filter(a => a !== "");
+
+        items.forEach(item => {
+            let li = document.createElement("li");
+            li.textContent = item;
+            list.appendChild(li);
+        });
+
+        input.value = "";
+    });
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const addMoreBtn = document.getElementById("addMoreImages");
+    const hiddenImages = [
+        document.getElementById("id_image2"),
+        document.getElementById("id_image3"),
+        document.getElementById("id_image4"),
+        document.getElementById("id_image5")
+    ];
+
+    let index = 0;
+
+    addMoreBtn.addEventListener("click", () => {
+        if (index < hiddenImages.length) {
+            const field = hiddenImages[index];
+            field.parentElement.style.display = "block";  // show it
+            index++;
+
+            if (index === hiddenImages.length) {
+                addMoreBtn.style.display = "none"; // reached 5 images
+            }
+        }
+    });
+});
+</script>
+
+<script>
+function toggleReraSection(propertyType) {
+
+    const reraSection = document.getElementById("reraSection");
+    const approvalTypeSection = document.getElementById("approvalTypeSection");
+    const amenitiesSection = document.getElementById("amenitiesSection");
+
+    const landTypes = [
+        "Lands",
+        "Farm",
+        "Developmentlands",
+        "Disputelands",
+        "Commerciallands"
+    ];
+
+    const isLand = landTypes.includes(propertyType);
+
+    const toggleSection = (section, show) => {
+        if (!section) return;
+
+        section.style.display = show ? "block" : "none";
+        section.querySelectorAll("input, select, textarea").forEach(el => {
+            el.disabled = !show;
+        });
+    };
+
+    
+    toggleSection(reraSection, !isLand);
+    toggleSection(approvalTypeSection, !isLand);
+    toggleSection(amenitiesSection, !isLand);
+}
+
+</script>
+<script>
+/* ==========================================================
+   SHOW / HIDE RENTAL INCOME & DEPOSIT BASED ON "LOOKING TO"
+========================================================== */
+function toggleRentFields() {
+    const lookValue = document.querySelector('input[name="look"]').value;
+
+    // Rental Income fields
+    const rentalFields = document.querySelectorAll('.rental-income-field');
+
+    // Deposit field
+    const depositFields = document.querySelectorAll('.deposit-field');
+
+    if (lookValue === 'Rent') {
+        // SHOW
+        rentalFields.forEach(field => {
+            field.style.display = 'block';
+            field.querySelector('input').disabled = false;
+        });
+
+        depositFields.forEach(field => {
+            field.style.display = 'block';
+            field.querySelector('input').disabled = false;
+        });
+
+    } else {
+        // HIDE
+        rentalFields.forEach(field => {
+            field.style.display = 'none';
+            const input = field.querySelector('input');
+            input.value = '';
+            input.disabled = true;
+        });
+
+        depositFields.forEach(field => {
+            field.style.display = 'none';
+            const input = field.querySelector('input');
+            input.value = '';
+            input.disabled = true;
+        });
+    }
+}
+
+/* Hook into LOOK option buttons */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.option[data-field="look"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            setTimeout(toggleRentFields, 0);
+        });
+    });
+
+    toggleRentFields(); // initial load
+});
+</script>
+
+<!-- furnitur--visible -->
+
+<script>
+/* ==========================================================
+   SHOW / HIDE FURNITURE
+   Conditions:
+   - LOOK = RENT
+   - PROPERTY = House | Flat | Villa
+========================================================== */
+function toggleFurniture() {
+    const lookValue = document.querySelector('input[name="look"]')?.value;
+    const propertyValue = document.querySelector('input[name="selectProperty"]')?.value;
+
+    const allowedProperties = ["House", "Flat", "Villa"];
+    const furnitureFields = document.querySelectorAll(".furniture-field");
+
+    const shouldShow =
+        lookValue === "Rent" && allowedProperties.includes(propertyValue);
+
+    furnitureFields.forEach(field => {
+        const select = field.querySelector("select");
+
+        if (shouldShow) {
+            field.style.display = "block";
+            select.disabled = false;
+        } else {
+            field.style.display = "none";
+            select.value = "";
+            select.disabled = true;
+        }
+    });
+}
+
+/* Hook into option button clicks */
+document.addEventListener("DOMContentLoaded", () => {
+
+    // When LOOK changes (RENT / SELL)
+    document.querySelectorAll('.option[data-field="look"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+            setTimeout(toggleFurniture, 0);
+        });
+    });
+
+    // When PROPERTY TYPE changes
+    document.querySelectorAll('.option[data-field="selectProperty"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+            setTimeout(toggleFurniture, 0);
+        });
+    });
+
+    toggleFurniture(); // initial load
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const requiredByProperty = {
+
+  Plot: [
+    "projectName",
+    "extent",
+    "units",
+    "facing",
+    "roadSize",
+    "dimensions"
+  ],
+
+  House: [
+    "projectName",
+    "extent",
+    "units",
+    "numberOfBHK",
+    "numberOfFloors",
+    "facing",
+    "roadSize",
+    "dimensions",
+    "builtUpArea",
+    "carpetArea",
+    "openArea",
+    "floorNo",
+    "rentalIncome"
+  ],
+
+  Flat: [
+    "projectName",
+    "communityType",
+    "facing",
+    "extent",
+    "units",
+    "builtUpArea",
+    "carpetArea",
+    "numberOfBHK",
+    "floorNo"
+  ],
+
+  Villa: [
+    "projectName",
+    "facing",
+    "numberOfFloors",
+    "numberOfBHK",
+    "dimensions",
+    "roadSize",
+    "extent",
+    "units",
+    "builtUpArea",
+    "openArea",
+    "rentalIncome"
+  ],
+
+  Farm: [
+    "projectName",
+    "extent",
+    "units",
+    "roadSize",
+    "facing",
+    "dimensions"
+  ],
+
+  Lands: [
+    "landType",
+    "extent",
+    "units",
+    "soilType",
+    "waterSource",
+    "roadSize",
+    "roadFacing"
+  ],
+
+  Developmentlands: [
+    "landType",
+    "extent",
+    "units",
+    "soilType",
+    "zone",
+    "roadSize"
+  ],
+
+  Disputelands: [
+    "landType",
+    "extent",
+    "units",
+    "soilType",
+    "zone",
+    "roadSize"
+  ],
+
+  Commerciallands: [
+    "landType",
+    "extent",
+    "units",
+    "soilType",
+    "waterSource",
+    "roadSize",
+    "roadFacing"
+  ]
+};
+
+
+  window.setRequiredFields = function (propertyType) {
+
+    // remove previous required flags
+    document.querySelectorAll("[data-required]")
+        .forEach(el => el.removeAttribute("data-required"));
+
+    const activeSet = document.querySelector(
+        "#step-2 .conditional-fields.active-fieldset"
+    );
+
+    if (!activeSet) return;
+
+    (requiredByProperty[propertyType] || []).forEach(fieldName => {
+
+        const field = activeSet.querySelector(
+            `[name="${fieldName}"]`
+        );
+
+        if (field) {
+            field.setAttribute("data-required", "true");
+        }
+    });
+};
+});
+</script>
+
+<script>
+
+function validateFields(fields) {
+    let hasError = false;
+
+    fields.forEach(field => {
+        if (!field) return;
+
+        field.classList.remove("error");
+        const oldError = field.parentElement.querySelector(".error-message");
+        if (oldError) oldError.remove();
+
+        // Rental income only required when RENT selected
+        if (field.name === "rentalIncome") {
+            const lookValue = document.querySelector('input[name="look"]').value;
+            if (lookValue !== "Rent") return;
+        }
+
+        if (!field.value || field.value.trim() === "") {
+            hasError = true;
+            field.classList.add("error");
+
+            const error = document.createElement("span");
+            error.className = "error-message";
+            error.innerText = "This field is required.";
+            field.parentElement.appendChild(error);
+        }
+    });
+
+    return !hasError;
+}
+</script>
+<script>
+/* ==========================================================
+   SHOW / HIDE RENTAL INCOME BASED ON "LOOKING TO"
+========================================================== */
+function toggleRentalIncome() {
+    const lookValue = document.querySelector('input[name="look"]').value;
+    const rentalFields = document.querySelectorAll('.rental-income-field');
+
+    rentalFields.forEach(field => {
+        const input = field.querySelector('input');
+
+        if (lookValue === 'Rent') {
+            field.style.display = 'block';
+            input.disabled = false;
+        } else {
+            field.style.display = 'none';
+            input.value = '';
+            input.disabled = true;
+        }
+    });
+}
+
+/* Hook into option button clicks */
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('.option[data-field="look"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            setTimeout(toggleRentalIncome, 0);
+        });
+    });
+
+    toggleRentalIncome(); // initial load
+});
+</script>
+
+
+<!-- Google Maps Script -->
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB92MLJIMGxSEXfAgLGObcO0OpVV6w2VbY&libraries=places&callback=initMap"
+    async
+    defer
+></script>
+
+<script>
+let map;
+let marker;
+let geocoder;
+let autocomplete;
+
+function initMap() {
+    // Default location (Hyderabad)
+    const defaultLocation = { lat: 17.385044, lng: 78.486671 };
+
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 13
+    });
+
+    // Draggable marker
+    marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true
+    });
+
+    geocoder = new google.maps.Geocoder();
+
+    // Autocomplete search box
+    autocomplete = new google.maps.places.Autocomplete(document.getElementById("search_location"));
+    autocomplete.bindTo("bounds", map);
+
+    autocomplete.addListener("place_changed", function() {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+
+        map.setCenter(place.geometry.location);
+        map.setZoom(15);
+        marker.setPosition(place.geometry.location);
+
+        updateFields(place.geometry.location, place.formatted_address);
+    });
+
+    // Update fields when marker is dragged
+    marker.addListener("dragend", function() {
+        const position = marker.getPosition();
+        geocoder.geocode({ location: position }, function(results, status) {
+            if (status === "OK" && results[0]) {
+                document.getElementById("search_location").value = results[0].formatted_address;
+                updateFields(position, results[0].formatted_address);
+            }
+        });
+    });
+
+    // Initialize hidden fields with default location
+    updateFields(defaultLocation, "");
+}
+
+// Update hidden fields function
+function updateFields(location, address) {
+    document.getElementById("id_latitude").value = location.lat();
+    document.getElementById("id_longitude").value = location.lng();
+    document.getElementById("id_location").value = address || "";
+    document.getElementById("id_locationUrl").value = `https://www.google.com/maps?q=${location.lat()},${location.lng()}`;
+}
+
+</script>
+
+  {% include 'footer.html' %}
+
+ 
+    
+  </body>
+</html>

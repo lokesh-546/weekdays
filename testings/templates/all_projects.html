@@ -1,0 +1,1330 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <title>All Projects</title>
+
+    <style>
+    html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+      body {
+        background: #f5f6fa;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* MAIN CONTAINER */
+      .container {
+        width: 90%;
+        margin: auto;
+        padding-top: 40px;
+        margin-top: 100px;
+        display: flex;
+        gap: 25px;
+      }
+
+      /* PAGE TITLE */
+      h2 {
+        text-align: center;
+        font-size: 28px;
+        margin-bottom: 25px;
+        width: 100%;
+      }
+
+      /* ============================
+   PROJECT GRID
+============================ */
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        width: 100%;
+      }
+
+      /* ============================
+   PROJECT CARD
+============================ */
+      .project-card {
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+        transition: 0.3s;
+        height: 100%;
+      }
+
+      .project-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .project-card img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        background: #ddd;
+      }
+
+      /* CARD TEXT */
+      .card-details {
+        padding: 15px;
+      }
+
+      .card-details h3 {
+        font-size: 20px;
+        margin-bottom: 8px;
+        color: #222;
+      }
+
+      .card-details p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #555;
+      }
+
+      /* CARD BUTTON */
+      .call-btn {
+        display: block;
+        background: #5252c7;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        margin-top: 12px;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .call-btn:hover {
+        background: #3f3f9d;
+      }
+
+      /* ============================
+   FILTER BOX (Desktop)
+============================ */
+      .filter-box {
+        width: 450px;
+        padding: 25px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e3e6ec;
+        height: 500px;
+        position: sticky;
+        top: 120px;
+        height:auto;
+      }
+
+      .filter-box h3 {
+        margin-bottom: 18px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #3a3d45;
+      }
+
+      .filter-box label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #4a4a4a;
+      }
+
+      .filter-box input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        margin-top: 5px;
+        font-size: 14px;
+      }
+
+      /* Apply + Reset buttons side-by-side */
+      .apply-btn,
+      .reset-btn {
+        background: #233b8e;
+        color: #fff;
+        font-size: 15px;
+        border-radius: 8px;
+        padding: 10px;
+        width: 48%;
+        text-align: center;
+        border: none;
+      }
+
+      .apply-btn {
+        background: #2e8b35;
+      }
+
+      /* ============================
+   MOBILE FILTER BUTTON
+============================ */
+      .filter-toggle-btn {
+        display: none;
+        background: #5252c7;
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        width: 100%;
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      /* ============================
+   RESPONSIVE BREAKPOINTS
+============================ */
+
+      /* Tablets */
+      @media (max-width: 900px) {
+        .project-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      /* ============================
+   RESPONSIVE (TABLET + MOBILE)
+============================ */
+
+      /* ------- TABLETS (900px) ------- */
+      @media (max-width: 768px) {
+        .container {
+          width: 95%;
+        }
+
+        .project-grid {
+          grid-template-columns: repeat(2, 1fr); /* 2 cards */
+        }
+
+        .project-card img {
+          height: 200px;
+        }
+      }
+
+      /* ------- MOBILE (768px) ------- */
+      @media (max-width: 768px) {
+        /* Main container becomes single column */
+        .container {
+          flex-direction: column;
+          width: 95%;
+          margin-top: 70px;
+          padding-top: 10px;
+          gap: 15px;
+        }
+
+        /* Mobile filter button */
+        .filter-toggle-btn {
+          display: block;
+          background: #233b8e;
+          color: #fff;
+          width: 100%;
+          padding: 14px;
+          border-radius: 10px;
+          font-size: 18px;
+          border: none;
+          cursor: pointer;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        /* Hide filter by default (mobile only) */
+        .filter-box {
+          width: 100% !important;
+          height: auto;
+          display: none;
+          padding: 25px 18px;
+          border-radius: 14px;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+          border: 1px solid #e1e4ea;
+          animation: fadeIn 0.25s ease-out;
+          position: relative !important;
+          top: 0 !important;
+        }
+
+        /* When open → show */
+        .filter-box.open {
+          display: block !important;
+        }
+
+        /* Input spacing fix */
+        .filter-box input {
+          padding: 14px 14px;
+          font-size: 15px;
+          margin-bottom: 16px;
+        }
+
+        /* Buttons inside filter */
+        .apply-btn,
+        .reset-btn {
+          width: 48%;
+          padding: 12px 0;
+          border-radius: 10px;
+          font-size: 16px;
+          gap: 10px;
+        }
+
+        /* Title adjust */
+        h2 {
+          font-size: 22px;
+          margin-bottom: 15px;
+        }
+
+        /* Grid → single column */
+        .project-grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        /* Cards look clean on mobile */
+        .project-card {
+          border-radius: 14px;
+        }
+
+        .project-card img {
+          height: 190px; /* consistent size */
+          border-bottom: 1px solid #eee;
+        }
+
+        .card-details h3 {
+          font-size: 18px;
+        }
+
+        .card-details p {
+          font-size: 13px;
+        }
+      }
+
+      /* Fade animation for filter */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+  
+/* Basic styling for the select element */
+#type_of_project {
+                   /* Set width */
+    padding: 10px 15px;          /* Padding inside */
+    border: 1px solid #ccc;      /* Light gray border */
+    border-radius: 5px;          /* Rounded corners */
+    font-size: 16px;             /* Font size */
+    background-color: #f9f9f9;   /* Background color */
+    color: #333;                 /* Text color */
+    transition: all 0.3s ease;  /* Smooth hover/focus transition */
+    appearance: none;            /* Remove default arrow (for modern look) */
+    -webkit-appearance: none;    /* Safari/Chrome */
+    -moz-appearance: none;       /* Firefox */
+}
+
+/* Add custom arrow */
+#type_of_project {
+    background-image: url('data:image/svg+xml;utf8,<svg fill="gray" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+/* On hover */
+#type_of_project:hover {
+    border-color: #888;          /* Darker border on hover */
+}
+
+/* On focus */
+#type_of_project:focus {
+    border-color: #007BFF;       /* Blue border when focused */
+    box-shadow: 0 0 5px rgba(0,123,255,0.5); /* Glow effect */
+    outline: none;               /* Remove default outline */
+}
+
+/* Style for the first option (placeholder) */
+#type_of_project option:first-child {
+    color: #999;
+}
+.project-info p:nth-child(1) {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 768px) {
+  
+  .project-info p:nth-child(1) {
+    max-width: 300px;
+  }
+  
+ 
+}
+</style>
+ 
+  </head>
+
+  <body>
+    {% include 'NavBar.html' %}
+
+    <div class="container">
+      <!-- MOBILE FILTER BUTTON -->
+      <button class="filter-toggle-btn" onclick="toggleFilters()">
+        ☰ Filters
+      </button>
+
+      <!-- FILTER BOX -->
+      <!-- FILTER BOX -->
+      <form method="GET" class="filter-box">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <input type="hidden" name="category" value="{{ category }}" />
+
+          <h3>🔎 Projects</h3>
+
+          <!-- Project Name -->
+           <input
+            type="text"
+            name="cname"
+            placeholder="Company Name"
+            value="{{ name }}"
+          />
+          <input
+            type="text"
+            name="name"
+            placeholder="Search by Project"
+            value="{{ name }}"
+          />
+
+          <!-- Location -->
+          <input
+  type="text"
+  id="location-input"
+  name="location"
+  placeholder="Search by location"
+  value="{{ location }}"
+/>
+
+          <!-- Type of Project -->
+
+<select name="type_of_project" id="type_of_project">
+    <option value="">-- Select Type of Project --</option>
+    <option value="Plot">Plot</option>
+    <option value="House">House</option>
+    <option value="Flat">Flat</option>
+    <option value="Villa">Villa</option>
+    <option value="Farm">Farm</option>
+    <option value="Lands">Lands</option>
+    <option value="Developmentlands">Developmentlands</option>
+    <option value="Disputelands">Disputelands</option>
+    <option value="Commerciallands">Commerciallands</option>
+</select>
+
+<select name="position">
+   <option value="" >
+        Select positon
+    </option>
+    <option value="READY" {% if position == "READY" %}selected{% endif %}>
+        Ready to Use
+    </option>
+
+    <option value="UNDER" {% if position == "UNDER" %}selected{% endif %}>
+        Under Construction
+    </option>
+</select>
+
+<style>
+  select[name="position"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover */
+select[name="position"]:hover {
+    border-color: #4b7bec;
+}
+
+/* Focus */
+select[name="position"]:focus {
+    border-color: #4b7bec;
+    box-shadow: 0 0 5px rgba(75, 123, 236, 0.5);
+}
+
+/* Option Styling (Supported in most modern browsers) */
+select[name="position"] option {
+    padding: 12px;
+    font-size: 15px;
+}
+
+
+ .project {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 25px;
+        margin-top: 30px;
+        margin-left: 20px;
+        
+    }
+
+    .project-card {
+        background: white;
+       
+        padding: 5px;
+        border-radius: 20px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .project-card img {
+        width: 200%;
+        height: 130px;
+       
+        object-fit: cover;
+        margin-top: -10px;
+        border: 4px solid #f0f0f0;
+    }
+
+    .card-details1 h3 {
+        margin-top: 9px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #222;
+    }
+
+   
+
+    .call-btn {
+        display: block;
+        margin: 18px auto 5px;
+        width: 60%;
+        padding: 8px;
+        background: #4c3eb6;
+        color: white;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 500;
+        transition: 0.3s;
+    }
+
+    .call-btn:hover {
+        background: #3a2ea1;
+    }
+
+    .location-pin {
+        color: #e63946;
+        font-size: 18px;
+    }
+
+    .center-btn {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .see-all-btn {
+        display: inline-block;
+        background: #3a2ea1;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+    .see-all-btn:hover {
+        background: #c65b64;
+    }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 1024px) {
+        .project {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        }
+    }
+     .card-details1 p {
+        margin: 3px 0;
+        font-weight:100;
+        font-size: 12px;
+        color: #444;
+    }
+
+/* MOBILE SLIDER STYLE */
+@media (max-width: 768px) {
+    .project {
+        display: flex;          /* horizontal scroll */
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .project-card {
+        flex: 0 0 90%;          /* one card per viewport width */
+        scroll-snap-align: start;
+        margin: 0;              /* remove extra margin for flex layout */
+    }
+
+    .project-card img {
+       
+        height: 100px;
+    }
+  
+    .card-details1 h3 {
+        font-size: 18px;
+    }
+
+    .card-details1 p {
+        font-size: 12px;
+    }
+
+    .call-btn {
+        width: 90%;
+        font-size: 12px;
+    }
+}
+         
+
+@media (width: 768px){
+    .card-details p{
+             font-weight:100;
+          color: black;
+          font-size: 12px;
+         }
+
+     
+    
+}
+
+@media (max-width: 768px) {
+
+    .company-row {
+        padding: 6px 8px;
+    }
+
+    .company-logo {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+    }
+
+    .company-name {
+        font-size: 12px;
+    }
+.image-wrapper img{
+  height: 200px;
+  width: 100%;
+}
+   
+    
+}
+
+.image-wrapper img{
+  height: 200px;
+  width: 100%;
+}
+
+.project::-webkit-scrollbar {
+  display: none;
+}
+.project {
+  scrollbar-width: none; /* Firefox */
+}
+.card-grid::-webkit-scrollbar {
+  display: none;
+}
+.card-grid {
+  scrollbar-width: none; /* Firefox */
+}
+
+</style>
+<style>
+
+.company-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    width: 100%;
+}
+
+.company-row img{
+  width: 50px;
+  height: 50px;
+}
+.company-logo {
+    width: 10px;
+    height: 10px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+}
+
+.company-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #222;
+    white-space: nowrap;       /* 🔥 single line */
+    overflow: hidden;
+    text-overflow: ellipsis;   /* 🔥 ... */
+    max-width: 100%;
+}
+
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-left: 25px;
+}
+
+/* CARD */
+.project-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+
+
+/* IMAGE */
+.image-wrapper {
+    position: relative;
+}
+
+.project-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* PRICE OVER IMAGE */
+.price-tag {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0,0,0,0.75);
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+/* INFO */
+.project-info {
+    padding: 12px;
+}
+
+.project-info h3 {
+    margin: 0 0 5px;
+    font-size: 17px;
+}
+
+.meta {
+    font-size: 13px;
+    color: #555;
+}
+
+.location {
+    font-size: 13px;
+    color: #777;
+}
+
+/* ACTIONS */
+.project-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    gap: 10px;
+    border-top: 1px solid #eee;
+}
+
+</style>
+       <style>
+      .project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .project-info {
+    gap: 12px;
+  }
+
+   
+    
+}
+
+
+        .project-info {
+  width: 100%;
+  text-align: left;
+}
+
+.project-info p,
+.project-info span {
+  margin: 0;
+}
+
+.contact-btn-main {
+  flex: 1;
+  height: 40px;
+  background: #4c3eb6;
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #d6d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+/* SHARE DROPDOWN */
+.icon-btn-wrapper {
+    position: relative;
+}
+
+
+
+/* SHARE WRAPPER */
+.icon-btn-wrapper {
+    position: relative;
+}
+
+
+
+/* SHARE ITEMS */
+.share-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.share-item:hover {
+    background: #f2f2f2;
+}
+
+
+/* SHARE WRAPPER */
+.share-wrapper {
+    position: relative;
+}
+
+/* SHARE BOX (CLICK ONLY) */
+.share-box {
+    display: none;
+    margin-left: 10px;
+    flex-direction: column;
+    position: absolute;
+    bottom: 55px;
+    left:40px;  
+
+    width: 260px;              /* ✅ mobile friendly */
+    max-width: 90vw;           /* ✅ never overflow screen */
+
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    z-index: 9999;
+}
+@media (max-width: 768px) {
+    .share-box {
+        right: 50%;
+        transform: translateX(50%);
+        bottom: 60px;
+    }
+    .project-card
+    { margin-left: -30px;
+    margin-right:20px;
+
+    }
+}
+
+
+/* SHARE ITEMS */
+.share-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.share-item:hover {
+    background: #f2f2f2;
+}
+ 
+
+      /* ===== NEARBY LOCATIONS (HORIZONTAL SCROLL) ===== */
+
+.nearby-wrapper {
+  overflow-x: auto; /* allow manual scroll */
+  margin-top: 6px;
+  position: relative;
+  -ms-overflow-style: none;  /* hide scrollbar IE */
+  scrollbar-width: none;     /* hide scrollbar Firefox */
+}
+
+.nearby-wrapper::-webkit-scrollbar {
+  display: none; /* hide scrollbar Chrome/Safari */
+}
+
+.nearby-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.nearby-box {
+  padding: 4px 8px;
+  font-size: 12px;
+  background: #f1f3f6;
+  color: #444;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+}
+
+/* COMPANY ROW */
+.company-row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 10px;
+}
+
+.company-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* CENTER NAME */
+.company-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  color: black;
+  text-decoration: none;
+}
+
+/* RIGHT CHAT */
+.company-right {
+  margin-left: auto;
+  margin-bottom: 9px;
+}
+
+/* IMAGE */
+.project-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* PRICE */
+.price-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.75);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+/* DETAILS */
+.project-info {
+  padding: 12px;
+  font-size: 13px;
+}
+
+/* ACTION BUTTONS */
+.project-actions {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* VIEW BUTTON */
+.contact-btn-main {
+  flex: 1;
+  background: #4c3eb6;
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* ICON BUTTON */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  background: #ddd;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+/* SAVE ACTIVE */
+.icon-btn i.bi-bookmark-fill {
+  color: #4c3eb6;
+}
+       </style>
+
+       
+          <!-- Facing -->
+          <input
+            type="text"
+            name="facing"
+            placeholder="Available Facing"
+            value="{{ facing }}"
+          />
+
+                   <!-- Pricing -->
+          <div style="display: flex;gap:4px; justify-content: space-between">
+          
+          <input
+            type="number"
+            name="minpricing"
+            placeholder="Min Pricing"
+            value="{{ pricing }}"
+          />
+          <input
+            type="number"
+            name="maxpricing"
+            placeholder="Max Price"
+            value="{{ pricing }}"
+          />
+        </div>
+
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              text-decoration: none;
+            "
+          >
+            <button type="submit" class="apply-btn">Apply</button>
+            <a href="?category={{ category }}" class="reset-btn">Reset</a>
+          </div>
+        </div>
+      </form>
+  
+      <div style="width: 100%">
+        <h2>
+  {% if category == "normal" %}
+      Company Normal Projects
+  {% elif category == "pro" %}
+      Company Pro Projects
+  {% elif category == "premium" %}
+      Company Premium Projects
+  {% else %}
+      All Projects
+  {% endif %}
+        </h2>
+
+      <div class="project-grid">
+{% for p in projects %}
+<div class="project-card">
+
+  <!-- COMPANY ROW -->
+  <div class="company-row">
+
+    <!-- LEFT LOGO -->
+    <a href="{% url 'prop:company_profile_with_id' p.user.id %}">
+      {% if p.user.company_logo_path %}
+        <img src="{{ p.user.company_logo_path.url }}" class="company-logo">
+      {% else %}
+        <img src="{% static 'default.jpg' %}" class="company-logo">
+      {% endif %}
+    </a>
+
+    <!-- CENTER NAME -->
+    <a href="{% url 'prop:company_profile_with_id' p.user.id %}" class="company-center">
+      {{ p.user.company_name|default:"Company Name" }}
+    </a>
+
+    <!-- RIGHT CHAT -->
+    <div class="company-right">
+<a
+  href="{% if user.is_authenticated %}
+          {% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20project%20{{ p.project_name|urlencode }}.%0AProject%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:project_detail' p.id %}
+        {% else %}
+          {% url 'prop:login' %}
+        {% endif %}"
+  class="icon-btn"
+  title="Chat"
+>
+  <i class="bi bi-chat-dots-fill"></i>
+</a>
+    </div>
+
+  </div>
+
+  <!-- IMAGE -->
+  <div class="image-wrapper">
+    <a href="{% url 'prop:project_detail' p.id %}">
+      {% if p.image %}
+        <img src="{{ p.image.url }}" class="project-image">
+      {% else %}
+        <img src="{% static 'default.jpg' %}" class="project-image">
+      {% endif %}
+    </a>
+
+    <div class="price-tag">₹ {{ p.pricing }}</div>
+  </div>
+
+  <!-- TITLE -->
+  <div style="padding-left: 15px;">
+    <h5>{{ p.project_name }}</h5>
+  </div>
+
+  <!-- DETAILS -->
+  <div class="project-info">
+    <p>@ {{ p.project_address }}</p>
+    <p>{{ p.type_of_project }}</p>
+    <p>{{ p.get_position_display }}</p>
+
+{% if p.nearby_locations %}
+    <div class="nearby-wrapper">
+        <div class="nearby-container">
+            <strong style="font-size: 13px;">Nearby Places:</strong>
+
+            {% for place in p.nearby_locations %}
+                <span class="nearby-box">  {{ place }}</span>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <span class="nearby-pill">No Nearby Places</span>
+{% endif %}
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="project-actions">
+
+    <a class="contact-btn-main"
+       href="{% url 'prop:project_detail' p.id %}">
+       View Details
+    </a>
+
+    <!-- SHARE -->
+    <button class="icon-btn"
+      onclick="shareProject(
+        '{{ p.project_name|escapejs }}',
+        '{{ p.project_address|escapejs }}',
+        '{{ p.pricing }}',
+        '{% url "prop:project_detail" p.id %}'
+      )">
+      <i class="bi bi-share-fill"></i>
+    </button>
+
+    <!-- SAVE BUTTON -->
+    <button class="icon-btn save-btn"
+      {% if user.is_authenticated %}
+        onclick="toggleProjectSave(event, {{ p.id }}, this)"
+      {% else %}
+        onclick="redirectToLogin()"
+      {% endif %}
+    >
+      <i class="bi bi-bookmark"></i>
+    </button>
+
+  </div>
+
+</div>
+{% endfor %}
+</div>
+
+      </div>
+    </div> 
+
+<script>
+function toggleProjectSave(event, id, btn) {
+  event.preventDefault();
+
+  fetch(`/save-project/${id}/`)
+    .then(res => res.json())
+    .then(data => {
+
+      let icon = btn.querySelector("i");
+
+      if (data.status === "saved") {
+        icon.classList.remove("bi-bookmark");
+        icon.classList.add("bi-bookmark-fill");
+      } else {
+        icon.classList.remove("bi-bookmark-fill");
+        icon.classList.add("bi-bookmark");
+      }
+
+    });
+}
+
+function redirectToLogin() {
+  window.location.href = "{% url 'prop:login' %}";
+}
+</script>
+ <script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqk0zEZL46G-ppnMd5794tXdFb4LFz0oA&libraries=places&callback=onGoogleMapsLoaded"
+  async
+  defer
+></script>
+
+<script>
+let startY = 0;
+let isRefreshing = false;
+
+document.addEventListener("touchstart", (e) => {
+    const target = e.target;
+
+    // ❌ Ignore when typing in input fields
+    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+        return;
+    }
+
+    startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e) => {
+    const target = e.target;
+
+    // ❌ Ignore when typing in input fields
+    if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+        return;
+    }
+
+    const currentY = e.touches[0].clientY;
+
+    if (currentY - startY > 70 && !isRefreshing && window.scrollY === 0) {
+        isRefreshing = true;
+        location.reload();
+    }
+});
+</script>
+
+    <br /><br /><br /><br />
+    {% include 'footer.html' %}
+
+    <script>
+      function toggleFilters() {
+        const box = document.querySelector(".filter-box");
+        const btn = document.querySelector(".filter-toggle-btn");
+
+        box.classList.toggle("open");
+
+        if (box.classList.contains("open")) {
+          btn.textContent = "✖ Close Filters";
+        } else {
+          btn.textContent = "☰ Filters";
+        }
+      }
+    </script>
+
+    <!-- location--js--- -->
+
+    <script>
+  function onGoogleMapsLoaded() {
+    const input = document.getElementById("location-input");
+
+    if (!input) return;
+
+    const autocomplete = new google.maps.places.Autocomplete(input, {
+      types: ["(cities)"],   // city-level search
+      componentRestrictions: { country: "in" } // India only (remove if needed)
+    });
+  }
+</script>
+<script>
+let startY = 0;
+let isRefreshing = false;
+
+document.addEventListener("touchstart", (e) => {
+    startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e) => {
+    const currentY = e.touches[0].clientY;
+
+    // User pulled down 70px AND is at top of page
+    if (currentY - startY > 70 && !isRefreshing && window.scrollY === 0) {
+        isRefreshing = true;
+
+        const msg = document.getElementById("refreshMessage");
+        msg.style.display = "block";
+
+        setTimeout(() => {
+            location.reload();  // refresh the page
+        }, 200);
+    }
+});
+</script>
+
+<script>
+function shareProject(name, location, price, url) {
+
+    const fullUrl = window.location.origin + url;
+
+    const message =
+        "🏗 Project: " + name + "\n" +
+        "📍 Location: " + location + "\n" +
+        "💰 Price: ₹" + price + "\n\n" +
+        "View Project 👇";
+
+    if (navigator.share) {
+        navigator.share({
+            title: name,
+            text: message,
+            url: fullUrl
+        }).catch(err => console.log(err));
+    } else {
+        navigator.clipboard.writeText(message + "\n" + fullUrl);
+        alert("Project link copied to clipboard");
+    }
+}
+</script>
+ 
+
+  </body>
+</html>

@@ -1,0 +1,1868 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+
+<link rel="shortcut icon" href="{% static 'images/logo.jpg' %}" type="image/x-icon">
+    <style>
+      html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+      body {
+        background: #f5f6fa;
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+      }
+
+      .profile-wrapper {
+        width: 95%;
+        max-width: 900px;
+        margin: 40px auto;
+        margin-top: 100px;
+      }
+
+      .profile-card {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 40px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .top-row {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+      }
+
+      .profile-photo {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .user-basic .user-name {
+        font-size: 12px;
+        margin: 0;
+      }
+
+      .user-basic p {
+        margin: 4px 0;
+        color: #666;
+      }
+
+      .location {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #ff4d6d;
+        font-weight: 500;
+      }
+
+      /* Stats Section */
+      .stats-box {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        background: transparent;
+       gap:10px;
+        margin: 5px 0;
+       
+      }
+
+      .stat-item {
+        width: 33%;
+        text-align: center;
+      }
+
+      .stat-item h3 {
+        font-size: 24px;
+        margin: 0;
+        color: #007bff;
+      }
+
+      .stat-item p {
+        margin: 5px 0;
+        color: #666;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px 40px;
+        margin-top: 20px;
+      }
+
+      .info-grid p {
+        font-size: 12px;
+        color: #666;
+      }
+
+      .call-btn {
+        display: block;
+        width: 20%;
+        margin: 30px auto 0 auto;
+        padding: 14px;
+        text-align: center;
+        background: rgb(84, 84, 151);
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+
+      .call-btn:hover {
+        background: #5a5a9d;
+      }
+
+      /* ================= MOBILE RESPONSIVE ================= */
+      @media (max-width: 768px) {
+        .profile-wrapper {
+          width: 100%;
+          margin: 0;
+          margin-top: 70px;
+          margin-bottom: 20px;
+        }
+
+        .profile-card {
+          border-radius: 0;
+          box-shadow: none;
+          padding: 20px 15px;
+          background: #ffffff;
+        }
+
+        .top-row {
+       
+          text-align: center;
+          gap: 15px;
+        }
+
+        .profile-photo {
+          width: 60px;
+          height:60px;
+        }
+
+        /* ⭐ Maintain 3 columns on mobile */
+        .stats-box {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          padding: 8px;
+          gap: 10px;
+        }
+
+        .stat-item h3 {
+          font-size: 22px;
+        }
+
+        /* Info section goes 1 column */
+        .info-grid {
+          grid-template-columns: 1fr;
+          gap: 5px;
+        }
+
+        .call-btn {
+          width: 40%;
+          font-size: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .profile-photo {
+          width: 60px;
+          height: 60px;
+        }
+
+        /* 3 columns still maintained */
+        .stats-box {
+          grid-template-columns: repeat(3, 1fr);
+          padding: 8px;
+          gap: 8px;
+        }
+
+        .stat-item h3 {
+          font-size: 20px;
+        }
+
+        .call-btn {
+          font-size: 12px;
+          padding: 8px;
+        }
+      }
+
+      .properties-grid {
+        display: grid;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      /* Desktop */
+      @media (min-width: 1024px) {
+        .properties-grid {
+          grid-template-columns: repeat(4, 1fr); /* 4 side by side */
+        }
+      }
+
+      /* Tablet */
+      @media (max-width: 1023px) and (min-width: 769px) {
+        .properties-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+        .properties-grid {
+          grid-template-columns: 1fr; /* ✅ one by one */
+        }
+      }
+      /* ================= ACTION BUTTON ROW ================= */
+      .action-row {
+        display: flex;
+        align-items: center;  
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+    /* Smaller share & chat */
+.icon-btn {
+      /* ↓ from 52px */
+  height: 48px;       /* ↓ from 52px */
+  border-radius: 50%;
+  border: none;
+  background: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Smaller icons */
+.icon-btn i {
+  font-size: 15px;    /* ↓ from 20px */
+ 
+}
+
+
+
+      .icon-btn:hover {
+        background: #d6d6d6;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 768px) {
+        .action-row {
+          gap: 10px;
+        }
+
+        .icon-btn {
+          height: 48px;
+          font-size: 20px;
+        }
+
+        .call-btn {
+          width: 65%;
+        }
+      }
+
+      .stat-item h3{
+        font-size: 14px;
+        
+      }
+       .stat-item p{
+        font-size: 12px;
+        font-weight: 100;
+        
+        
+      }
+
+
+      .info-grid {
+  
+    margin-top: 1px;
+}
+      
+      
+    </style>
+  </head>
+
+  <body>
+    {% include 'NavBar.html' %}
+
+     <div class="user-profile-page"> 
+
+    <div class="profile-wrapper">
+      <div class="profile-card">
+        <!-- Top Profile Row -->
+        <div class="top-row">
+          <img src="{{ u.profile_image_path.url }}" class="profile-photo" />
+
+          <div class="user-basic">
+            <p style="font-weight: bold;" class="user-name">{{ u.username }}</p>
+         
+                                 {% if u.role == "MARKETER" %}
+
+  {% if u.plan_type == "MARKETER_EXPORT" %}
+      <p style="font-size:12px; color:#f4c430;">⭐⭐⭐</p>
+
+  {% elif u.plan_type == "MARKETER_EXPORT_PRO" %}
+      <p style="font-size:12px; color:#f4c430;">⭐⭐⭐⭐</p>
+
+  {% elif u.plan_type == "MARKETER_EXPORT_PREMIUM" %}
+      <p style="font-size:12px; color:#f4c430;">⭐⭐⭐⭐⭐</p>
+  {% endif %}
+
+{% endif %}
+            <div class="stats-box">
+          <div class="stat-item">
+            <h3>{{ sold }}</h3>
+            <p>Sold</p>
+          </div>
+          <div class="stat-item">
+            <h3>{{ pending }}</h3>
+            <p>Pending</p>
+          </div>
+          <div class="stat-item">
+            <h3>{{ total }}</h3>
+            <p>Posted</p>
+          </div>
+        </div>
+
+          </div>
+        </div>
+
+        <!-- Stats Section -->
+        
+
+        <!-- User Info -->
+        <div class="info-grid">
+          <!--<p><strong>Username:</strong> {{ u.username }}</p>-->
+          <p >@ {{ u.location }}</p>
+          <p> <strong>Referral Code:</strong> {{ u.user_referral_code }}</p>
+            
+          <p><strong>Email:</strong> {{ u.email }}</p>
+          
+
+          <p>
+            <strong>Deals with:</strong>
+            {% if u.role == "MARKETER" %} {{ u.marketer_category }} {% else %}
+            {{ u.category }} {% endif %}
+          </p>
+          
+
+          <p><strong>Experience:</strong> {{ u.experience }} Years</p>
+          <p> {{ u.description }} </p>
+        </div>
+
+      
+   <!-- Contact Button Row -->
+<div class="action-row">
+
+  <!-- CONTACT -->
+  <a
+    href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
+    class="icon-btn" style="background-color: #007bff;"
+    {% if user.is_authenticated %}
+      onclick="profileLead(event, {{ u.id }})"
+    {% endif %}
+  >
+    <i class="bi bi-telephone-fill phone-blue"  style="color: white;"></i>
+    <span style=" color:white">Contact</span>
+  </a>
+
+  <!-- SHARE -->
+  <button class="icon-btn" title="Share" onclick="shareProfile()" style="border:none;background-color:  #d6d6d6; ">
+    <i class="bi bi-share-fill" style="color: blueviolet;"></i>
+  </button>
+
+  <!-- CHAT -->
+  <a href="{% if user.is_authenticated %}
+          {% url 'prop:start_chat_with_user' u.id %}
+        {% else %}
+          {% url 'prop:login' %}
+        {% endif %}"
+   class="icon-btn"
+   title="Chat" style="border:none;background-color:  #d6d6d6;">
+   <i class="bi bi-chat-dots-fill" style="color: blueviolet;"></i>
+</a>
+</div>
+
+
+    </div>
+    <style>
+.action-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Button base */
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+    padding-top:1px;
+    padding-bottom:1px;
+    border-radius: 12px;
+    border: 1px solid blue;
+    background: transparent;
+    font-size: 15px;
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.2s ease;
+    height:30px;
+}
+
+/* Icons */
+.icon-btn i {
+    font-size: 18px;
+}
+
+/* Blue phone */
+.phone-blue {
+    color: #0d6efd;
+}
+
+/* Hover effect */
+.icon-btn:hover {
+    background: #f2f7ff;
+    border-color: #cfe0ff;
+}
+
+
+
+      /* ================= INSTAGRAM STYLE TABS ================= */
+      .tab-header {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        margin: 5px auto;
+      }
+      .tab-btn {
+        padding: 10px 25px;
+        font-size: 16px;
+        border: none;
+        background: #e0e0e0;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+      }
+      .tab-btn #tabProperties {
+      }
+      .tab-btn.active {
+        background: #0d6efd;
+        color: white;
+      } /* ================= INSTAGRAM REELS GRID ================= */
+      .reels-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 200px;
+        padding: 15px;
+      }
+      .reel-box {
+        position: relative;
+        width: 100%;
+        padding-bottom: 160%; /* Adjusted for a slightly shorter look */
+        border-radius: 12px;
+        overflow: hidden;
+        background: #000;
+      }
+      .reel-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+      .reel-video:hover {
+        opacity: 0.7;
+      } /* ================= INSTAGRAM PHOTO GRID ================= */
+
+      .prop-box {
+        width: 100%;
+      }
+      .prop-img {
+        width: 100%;
+        aspect-ratio: 1 / 1; /* square like Instagram photos */
+        object-fit: cover;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .prop-box {
+        background: white;
+        border-radius: 12px;
+        padding: 10px;
+        transition: 0.3s;
+      }
+
+      .prop-box:hover {
+        transform: scale(1.03);
+      }
+
+      .prop-img {
+        width: 100%;
+        height: 230px; /* fixed size for desktop */
+        object-fit: cover;
+        border-radius: 10px;
+      }
+
+      .prop-box p {
+        margin: 5px 0 0 0;
+        font-size: 14px;
+        color: #222;
+      }
+
+      /* =========== RESPONSIVE BREAKPOINTS =========== */
+
+      /* Desktop: 4 columns */
+      @media (min-width: 769px) {
+        .reels-grid {
+          grid-template-columns: repeat(4, 1fr); /* 4 per row */
+        }
+      }
+
+      /* Tablet: 3 columns */
+      @media (max-width: 768px) {
+        .reels-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      /* Mobile: 1 column */
+      @media (max-width: 480px) {
+        .reels-grid {
+          grid-template-columns: repeat(1, 1fr); /* 2 columns on mobile */
+        }
+      }
+
+      .properties-grid {
+  display: grid;
+  gap: 15px;
+  padding: 15px;
+}
+
+/* Desktop: 4 columns */
+@media (max-width: 768px) {
+
+  .properties-grid {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    gap: 12px;
+    padding: 0 12px;
+
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .prop-box {
+    flex: 0 0 90%;
+    max-width: 90%;
+
+    scroll-snap-align: center;
+    box-sizing: border-box;
+  }
+
+  .prop-img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+  }
+
+  .properties-grid::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+
+/* ✅ Mobile: side-by-side + horizontal scroll */
+/* ================= MOBILE PROPERTY SLIDER – ONE AT A TIME ================= */
+@media (max-width: 768px) {
+
+  /* 🔥 Kill grid completely */
+  .properties-grid {
+    display: flex !important;
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;                    /* no gaps → full width */
+    padding: 0 10px;
+  }
+
+  /* 🔥 Each property takes FULL screen width */
+  .prop-box {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: 340px;             /* uniform height */
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    padding: 12px;
+  }
+
+  /* Fixed image height */
+  .prop-img {
+    height: 210px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+  /* Hide scrollbar */
+  .properties-grid::-webkit-scrollbar {
+    display: none;
+  }
+}
+/* ================= FORCE SINGLE PROPERTY VIEW (MOBILE) ================= */
+
+
+   /* ===== NEARBY LOCATIONS (HORIZONTAL SCROLL) ===== */
+      .nearby-wrapper {
+        overflow-x: auto;
+        margin-top: 6px;
+      }
+
+      /* horizontal row */
+      .nearby-container {
+        display: flex;
+        gap: 8px;
+        padding-bottom: 4px;
+        flex-wrap: nowrap;
+        width: max-content;
+      }
+
+      /* hide scrollbar (mobile friendly) */
+      .nearby-wrapper::-webkit-scrollbar {
+        display: none;
+      }
+      .nearby-wrapper {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* individual tag */
+      .nearby-box {
+        padding: 4px 8px;
+        font-size: 12px;
+        background: #f1f3f6;
+        color: #444;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        white-space: nowrap;
+        
+      }
+
+      
+      
+      /* ================= CARD ACTIONS ================= */
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        padding: 12px;
+        border-top: 1px solid #eee;
+        align-items: center;
+        width:fit-content;
+      }
+
+      /* Base button */
+      .card-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+      }
+
+      /* Contact */
+      .card-btn.contact {
+        flex: 1;
+        background: #0d6efd;
+        color: #fff;
+        padding: 12px;
+      }
+
+      .card-btn.contact:hover {
+        background: #0b5ed7;
+      }
+
+      /* Icon buttons */
+      .card-btn.icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f1f3f6;
+        font-size: 18px;
+      }
+
+      .card-btn.icon:hover {
+        background: #e2e6ea;
+      }
+
+      /* Saved state */
+      .card-btn.saved {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+        .card-actions {
+          gap: 8px;
+        }
+
+        .card-btn.contact {
+          font-size: 14px;
+          padding: 10px;
+        }
+
+        .card-btn.icon {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      /* Hover */
+      .action-btn:hover,
+      .contact-btn-main:hover {
+        background: #f0f6ff;
+      }
+
+      /* Icon color */
+      .action-btn i,
+      .contact-btn-main i {
+        color: #0d6efd;
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+
+        height: 44px;
+        padding: 0 14px;
+
+        border-radius: 8px;
+        border: 1px solid #0d6efd;
+        background: #fff;
+
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .action-btn:hover {
+        background: #f0f6ff;
+      }
+
+      .action-btn i {
+        color: #0d6efd;
+      }
+
+      /* 🔒 Anchor point */
+      .card-actions {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap; /* 🔥 PREVENT STACKING */
+      }
+
+      /* Share wrapper must NOT stretch */
+      .share-wrapper {
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      /* FLOATING share box */
+      .share-box {
+        position: absolute;
+        bottom: 52px; /* ⬆ above buttons */
+        right: 0;
+        display: none; /* hidden by default */
+        flex-direction: column;
+        width: 170px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+      }
+      @media (max-width: 768px) {
+        /* Contact stays full */
+        .card-btn.contact {
+          flex: 1;
+        }
+
+        /* Share & Save = icon only */
+        .action-btn span {
+          display: none; /* 🔥 hide text */
+        }
+
+        .action-btn {
+          width: 44px;
+          padding: 0;
+        }
+      }
+
+      /* 🔵 COMMON ACTION BUTTON STYLE */
+      .action-btn,
+      .contact-btn-main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        height: 44px;
+        padding: 0 14px;
+
+        background: #fff; /* ✅ white */
+        border: 1.5px solid #0d6efd; /* ✅ blue border */
+        border-radius: 8px;
+
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      /* Hover */
+      .action-btn:hover,
+      .contact-btn-main:hover {
+        background: #f0f6ff;
+      }
+
+      /* Icon + text color */
+      .action-btn i,
+      .contact-btn-main i,
+      .contact-btn-main span {
+        color: #0d6efd;
+      }
+
+      /* Icon-only buttons (Share & Save) */
+      .action-btn.icon {
+        width: 44px;
+        padding: 0;
+      }
+      .save-btn {
+        width: 10px;
+      }
+
+      /* Mobile consistency */
+      @media (max-width: 768px) {
+        .action-btn,
+        .contact-btn-main {
+          height: 42px;
+          font-size: 13px;
+        }
+      }
+      /* ❌ REMOVE THIS */
+      .card-btn.contact {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* ❌ REMOVE THIS */
+      .contact-btn {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      .card-actions button {
+        background-color: white;
+      }
+      /* CARD ACTIONS LAYOUT */
+      .card-actions {
+        display: flex;
+        justify-content: space-between; /* 🔥 space between */
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* LEFT SIDE (CONTACT) */
+      .actions-left {
+        flex: 1; /* 🔥 take more space */
+      }
+
+      /* Make contact button wider */
+      .actions-left .contact-btn-main {
+        width: 100%;
+        height: 46px;
+        font-size: 14px;
+      }
+
+      /* RIGHT SIDE (SHARE + SAVE) */
+      .actions-right {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      /* Icon buttons */
+      .actions-right .action-btn.icon {
+        width: 44px;
+        height: 44px;
+        padding: 0;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 768px) {
+        .actions-left .contact-btn-main {
+          height: 42px;
+          font-size: 13px;
+        }
+
+        .actions-right .action-btn.icon {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      /* ================= DESKTOP LOCK ================= */
+@media (min-width: 769px) {
+
+  .properties-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+    overflow: visible !important;
+    width: 100% !important;
+    padding: 20px !important;
+    
+  }
+
+  .prop-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: unset !important;
+  }
+
+  .property-image {
+    height: 240px;
+  }
+
+  .card-actions {
+    position: static !important;
+    flex-wrap: nowrap !important;
+  }
+}
+
+
+
+    </style>
+    <style>
+      /* ================= PROPERTY CARDS – FINAL WORKING VERSION ================= */
+
+
+/* ================= MOBILE: SIDE-BY-SIDE HORIZONTAL SCROLL ================= */
+@media (max-width: 768px) {
+
+  /* container becomes horizontal slider */
+  .properties-grid1 {
+    display: flex !important;
+    flex-direction: row;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px;
+    margin-left: 20px;
+  }
+
+  /* each card = one screen width */
+  .property-card1 {
+    flex: 0 0 100%;
+    max-width: 100%;
+    scroll-snap-align: start;
+  }
+
+  /* image sizing */
+  .property-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  /* hide scrollbar */
+  .properties-grid1::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+    </style>
+    <!-- ================== USER REELS SECTION ================== -->
+<!-- ================== USER TABS ================== -->
+ 
+<div class="tab-header" style="margin-top: 20px;">
+  <button class="tab-btn active" id="tabSale">Sale</button>
+  <button class="tab-btn" id="tabRent">Rent</button>
+    {% if u.role != "OWNER" %}
+    <button class="tab-btn" id="tabReels">Reels</button>
+  {% endif %}
+ 
+</div>
+
+<!-- ================== SALE SECTION (DEFAULT OPEN) ================== -->
+<div id="saleSection">
+  <div class="properties-grid1">
+
+    {% for p in properties %}
+    {% if p.look == 'Sell' %}
+
+    <div class="property-card1">
+
+      <!-- TOP USER ROW -->
+      <div class="user-row1">
+        <div class="user-left1">
+          <img src="{{ p.user.profile_image_path.url }}" class="user-avatar1">
+          <div>
+            <div class="user-name">{{ p.user.username }}</div>
+            <div class="post-date">{{ p.created_at|date:"M d, Y" }}</div>
+          </div>
+        </div>
+        {% if not user.is_authenticated %}
+  <button
+    class="msg-btn"
+    onclick="window.location.href='{% url 'prop:login' %}'"
+  >
+    Message
+  </button>
+
+{% elif p.user.role == "OWNER" %}
+  {# no message button for OWNER #}
+
+{% elif p.user == user %}
+  <button class="msg-btn" disabled>Message</button>
+
+{% else %}
+<a href="{% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20property%20{{ p.projectName|urlencode }}.%0AProperty%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:property_detail' p.id %}"
+  onclick="event.stopPropagation()"
+>
+  <button class="msg-btn">Message</button>
+</a>
+{% endif %}
+
+      </div>
+
+      <!-- IMAGE -->
+      <a href="{% url 'prop:property_detail' p.id %}">
+        {% if p.image %}
+          <img src="{{ p.image.url }}" class="property-image">
+        {% else %}
+          <img src="{% static 'no-image.png' %}" class="property-image">
+        {% endif %}
+      </a>
+
+      <!-- DETAILS -->
+      <div class="property-info">
+       <div class="title-row">
+  <h3>{{ p.projectName }}</h3>
+  <span class="approval-badge">{{ p.approvalType }}</span>
+</div>
+        <p>{{ p.area }} Sqyd {{ p.facing }} Facing Plot For Sale</p>
+        <p>@ {{ p.address }}</p>
+
+        <div class="price">₹ {{ p.price }}</div>
+{% if p.nearByPlaces %}
+  <div class="nearby-wrapper">
+    <div class="nearby-container">
+        <strong style="font-size:12px;">Nearby Places:</strong>
+
+      {% for place in p.nearByPlaces %}
+        <span class="nearby-box">{{ place }}</span>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <div class="nearby-wrapper">
+    <span class="nearby-box nearby-empty">No Nearby Places</span>
+  </div>
+{% endif %}
+
+      </div>
+
+      <!-- ACTIONS -->
+        <div class="card-actions">
+            <!-- LEFT : CONTACT -->
+            <div class="actions-left">
+              <button
+  class="action-btn contact-btn-main"
+  style="background-color: #4c3eb6; color: white; border-radius: 20px;"
+  onclick="handleContact(event, {{ p.user.id }}, {{ p.id }}, '{{ p.user.phone }}')"
+>
+  <i class="fa-solid fa-phone" style="color:white;"></i>
+  <p style="color:white;font-size:12px;">Contact</p>
+</button>
+
+            </div>
+
+            <!-- RIGHT : SHARE + SAVE -->
+            <div class="actions-right">
+              <!-- SHARE -->
+              <div class="share-wrapper"  data-property-id="{{ item.id }}">
+                <button class="icon-btn1" style="background-color: #d6d6d6;margin-top: -5px;">
+                  <i
+                    class="bi bi-share-fill" style="color: blueviolet; font-size: 20px;"
+                    onclick="shareProfile({{ item.id }})"
+                  ></i>
+                </button>
+
+                <div></div>
+              </div>
+
+              <style>
+                .icon-btn1 {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #d6d6d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+/* SHARE DROPDOWN */
+.icon-btn1-wrapper1 {
+    position: relative;
+}
+
+
+
+/* SHARE WRAPPER */
+.icon-btn1-wrapper1 {
+    position: relative;
+}
+
+              </style>
+              <!-- SAVE -->
+            <button
+  class="icon-btn1" style="background-color: #d6d6d6; margin-top: -5px;"
+  {% if user.is_authenticated %}
+    onclick="toggleSave(event, {{ p.id }}, this)"
+  {% else %}
+    onclick="redirectToLogin()"
+  {% endif %}
+>
+  <i class="bi bi-bookmark" style="color: blueviolet; font-size: 20px;"></i>
+</button>
+
+            </div>
+          </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+
+  </div>
+</div>
+<style>
+  /* SAFETY */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* GRID */
+/* DEFAULT (DESKTOP & TABLET) */
+.properties-grid1 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 16px;
+}
+
+.property-card1 {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* USER ROW */
+.user-row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+
+.user-left1 {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.user-avatar1 {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.msg-btn {
+  border: 1px solid #000;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* IMAGE */
+.property-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+/* INFO */
+.property-info {
+  padding: 12px;
+}
+
+/* ================= PROPERTY CARD TEXT SYSTEM ================= */
+
+/* Title */
+.property-info h3 {
+  font-size: 14px;
+  margin: 0;
+  color: #444444; 
+}
+
+/* All paragraph content */
+.property-info p {
+  font-size: 11px;
+  margin: 2px 0;
+  color: #444444;
+}
+
+/* Price */
+.price {
+  font-size: 12px;
+  color: #444444; 
+  margin: 5px 0;
+}
+
+/* Approval badge */
+.approval-badge {
+  font-size: 10px;
+  color: #2a6ef2;
+  background: #eaf2ff;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+/* Nearby tags */
+.nearby-box {
+  font-size: 10px;
+  color: #444444;
+}
+
+.tag {
+  display: inline-block;
+  background: #f1f1f1;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+/* ACTIONS */
+.property-actions1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.contact-btn1 {
+  flex: 1;
+  background: #0d6efd;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.icon-btn1 {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-row h3 {
+  font-size: 14px;
+  font-weight:initial;
+  margin: 0;
+  flex: 1;
+}
+
+/* 🔥 Approval badge */
+.approval-badge {
+  background: #eaf2ff;
+  color: #2a6ef2;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+</style>
+
+<!-- ================== RENT SECTION (HIDDEN INITIALLY) ================== -->
+<!-- ================== RENT SECTION ================== -->
+<div id="rentSection" style="display: none">
+  <div class="properties-grid1">
+
+    {% for p in properties %}
+    {% if p.look == 'Rent' %}
+
+    <div class="property-card1">
+
+      <!-- TOP USER ROW -->
+      <div class="user-row1">
+        <div class="user-left1">
+          <img src="{{ p.user.profile_image_path.url }}" class="user-avatar1">
+          <div>
+            <div class="user-name">{{ p.user.username }}</div>
+            <div class="post-date">{{ p.created_at|date:"M d, Y" }}</div>
+          </div>
+        </div>
+
+        {% if not user.is_authenticated %}
+          <button class="msg-btn"
+            onclick="window.location.href='{% url 'prop:login' %}'">
+            Message
+          </button>
+
+        {% elif p.user == user %}
+          <button class="msg-btn" disabled>Message</button>
+
+        {% else %}
+      <a href="{% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20property%20{{ p.projectName|urlencode }}.%0AProperty%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:property_detail' p.id %}"
+  onclick="event.stopPropagation()"
+>
+  <button class="msg-btn">Message</button>
+</a>
+        {% endif %}
+      </div>
+
+      <!-- IMAGE -->
+      <a href="{% url 'prop:property_detail' p.id %}">
+        {% if p.image %}
+          <img src="{{ p.image.url }}" class="property-image">
+        {% else %}
+          <img src="{% static 'no-image.png' %}" class="property-image">
+        {% endif %}
+      </a>
+
+      <!-- DETAILS -->
+      <div class="property-info">
+        <div class="title-row">
+  <h3>{{ p.projectName }}</h3>
+  <span class="approval-badge">{{ p.approvalType }}</span>
+</div>
+        <p>{{ p.area }} Sqyd {{ p.facing }} Facing Property For Rent</p>
+        <p>@ {{ p.address }}</p>
+
+        <div class="price">₹ {{ p.price }}</div>
+
+    {% if p.nearByPlaces %}
+  <div class="nearby-wrapper">
+    <div class="nearby-container">
+        <strong style="font-size:12px;">Nearby Places:</strong>
+
+      {% for place in p.nearByPlaces %}
+        <span class="nearby-box">{{ place }}</span>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <div class="nearby-wrapper">
+    <span class="nearby-box nearby-empty">No Nearby Places</span>
+  </div>
+{% endif %}
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="card-actions">
+
+        <!-- CONTACT -->
+        <div class="actions-left">
+             <button
+  class="action-btn contact-btn-main"
+  style="background-color: #4c3eb6; color: white; border-radius: 20px;"
+  onclick="handleContact(event, {{ p.user.id }}, {{ p.id }}, '{{ p.user.phone }}')"
+>
+  <i class="fa-solid fa-phone" style="color:white;"></i>
+  <p style="color:white;font-size:12px;">Contact</p>
+</button>
+        </div>
+
+        <!-- SHARE + SAVE -->
+        <div class="actions-right">
+
+          <button class="icon-btn1" style="background-color: #d6d6d6; margin-top: -5px;">
+            <i class="bi bi-share-fill" style="color: blueviolet; font-size: 20px;"
+               onclick="shareProfile({{ p.id }})"></i>
+          </button>
+
+          <button class="icon-btn1"style="background-color: #d6d6d6; margin-top: -5px;"
+            {% if user.is_authenticated %}
+              onclick="toggleSave(event, {{ p.id }}, this)"
+            {% else %}
+              onclick="redirectToLogin()"
+            {% endif %}
+          >
+            <i class="bi bi-bookmark" style="color: blueviolet; font-size: 20px;"></i>
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ================== REELS SECTION (HIDDEN INITIALLY) ================== -->
+<div id="reelsSection" style="display: none">
+  <div class="reels-grid">
+    {% for r in reels %}
+    <div class="reel-box">
+      
+      <video
+        src="/media/{{ r.reel }}"
+        class="reel-video"
+        muted
+        playsinline
+        data-id="{{ r.id }}"
+        data-url="/media/{{ r.reel }}"
+        data-views="{{ r.view_count|default:0 }}"
+        data-likes="{{ r.likeCount|default:0 }}"
+        data-comments="{{ r.comment_set.count }}"
+      ></video>
+
+      <!-- ✅ VIEW COUNT (BOTTOM LEFT) -->
+      <div class="reel-views">
+        <i class="bi bi-eye"></i> {{ r.view_count|default:0 }}
+      </div>
+
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ================== REEL POPUP MODAL ================== -->
+<div id="reelModal" style="
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  justify-content:center;
+  align-items:center;
+  z-index:999999;
+">
+  <div style="
+    position:relative;
+    width:90%;
+    max-width:600px;
+    background:#000;
+    border-radius:12px;
+    padding:10px;
+  ">
+    
+    <button class="reel-close-btn" onclick="closeReel()">
+      &times;
+    </button>
+
+    <video id="popupVideo" controls autoplay 
+      style="width:100%; border-radius:12px;"></video>
+
+    <div style="
+      display:flex;
+      gap:20px;
+      color:white;
+      margin-top:8px;
+      font-size:14px;
+    ">
+      <span id="viewCount"><i class="bi bi-eye"></i> 0</span>
+      <span id="likeCount"><i class="bi bi-hand-thumbs-up"></i> 0</span>
+      <span id="commentCount"><i class="bi bi-chat-dots"></i> 0</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================== JS ================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  document.querySelectorAll(".reel-video").forEach(video => {
+
+    video.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      const id = this.dataset.id;
+      const url = this.dataset.url;
+      const views = Number(this.dataset.views) || 0;
+      const likes = Number(this.dataset.likes) || 0;
+      const comments = Number(this.dataset.comments) || 0;
+
+      openReel(id, url, views, likes, comments);
+    });
+
+  });
+
+});
+
+/* FORMAT NUMBERS */
+function formatNumber(num){
+  num = Number(num);
+  if(isNaN(num)) num = 0;
+
+  if(num >= 1000000) return (num/1000000).toFixed(1) + 'M';
+  if(num >= 1000) return (num/1000).toFixed(1) + 'K';
+  return num;
+}
+
+/* OPEN POPUP */
+function openReel(id, url, views, likes, comments) {
+
+  const video = document.getElementById("popupVideo");
+
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+
+  video.src = url;
+  video.currentTime = 0;
+  video.play();
+
+  document.getElementById("viewCount").innerHTML =
+    `<i class="bi bi-eye"></i> ${formatNumber(views)}`;
+
+  document.getElementById("likeCount").innerHTML =
+    `<i class="bi bi-hand-thumbs-up"></i> ${formatNumber(likes)}`;
+
+  document.getElementById("commentCount").innerHTML =
+    `<i class="bi bi-chat-dots"></i> ${formatNumber(comments)}`;
+
+  document.getElementById("reelModal").style.display = "flex";
+}
+
+/* CLOSE POPUP */
+function closeReel() {
+  const video = document.getElementById("popupVideo");
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  document.getElementById("reelModal").style.display = "none";
+}
+
+/* CLICK OUTSIDE */
+document.getElementById("reelModal").addEventListener("click", function(e) {
+  if (e.target === this) {
+    closeReel();
+  }
+});
+
+/* ESC KEY */
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    closeReel();
+  }
+});
+</script>
+
+<!-- ================== CSS ================== -->
+<style>
+.reels-grid {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 10px;
+}
+
+.reel-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #000;
+}
+
+.reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.reel-video:hover {
+  opacity: 0.8;
+}
+
+/* ✅ VIEW COUNT STYLE */
+.reel-views {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 12px;
+  color: #fff;
+
+  background: rgba(0,0,0,0.6);
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+/* CLOSE BUTTON */
+.reel-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100000;
+}
+
+.reel-close-btn:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .reels-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reels-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+  }
+}
+</style>
+</div>
+<style>
+  /* ================= USER PROFILE PAGE ONLY ================= */
+.user-profile-page {
+  font-family: "Poppins", sans-serif;
+  background: #f5f6fa;
+}
+
+</style>
+
+
+{% include 'footer.html' %}
+
+
+<!-- ================== TAB SCRIPT ================== -->
+<script>
+  const tabSale = document.getElementById("tabSale");
+  const tabRent = document.getElementById("tabRent");
+  const tabReels = document.getElementById("tabReels");
+  
+  const saleSection = document.getElementById("saleSection");
+  const rentSection = document.getElementById("rentSection");
+  const reelsSection = document.getElementById("reelsSection");
+
+  function hideAll() {
+    saleSection.style.display = "none";
+    rentSection.style.display = "none";
+    reelsSection.style.display = "none";
+    
+    tabSale.classList.remove("active");
+    tabRent.classList.remove("active");
+    tabReels.classList.remove("active");
+  }
+
+  tabSale.onclick = function () {
+    hideAll();
+    saleSection.style.display = "block";
+    tabSale.classList.add("active");
+  };
+
+  tabRent.onclick = function () {
+    hideAll();
+    rentSection.style.display = "block";
+    tabRent.classList.add("active");
+  };
+
+  tabReels.onclick = function () {
+    hideAll();
+    reelsSection.style.display = "block";
+    tabReels.classList.add("active");
+  };
+
+  // ✅ Ensure Properties is open on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    tabSale.click();
+  });
+</script>
+
+<!-- ================== REEL CLICK ================== -->
+ 
+
+    <script>
+      function shareProfile() {
+        if (navigator.share) {
+          navigator.share({
+            title: "User Profile",
+            text: "Check out this profile",
+            url: window.location.href,
+          });
+        } else {
+          navigator.clipboard.writeText(window.location.href);
+          alert("Profile link copied!");
+        }
+      }
+    </script>
+    <script>
+      
+      function toggleSave(event, id, btn) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        fetch(`/save/${id}/`, { method: "GET" })
+          .then((res) => res.json())
+          .then((data) => {
+            const icon = btn.querySelector("i");
+
+            if (data.status === "saved") {
+              btn.classList.add("saved");
+              icon.classList.replace("bi-bookmark", "bi-bookmark-fill");
+            } else {
+              btn.classList.remove("saved");
+              icon.classList.replace("bi-bookmark-fill", "bi-bookmark");
+            }
+          });
+      }
+    </script>
+    
+    <script>
+      function goToProperty(event, propertyId) {
+        // ❌ Ignore clicks on buttons / actions
+        if (
+          event.target.closest("button") ||
+          event.target.closest(".share-wrapper") ||
+          event.target.closest(".share-box") ||
+          event.target.closest(".save-btn") ||
+          event.target.closest(".contact-btn-main") ||
+          event.target.closest(".chat-inline-btn") ||
+          event.target.closest("a")
+        ) {
+          return;
+        }
+
+        // 🔐 Not logged in → login
+
+        // ✅ Logged in → property detail
+        window.location.href = `/property/${propertyId}`;
+      }
+    </script>
+    <script>
+    if (
+  event.target.closest("button") ||
+  event.target.closest(".share-wrapper") ||
+  event.target.closest(".save-btn") ||
+  event.target.closest(".contact-btn-main") ||
+  event.target.closest("a")
+) {
+  return;
+}
+</script>
+<script>
+function handleContact(event, userId, propertyId, phone) {
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (!phone) {
+    alert("Phone number not available");
+    return;
+  }
+
+  // 🔥 Open dialer (mobile) / call prompt
+  window.location.href = `tel:${phone}`;
+}
+</script>
+
+
+  </body>
+</html>

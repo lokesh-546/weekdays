@@ -1,0 +1,684 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+
+    <title>Company Register</title>
+
+    <style>
+      body {
+        background: #eef1f6;
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+
+      /* MAIN CARD */
+      .container {
+        max-width: 500px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 25px 30px;
+        border-radius: 14px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      /* Title */
+      .title {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 15px;
+      }
+
+      /* Wallpaper */
+      .wallpaper-center {
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .wallpaper-preview {
+        width: 100%;
+        height: 160px;
+        border-radius: 12px;
+        background-size: cover;
+        background-position: center;
+        border: 1px solid #ddd;
+      }
+      .upload-btn-wall {
+        margin-top: 10px;
+        display: inline-block;
+        background: #2563eb;
+        padding: 7px 16px;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      #id_company_wallpaper_path {
+        display: none;
+      }
+
+      /* Logo */
+      .logo-center {
+        text-align: center;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+      }
+      .logo-preview {
+        width: 95px;
+        height: 95px;
+        border-radius: 50%;
+        background: #eee;
+        border: 4px solid white;
+        background-size: cover;
+        background-position: center;
+        display: inline-block;
+        cursor: pointer;
+        margin-bottom: 10px;
+      }
+      .upload-btn-logo {
+        display: inline-block;
+        background: #2563eb;
+        padding: 6px 16px;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+      }
+      #id_company_logo_path {
+        display: none;
+      }
+
+      /* Inputs */
+      input,
+      textarea,
+      select {
+        width: 95%;
+        padding: 12px;
+        margin-bottom: 14px;
+        border-radius: 10px;
+        border: 1px solid #dcdcdc;
+        background: #fafafa;
+        font-size: 14px;
+      }
+      input:focus,
+      textarea:focus,
+      select:focus {
+        background: #fff;
+        border-color: #2669ff;
+      }
+
+      /* PLAN BUTTONS */
+      .plan-box {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        gap: 10px;
+      }
+      .plan-btn {
+        width: 48%;
+        padding: 12px 0;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .blue-plan {
+        background: #2669ff;
+      }
+      .red-plan {
+        background: #d62828;
+      }
+
+      .selected-plan {
+        outline: 3px solid #000;
+      }
+
+      /* Amount Box */
+      .amount-box {
+        background: #f3f4f6;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 18px;
+        font-weight: 600;
+      }
+
+      /* Submit */
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: #2669ff;
+        color: white;
+        border-radius: 10px;
+        border: none;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .error-text {
+        color: #d62828;
+        font-size: 13px;
+        margin-top: -10px;
+        margin-bottom: 10px;
+      }
+      .plan-features {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+  text-align: left;
+}
+
+.plan-features li {
+  margin: 5px;
+  font-size: small;
+}
+
+.more-content {
+  display: none;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+      .plan-btn h4{
+margin: 0%;
+      }
+      /* =========================
+   MOBILE VERSION – PLAN BOX
+   ========================= */
+
+@media (max-width: 768px) {
+
+  .plan-box {
+    flex-direction: column;
+    gap: 15px;
+    margin-right: 25px;
+        padding: 30px;
+  }
+
+  .plan-btn {
+    width: 100%;
+    padding: 18px 15px;
+    font-size: 15px;
+    border-radius: 14px;
+    text-align: left;
+  }
+
+  .plan-btn h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+
+  .plan-features {
+    margin-top: 10px;
+  }
+
+  .plan-features li {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .read-more {
+    font-size: 14px;
+    color: #000;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+
+  .selected-plan {
+    outline: none;
+    box-shadow: 0 0 0 3px #000;
+  }
+
+}
+/* Dropdown container */
+.dropdown-checkbox {
+  position: relative;
+  max-width: 300px;
+  margin-bottom: 15px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Dropdown button */
+.dropdown-btn {
+  width: 168%;
+  padding: 12px 16px;
+  font-size: 16px;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.3s ease;
+}
+
+.dropdown-btn:focus {
+  outline: none;
+  border-color: #2669ff;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 158%;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 10px 12px;
+}
+
+/* Checkbox list styling */
+.company-category-checkbox {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.company-category-checkbox li {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.company-category-checkbox label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  width: auto !important;
+  margin-right: 8px;
+  cursor: pointer;
+}
+.dropdown-btn p{
+  text-align: right;
+  margin-left: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+/* Scrollbar styling (optional) */
+.dropdown-content::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-content::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+  .dropdown-checkbox {
+    max-width: 100%;
+  }
+
+  .dropdown-btn {
+    font-size: 14px;
+    padding: 10px 14px;
+    width: 100%;
+  }
+  .dropdown-content{
+    width: 90%;
+  }
+
+  .company-category-checkbox li {
+    font-size: 14px;
+  }
+ 
+}
+
+.silver-plan {
+  background: linear-gradient(135deg, #b8b8b8, #8f8f8f);
+  color: #111111;   
+    font-weight: 400;
+  font-size: 14px;
+}
+
+.gold-plan {
+  background: linear-gradient(145deg, #d4af37, #a67c00);
+  color: #ffffff; 
+    font-weight: 400;
+  font-size: 14px;
+}
+
+.platinum-plan {
+  background: linear-gradient(145deg, #e5e4e2, #bfbfbf);
+  color: #1a1a1a; 
+    font-weight: 400;
+  font-size: 14px; 
+}
+
+.plan-btn h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+        <div style="display: flex; flex-direction: column;align-items: center;"><img src="{% static 'images/logo.jpg' %}"  width="100px"/>
+      <h2 class="title">Company Register</h2>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {% if form.non_field_errors %}
+        <div
+          style="
+            background: #ffe6e6;
+            color: #b30000;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+          "
+        >
+          {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+
+        <!-- Wallpaper -->
+        <div class="wallpaper-center">
+          <div
+            class="wallpaper-preview"
+            id="wallPrev"
+            style="
+              background-image: url('https://cdn-icons-png.flaticon.com/512/847/847969.png');
+            "
+          ></div>
+
+          <label class="upload-btn-wall" for="id_company_wallpaper_path"
+            >Upload Wallpaper</label
+          >
+          {{ form.company_wallpaper_path }}
+        </div>
+        <div class="error-text">{{ form.company_wallpaper_path.errors }}</div>
+
+        <!-- Logo -->
+        <div class="logo-center">
+          <label class="upload-btn-logo" for="id_company_logo_path">Upload Logo</label>
+
+          <div
+            class="logo-preview"
+            id="logoPrev"
+            style="
+              background-image: url('https://cdn-icons-png.flaticon.com/512/847/847969.png');
+            "
+          ></div>
+
+          {{ form.company_logo_path }}
+        </div>
+        <div class="error-text">{{ form.company_logo_path.errors }}</div>
+
+        <!-- Fields -->
+        <label>Username</label>
+        {{ form.username }}
+        <div class="error-text">{{ form.username.errors }}</div>
+
+        <label>Email</label>
+        {{ form.email }}
+        <div class="error-text">{{ form.email.errors }}</div>
+
+        <label>Password</label>
+        {{ form.password1 }}
+        <div class="error-text">{{ form.password1.errors }}</div>
+
+        <label>Confirm Password</label>
+        {{ form.password2 }}
+        <div class="error-text">{{ form.password2.errors }}</div>
+
+        <label>Company Name</label>
+        {{ form.company_name }}
+        <div class="error-text">{{ form.company_name.errors }}</div>
+
+        <label>Description</label>
+        {{ form.description }}
+        <div class="error-text">{{ form.description.errors }}</div>
+
+        <label>Established Year</label>
+        {{ form.experience }}
+        <div class="error-text">{{ form.experience.errors }}</div>
+
+        <label>Total Projects</label>
+        {{ form.total_projects }}
+        <div class="error-text">{{ form.total_projects.errors }}</div>
+
+        <label>Ongoing Projects</label>
+        {{ form.ongoing_projects }}
+        <div class="error-text">{{ form.ongoing_projects.errors }}</div>
+
+        <label>Completed Projects</label>
+        {{ form.completed_projects }}
+        <div class="error-text">{{ form.completed_projects.errors }}</div>
+
+        <label>Address</label>
+        {{ form.address }}
+        <div class="error-text">{{ form.address.errors }}</div>
+        <label>Location</label>
+        {{form.location}}
+        <div class="error-text">{{form.location.errors}}</div>
+        <label>Contact Number</label>
+        {{ form.phone }}
+        <div class="error-text">{{ form.phone.errors }}</div>
+<label>Category</label>
+
+<div class="dropdown-checkbox">
+  <button type="button" class="dropdown-btn" onclick="toggleDropdown()">
+   <p> Select Category ▼</p>
+  </button>
+
+  <div id="checkboxDropdown" class="dropdown-content">
+    <ul class="company-category-checkbox">
+      {% for value, label in form.category.field.choices %}
+      <li>
+        <label>
+          <input type="checkbox" name="category" value="{{ value }}"
+            {% if value in form.category.value %}checked{% endif %}>
+          {{ label }}
+        </label>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="error-text">{{ form.category.errors }}</div>
+        <!-- Plan -->
+        <label>Choose Plan</label>
+ 
+<div class="plan-box">
+
+  <!-- SILVER -->
+  <div class="plan-btn silver-plan" onclick="selectPlan('NORMAL', 14999, this)">
+    <h4>Silver</h4>
+    <hr>
+
+    <ul class="plan-features">
+      <li>3 Project listings</li>
+      <li>5 Reels posting</li>
+      <li>Direct leads</li>
+
+      <div class="more-content">
+        <li>Easy customer reach</li>
+      </div>
+    </ul>
+
+    <span style="margin-top: 40px; color: #111111;" class="read-more" onclick="toggleFeatures(event, this)">Read More</span>
+  </div>
+
+  <!-- GOLD -->
+  <div class="plan-btn gold-plan" onclick="selectPlan('PRO', 19999, this)">
+    <h4>Gold</h4>
+    <hr>
+
+    <ul class="plan-features">
+      <li>5 Project listings</li>
+      <li>10 Reels postings</li>
+      <li>Company profile promotion</li>
+
+      <div class="more-content">
+        <li>Direct leads</li>
+        <li>Easy customer reach</li>
+        <li>Can approach CP's directly</li>
+      </div>
+    </ul>
+
+    <span style="margin-top: 25px;color: #ffffff; " class="read-more" onclick="toggleFeatures(event, this)">Read More</span>
+  </div>
+
+  <!-- PLATINUM -->
+  <div class="plan-btn platinum-plan" onclick="selectPlan('PREMIUM', 24999, this)">
+    <h4>Platinum</h4>
+    <hr>
+
+    <ul class="plan-features">
+      <li>Unlimited project listings</li>
+      <li>Unlimited reels postings</li>
+      <li>Company profile promotion & branding on top</li>
+
+      <div class="more-content">
+        <li>More direct leads</li>
+        <li>Extremely customer reach</li>
+        <li>Hire CP's easy and direct</li>
+      </div>
+    </ul>
+
+    <span style="color: #1a1a1a;" class="read-more" onclick="toggleFeatures(event, this)">Read More</span>
+  </div>
+
+</div>
+        {{ form.plan }}
+        <div class="error-text">{{ form.plan.errors }}</div> <br>
+
+        <!-- Duration -->
+        <label>Duration (Months)</label>
+        <select
+          id="durationSelect"
+          name="duration"
+          onchange="updateAmount()"
+          required
+        >
+          <option value="1">1 Month</option>
+          <option value="3">3 Months</option>
+          <option value="6">6 Months</option>
+        </select>
+
+        <!-- Amount -->
+        <div class="amount-box">
+          Total Amount: ₹ <span id="finalAmount">0</span>
+        </div>
+
+     
+          <div>
+           
+            <span
+              ><a href="{% url 'prop:terms' %}" style="color: blue;text-decoration: none;"
+                >By registering you will Agree Our Terms And Conditions</a
+              ></span
+            >
+          </div>
+          <br>
+
+        <button class="submit-btn">Register</button>
+      </form>
+    </div>
+
+    <script>
+      let selectedPlanAmount = 0;
+
+      document
+        .getElementById("id_company_wallpaper_path")
+        .addEventListener("change", (e) => {
+          document.getElementById(
+            "wallPrev"
+          ).style.backgroundImage = `url(${URL.createObjectURL(
+            e.target.files[0]
+          )})`;
+        });
+
+      document.getElementById("id_company_logo_path").addEventListener("change", (e) => {
+        document.getElementById(
+          "logoPrev"
+        ).style.backgroundImage = `url(${URL.createObjectURL(
+          e.target.files[0]
+        )})`;
+      });
+
+      function selectPlan(planType, amount, elem) {
+        document.getElementById("id_plan").value = planType; // Store plan type
+        selectedPlanAmount = amount;
+
+        document
+          .querySelectorAll(".plan-btn")
+          .forEach((btn) => btn.classList.remove("selected-plan"));
+
+        elem.classList.add("selected-plan");
+
+        updateAmount();
+      }
+
+      function updateAmount() {
+        let months = document.getElementById("durationSelect").value;
+        document.getElementById("finalAmount").innerText =
+          selectedPlanAmount * months;
+      }
+// read more button
+  function toggleFeatures(event, element) {
+  event.stopPropagation(); // prevent selecting plan
+
+  let moreContent = element.parentElement.querySelector(".more-content");
+
+  if (moreContent.style.display === "block") {
+    moreContent.style.display = "none";
+    element.innerText = "Read More";
+  } else {
+    moreContent.style.display = "block";
+    element.innerText = "Read Less";
+  }
+}
+
+function toggleDropdown() {
+  const dropdown = document.getElementById('checkboxDropdown');
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+// Close dropdown if clicked outside of it or button
+document.addEventListener('click', function(event) {
+  const dropdown = document.getElementById('checkboxDropdown');
+  const btn = document.querySelector('.dropdown-btn');
+  if (!btn.contains(event.target) && !dropdown.contains(event.target)) {
+    dropdown.style.display = 'none';
+  }
+});
+    </script>
+  </body>
+</html>

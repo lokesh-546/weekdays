@@ -1,0 +1,745 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Reels</title>
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<style>
+/* ---------- Basic ---------- */
+:root{
+  --max-card-width:450px;
+  --bg:#000;
+  --muted: rgba(255,255,255,0.85);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:var(--bg);
+  color: #fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* ---------- Reels scroll container ---------- */
+.reels-container{
+  height:100vh;
+  height:100dvh;
+  width:100%;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+}
+
+.reel-item{
+  height:100vh;
+  height:100dvh;
+  width:100%;
+  position:relative;
+  scroll-snap-align:start;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+}
+
+.reel-card{
+  width:100%;
+  max-width:var(--max-card-width);
+  height:100vh;
+  height:100dvh;
+  position:relative;
+  background:#000;
+}
+
+.reel-video{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#000;
+}
+
+
+/* ---------- Right vertical actions ---------- */
+.reel-actions{
+  position:absolute;
+  right:14px;
+  bottom:130px;       /* FIXED - Like Instagram */
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  align-items:center;
+  z-index:40;
+}
+
+.action-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.action-icon{
+  font-size:20px;
+  color:#fff;
+ margin-bottom: -10px;
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+ 
+  transition: all 0.2s ease;
+}
+
+.action-icon:hover{
+  transform: scale(1.1);
+}
+
+.action-icon.liked{
+  color:#ff2e55 !important;
+ 
+}
+.action-count{
+  margin-top:6px;
+  font-size:12px;
+  color:#fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+
+/* ---------- Bottom-left user info & description ---------- */
+.reel-info{
+  position:absolute;
+  left:14px;
+  bottom:96px;
+  z-index:35;
+  width:66%;
+  color:var(--muted);
+}
+
+.reel-user{ display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+
+.reel-user img{
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 0 6px rgba(0,0,0,0.6);
+}
+
+.reel-username{
+  font-weight:600;
+  font-size:15px;
+  color:#fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+.reel-description{
+  font-size:13px;
+  line-height:18px;
+  color: rgba(255,255,255,0.95);
+  margin-top:4px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+}
+/* ---------- Sound flash icon ---------- */
+.sound-icon{
+  position:absolute;
+ 
+  bottom:50%;
+  right: 45%;
+  font-size:34px;
+  color:#fff;
+  opacity:0;
+  transition:opacity .25s ease;
+  z-index:50;
+}
+.sound-icon.show{ opacity:1; }
+
+/* ---------- Overlay for modals/drawers ---------- */
+.overlay-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  z-index:1000;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .25s ease, visibility .25s ease;
+}
+.overlay-bg.active{ opacity:1; visibility:visible; }
+
+/* ---------- Comment drawer (bottom sliding) ---------- */
+.comment-drawer{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%) translateY(110%);
+  bottom:0;
+  width:100%;
+  max-width:var(--max-card-width);
+  height:62vh;               /* Instagram-like half to two-thirds */
+  background:#0f0f10;
+  border-radius:16px 16px 0 0;
+  z-index:1100;
+  box-shadow:0 -8px 30px rgba(0,0,0,0.6);
+  transition:transform .28s cubic-bezier(.2,.9,.2,1);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.comment-drawer.active{
+  transform:translateX(-50%) translateY(0%);
+}
+
+/* Drawer header */
+.drawer-header{
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.drawer-title{ font-weight:700; color:#fff; font-size:16px; }
+.drawer-count{ color:var(--muted); font-size:13px; }
+
+/* Comments scroll area */
+.comment-list{
+  padding:12px 14px;
+  overflow-y:auto;
+  flex:1 1 auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* single comment */
+.comment-item{
+  margin-bottom:12px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+.comment-item .meta{ font-weight:700; color:#fff; margin-right:6px; font-size:13px; }
+.comment-item .text{ font-size:13px; color:var(--muted); line-height:1.2; }
+
+/* sticky input area */
+.comment-input {
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding:10px 12px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
+}
+.comment-input input{
+  flex:1;
+  padding:10px 12px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.02);
+  color:#fff;
+  font-size:14px;
+}
+.comment-input button{
+  background:transparent;
+  border:none;
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* ---------- Share bottom sheet ---------- */
+.share-sheet{
+  position:fixed;
+  left:50%;
+  transform:translateX(-50%) translateY(110%);
+  bottom:0;
+  width:100%;
+  max-width:var(--max-card-width);
+  background:#0f0f10;
+  border-radius:16px 16px 0 0;
+  padding:12px;
+  z-index:1200;
+  transition:transform .28s cubic-bezier(.2,.9,.2,1);
+  box-shadow:0 -8px 30px rgba(0,0,0,0.6);
+}
+.share-sheet.active{ transform:translateX(-50%) translateY(0%); }
+.share-row{ display:flex; gap:12px; align-items:center; padding:8px 6px; }
+.share-item{
+  background:rgba(255,255,255,0.02);
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  min-width:64px;
+}
+.share-label{ font-size:13px; margin-top:6px; color:var(--muted); }
+
+/* ---------- small screens ---------- */
+@media (max-width:520px){
+  .reel-info{ width:62%; bottom:86px; left:12px; }
+  .action-icon{ font-size:20px; }
+  .reel-user img{ width:36px; height:36px; }
+  .comment-drawer{ height:38vh; }
+  .sound-icon{bottom:50%; right: 45%;}
+}
+
+/* reduce overscroll bounce on iOS */
+.reel-card, .reels-container { -webkit-overflow-scrolling: touch; }
+</style>
+</head>
+<body>
+ 
+<style>
+    .footer-nav{
+        color: black;
+    }
+    .reel-link a{
+  color:#4da6ff;
+  font-size:13px;
+  text-decoration:none;
+}
+
+.reel-link a:hover{
+  text-decoration:underline;
+}
+.video-gradient{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:55%;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,0.9) 0%,
+    rgba(0,0,0,0.6) 0%,
+    rgba(0,0,0,0.3) 70%,
+    transparent 100%
+  );
+  z-index:2;
+  pointer-events:none;
+}
+.reel-video{ z-index:1; position:relative; }
+.video-gradient{ z-index:2; }
+.reel-info{ z-index:10; }
+.reel-actions{ z-index:15; }
+</style>
+
+<!-- overlay for both comment drawer and share sheet -->
+<div id="overlay" class="overlay-bg" onclick="closeActiveSheets()"></div>
+
+<div class="reels-container">
+    {%if data%}
+  {% for i in data %}
+  <div class="reel-item" data-reel-id="{{ i.id }}">
+    <div class="reel-card">
+
+      <!-- video element (uses uploaded video url) -->
+    <video class="reel-video" src="{{ i.reel.url }}" playsinline loop autoplay onclick="toggleUserSound(this)"></video>
+
+
+
+      <!-- small temporary sound icon -->
+      <div class="sound-icon"><i class="fa-solid fa-volume-xmark"></i></div>
+
+      <!-- bottom-left info -->
+     <div class="reel-info">
+<div class="reel-user">
+<a href="{% url 'prop:user_detail' i.user.id %}" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
+        {% if i.user.role|lower == "company" %}
+          {% if i.user.company_logo_path %}
+              <img src="{{ i.user.company_logo_path.url }}" alt="Company Logo">
+          {% endif %}
+      {% else %}
+          {% if i.user.profile_image_path and i.user.profile_image_path.url != '/media/images/Default_profile_picture.jpeg' %}
+              <img src="{{ i.user.profile_image_path.url }}" alt="Profile">
+          {% endif %}
+      {% endif %}
+      <span class="reel-username">{{ i.user.username }}</span>
+  </a>
+</div>
+
+    <div class="reel-description">{{ i.description }}</div>
+   {% if i.link %}
+<div class="reel-link">
+    <a href="{{ i.link }}" target="_blank" style="color:#4da6ff; text-decoration:none; font-size:13px;">
+        {{ i.link }}
+    </a>
+</div>
+{% endif %}
+</div>
+
+      <!-- right side actions -->
+      <div class="reel-actions">
+        <div class="action-item" onclick="toggleLike(this, {{ i.id }})">
+          <i class="fa-solid fa-heart action-icon {% if i.id in request.session.liked_reels %}liked{% endif %}"></i>
+          <div class="action-count">{{ i.likeCount }}</div>
+        </div>
+
+        <div class="action-item" onclick="openCommentDrawer({{ i.id }})">
+          <i class="fa-regular fa-comment action-icon"></i>
+          <div class="action-count">Comment</div>
+        </div>
+
+        <div class="action-item" onclick="openShareSheet({{ i.id }}, '{{ i.reel.url }}')">
+          <i class="fa-solid fa-paper-plane action-icon"></i>
+          <div class="action-count">Share</div>
+        </div>
+      </div>
+
+      <!-- COMMENT DRAWER (per reel) -->
+      <div id="commentDrawer_{{ i.id }}" class="comment-drawer" aria-hidden="true">
+        <div class="drawer-header">
+          <div>
+            <div class="drawer-title">Comments</div>
+            <div class="drawer-count" id="drawerCount_{{ i.id }}">0</div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button aria-label="close" onclick="closeCommentDrawer({{ i.id }})" 
+              style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="commentList_{{ i.id }}" class="comment-list">
+          <!-- comments will be injected here -->
+        </div>
+
+        <div class="comment-input">
+          <input id="commentInput_{{ i.id }}" type="text" placeholder="Add a comment..." 
+                 onkeypress="handleCommentKeypress(event, {{ i.id }})">
+          <button onclick="sendComment({{ i.id }})" title="Send">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+
+     <div class="video-gradient"></div>
+    </div>
+  </div>
+  {% endfor %}
+  {%else%}
+  
+  <span> <p style="color: white;margin-top: 250px;text-align: center;">No Reels Found</p></span>
+  {%endif%}
+</div>
+
+<!-- single share sheet element (reused for all reels) -->
+<div id="shareSheet" class="share-sheet" aria-hidden="true">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div style="font-weight:700;color:#fff">Share</div>
+    <button onclick="closeShareSheet()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px">
+    <!-- top row share shortcuts -->
+    <div class="share-item" onclick="shareToWhatsApp()">
+      <div style="font-size:20px">🟢</div>
+      <div class="share-label">WhatsApp</div>
+    </div>
+    <div class="share-item" onclick="shareToFacebook()">
+      <div style="font-size:20px">🔵</div>
+      <div class="share-label">Facebook</div>
+    </div>
+    <div class="share-item" onclick="copyReelLink()">
+      <div style="font-size:20px">🔗</div>
+      <div class="share-label">Copy link</div>
+    </div>
+  </div>
+
+  <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.03); padding-top:10px; font-size:13px; color:var(--muted)">
+    You can share this reel with others.
+  </div>
+</div>
+
+<script>
+/* ---------- Utilities ---------- */
+const overlay = document.getElementById('overlay');
+let activeCommentDrawerId = null;
+let currentReelLink = '';
+
+function closeActiveSheets(){
+  // close comment drawer or share sheet
+  if(activeCommentDrawerId !== null){
+    closeCommentDrawer(activeCommentDrawerId);
+    return;
+  }
+  closeShareSheet();
+}
+
+/* ---------- Like ---------- */
+function toggleLike(el, id){
+  try{
+    const icon = el.querySelector('i');
+    const countEl = el.querySelector('.action-count');
+    let v = parseInt(countEl.innerText.replace(/[^0-9]/g,'')) || 0;
+    icon.classList.toggle('liked');
+    countEl.innerText = icon.classList.contains('liked') ? v + 1 : Math.max(0, v - 1);
+    fetch(`/likeReel/${id}`, { method: 'GET' }).catch(()=>{ /* ignore */});
+  } catch(e){ console.warn(e) }
+}
+
+/* ---------- Comment drawer functions (bottom sheet) ---------- */
+function openCommentDrawer(id){
+  // close any share sheet
+  closeShareSheet();
+
+  const drawer = document.getElementById(`commentDrawer_${id}`);
+  if(!drawer) return;
+  drawer.classList.add('active');
+  drawer.setAttribute('aria-hidden','false');
+  overlay.classList.add('active');
+  activeCommentDrawerId = id;
+
+  // wait a tick then focus input
+  setTimeout(()=> {
+    const input = document.getElementById(`commentInput_${id}`);
+    if(input) input.focus();
+  }, 220);
+
+  loadComments(id);
+}
+
+function closeCommentDrawer(id){
+  const drawer = document.getElementById(`commentDrawer_${id}`);
+  if(!drawer) return;
+  drawer.classList.remove('active');
+  drawer.setAttribute('aria-hidden','true');
+  overlay.classList.remove('active');
+  activeCommentDrawerId = null;
+}
+
+function loadComments(id){
+  const list = document.getElementById(`commentList_${id}`);
+  const countEl = document.getElementById(`drawerCount_${id}`);
+  if(!list) return;
+  list.innerHTML = `<div style="padding:12px;color:var(--muted);">Loading comments…</div>`;
+  fetch(`/getAllComments/${id}`)
+    .then(r=>r.json())
+    .then(d=>{
+      list.innerHTML = '';
+      if(!d.comments || d.comments.length===0){
+        list.innerHTML = `<div style="padding:12px;color:var(--muted)">No comments yet. Be the first!</div>`;
+        if(countEl) countEl.innerText = '0';
+        return;
+      }
+      d.comments.forEach(c=>{
+        const node = document.createElement('div');
+        node.className = 'comment-item';
+        node.innerHTML = `<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);flex:0 0 36px"></div>
+                          <div>
+                            <div class="meta">${escapeHtml(c.user__username)}</div>
+                            <div class="text">${escapeHtml(c.comment)}</div>
+                          </div>`;
+        list.appendChild(node);
+      });
+      if(countEl) countEl.innerText = d.comments.length;
+      // scroll to bottom
+      list.scrollTop = list.scrollHeight;
+    })
+    .catch(e=>{
+      list.innerHTML = `<div style="padding:12px;color:#e88">Failed to load comments</div>`;
+      console.error(e);
+    });
+}
+
+function sendComment(id){
+  const input = document.getElementById(`commentInput_${id}`);
+  if(!input) return;
+  const val = input.value.trim();
+  if(!val) return;
+  // call endpoint and reload
+  fetch(`/comment/${id}/${encodeURIComponent(val)}`, { method: 'GET' })
+    .then(()=> {
+      input.value = '';
+      loadComments(id);
+    })
+    .catch(e=>{
+      console.error(e);
+      loadComments(id);
+    });
+}
+
+function handleCommentKeypress(ev, id){
+  if(ev.key === 'Enter') {
+    ev.preventDefault();
+    sendComment(id);
+  }
+}
+
+/* ---------- Share sheet ---------- */
+const shareSheet = document.getElementById("shareSheet");
+
+      function openShareSheet(id, reelUrl) {
+        // close any comment drawer
+        if (activeCommentDrawerId !== null) {
+          closeCommentDrawer(activeCommentDrawerId);
+        }
+        // store current link
+        currentReelLink = window.location.origin + "/getReel?reel=" + id;
+        shareSheet.classList.add("active");
+        overlay.classList.add("active");
+      }
+
+      function closeShareSheet() {
+        shareSheet.classList.remove("active");
+        overlay.classList.remove("active");
+      }
+
+      /* share actions */
+      function shareToWhatsApp() {
+        if (!currentReelLink && activeCommentDrawerId) {
+          currentReelLink =
+            window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
+        }
+        if (!currentReelLink) return;
+
+        window.open(
+          `https://api.whatsapp.com/send?text=${encodeURIComponent(
+            currentReelLink
+          )}`,
+          "_blank"
+        );
+      }
+
+      function shareToFacebook() {
+        if (!currentReelLink && activeCommentDrawerId) {
+          currentReelLink =
+            window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
+        }
+        if (!currentReelLink) return;
+
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            currentReelLink
+          )}`,
+          "_blank"
+        );
+      }
+
+      function copyReelLink() {
+        if (!currentReelLink) {
+          // build correct link if not present
+          if (activeCommentDrawerId) {
+            currentReelLink =
+              window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
+          } else return;
+        }
+
+        navigator.clipboard
+          .writeText(currentReelLink)
+          .then(() => {
+            alert("Link copied to clipboard");
+            closeShareSheet();
+          })
+          .catch(() => alert("Copy failed"));
+      }
+
+/* ---------- Video autoplay/visibility handling ---------- */
+const videos = document.querySelectorAll('.reel-video');
+let viewedReels = new Set();   // 🔥 prevents multiple counts
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const v = entry.target;
+
+    try {
+      if(entry.isIntersecting){
+
+        v.play().catch(()=>{});
+
+        // 🔥 GET REEL ID
+        const reelId = v.closest(".reel-item").dataset.reelId;
+
+        // 🔥 ONLY COUNT ONCE
+        if(!viewedReels.has(reelId)){
+            viewedReels.add(reelId);
+
+            fetch(`/reel/view/${reelId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCSRFToken(),
+                    "X-Requested-With": "XMLHttpRequest"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("View counted:", reelId);
+            })
+            .catch(err => console.error(err));
+        }
+
+      } else {
+        v.pause();
+      }
+    } catch(e) {}
+  });
+}, { threshold: 0.6 });
+
+videos.forEach(v => observer.observe(v));
+function getCSRFToken() {
+    return document.cookie
+        .split('; ')
+        .find(row => row.startsWith('csrftoken='))
+        ?.split('=')[1];
+}
+/* sound toggle */
+function toggleUserSound(video){
+    if(!video) return;
+
+    const iconBox = video.parentElement.querySelector('.sound-icon i');
+    
+    // toggle mute
+    video.muted = !video.muted;
+
+    // update icon
+    if(video.muted){
+        iconBox.className = 'fa-solid fa-volume-xmark';
+    } else {
+        iconBox.className = 'fa-solid fa-volume-high';
+    }
+
+    // flash icon
+    const icon = video.parentElement.querySelector('.sound-icon');
+    icon.classList.add('show');
+    setTimeout(() => icon.classList.remove('show'), 1100);
+}
+
+/* ---------- Utility: escape text for innerHTML ---------- */
+function escapeHtml(unsafe){
+  if(!unsafe && unsafe !== 0) return '';
+  return String(unsafe)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/* ---------- Close overlay click handles: close sheets ---------- */
+overlay.addEventListener('click', closeActiveSheets);
+
+/* ---------- Prevent body scroll when a sheet is active on mobile ---------- */
+const body = document.body;
+const observerForSheet = new MutationObserver(() => {
+  // if overlay visible => freeze body scroll (simple)
+  if(overlay.classList.contains('active')) {
+    body.style.overflow = 'hidden';
+  } else {
+    body.style.overflow = '';
+  }
+});
+observerForSheet.observe(overlay, { attributes: true, attributeFilter: ['class'] });
+
+</script>
+</body>
+</html>
