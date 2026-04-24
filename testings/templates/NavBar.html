@@ -30,7 +30,7 @@
     background-color: var(--border-color);
     color: var(--text-primary);
   }
-  
+
   body {
     text-transform: capitalize;
     /* Removed background-color: var(--bg-color); to prevent global leakage */
@@ -40,218 +40,280 @@
     background: var(--nav-card);
     border-right: 1px solid var(--nav-border);
     color: var(--nav-text-primary);
-}
+  }
 
-.gn-brand {
+  .gn-brand {
     color: var(--nav-text-primary);
     border-bottom: 1px solid var(--nav-border);
     padding: 20px;
     font-weight: 800;
-}
+  }
 
-.gn-nav-link {
+  .gn-nav-link {
     color: var(--nav-text-secondary);
-}
+  }
 
-.gn-nav-link:hover, .gn-nav-link.active {
+  .gn-nav-link:hover,
+  .gn-nav-link.active {
     background: var(--nav-bg);
     color: var(--nav-text-primary);
     border-left: 4px solid var(--nav-success);
-}
+  }
 
-.gn-top-header {
+  .gn-top-header {
     background: var(--nav-card);
     border-bottom: 1px solid var(--nav-border);
     color: var(--nav-text-primary);
-}
+  }
 
-.gn-search-box {
+  .gn-search-box {
     background: var(--nav-bg);
     border: 1px solid var(--nav-border);
     border-radius: 20px;
-}
+  }
 
-.gn-search-field {
+  .gn-search-field {
     color: var(--nav-text-primary);
-}
+  }
 
-.gn-user-meta .name {
+  .gn-user-meta .name {
     color: var(--nav-text-primary);
-}
+  }
 
-.gn-user-meta .location {
+  .gn-user-meta .location {
     color: var(--nav-text-secondary);
-}
+  }
 
-.gn-aside-footer {
+  .gn-aside-footer {
     padding: 20px;
     border-top: 1px solid var(--nav-border);
     margin-top: auto;
-}
+  }
 
-.gn-footer-links {
+  .gn-footer-links {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 15px;
-}
+  }
 
-.gn-footer-links a {
+  .gn-footer-links a {
     color: var(--nav-text-secondary);
     font-size: 11px;
     text-decoration: none;
     transition: 0.2s;
-}
+  }
 
-.gn-footer-links a:hover {
+  .gn-footer-links a:hover {
     color: var(--nav-success);
-}
+  }
 
-.gn-dev-credit {
+  .gn-dev-credit {
     font-size: 10px;
     color: var(--nav-text-secondary);
     opacity: 0.8;
-}
+  }
 
-.gn-dev-credit a {
+  .gn-dev-credit a {
     color: var(--nav-success);
     text-decoration: none;
-}
+  }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}" />
 
 <link rel="stylesheet" href="{% static 'css/premium.css' %}" />
 
 <!-- ================= DESKTOP SIDEBAR ================= -->
-    <!-- Sidebar -->
-    <aside class="gn-aside navbar-sidebar" id="sidebar" style="display: flex; flex-direction: column;">
-        <div class="gn-brand" style="display: flex; align-items: center; gap: 10px; font-size: 20px;">
-            <i class="bi bi-search" style="color: var(--status-success);"></i> GoNestro
-        </div>
-        <ul class="gn-nav-list" style="list-style: none; padding: 20px 0; overflow-y: auto; flex: 1;">
-            <li class="gn-nav-item"><a href="#" class="gn-nav-link active" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-grid-1x2"></i> My Dashboard</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:home' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-house-door"></i> Home</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:recent_properties_list' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-house"></i> Properties</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:all_projects' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-building"></i> Projects</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-person-workspace"></i> Builders</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-people"></i> Agents</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-tools"></i> Professionals</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:all_users_to_chat' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-chat-dots"></i> Messages</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:loan_form' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-bank"></i> Loan services</a></li>
-            <li class="gn-nav-item"><a href="#" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-cone-striped"></i> Construction services</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:franchise' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-shop"></i> Get Franchise</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:feed_list' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-newspaper"></i> News Feed</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:require' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-question-circle"></i> Enquiry</a></li>
-            <li class="gn-nav-item"><a href="#" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-calendar-event"></i> Events</a></li>
-            <li class="gn-nav-item"><a href="{% url 'prop:saved_properties' %}" class="gn-nav-link" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i class="bi bi-bookmark"></i> Saved</a></li>
-        </ul>
+<!-- Sidebar -->
+<aside class="gn-aside navbar-sidebar" id="sidebar" style="display: flex; flex-direction: column;">
+  <div class="gn-brand" style="display: flex; align-items: center; gap: 10px; font-size: 20px;">
+    <i class="bi bi-search" style="color: var(--status-success);"></i> GoNestro
+  </div>
+  <ul class="gn-nav-list" style="list-style: none; padding: 20px 0; overflow-y: auto; flex: 1;">
+    <li class="gn-nav-item"><a href="{% url 'prop:profile' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-grid-1x2"></i> My Dashboard</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:home' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-house-door"></i> Home</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:recent_properties_list' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-house"></i> Properties</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:all_projects' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-building"></i> Projects</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}?category=company" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-person-workspace"></i> Builders</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}?category=marketer" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-people"></i> Agents</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:all_users' %}?category=professional" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-tools"></i> Professionals</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:all_users_to_chat' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-chat-dots"></i> Messages</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:loan_form' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-bank"></i> Loan services</a></li>
+    <li class="gn-nav-item"><a href="#" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-cone-striped"></i> Construction services</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:franchise' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-shop"></i> Get Franchise</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:feed_list' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-newspaper"></i> News Feed</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:require' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-question-circle"></i> Enquiry</a></li>
+    <li class="gn-nav-item"><a href="#" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-calendar-event"></i> Events</a></li>
+    <li class="gn-nav-item"><a href="{% url 'prop:saved_properties' %}" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none;"><i
+          class="bi bi-bookmark"></i> Saved</a></li>
+    {% if user.is_authenticated %}
+    <li class="gn-nav-item">
+      <a href="javascript:void(0)" onclick="openLogoutModal()" class="gn-nav-link"
+        style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; text-decoration: none; color: #ef4444;">
+        <i class="bi bi-box-arrow-right"></i> Logout
+      </a>
+    </li>
+    {% endif %}
+  </ul>
 
-        <div class="gn-aside-footer">
-            <div class="gn-footer-links">
-                <a href="{% url 'prop:about' %}">About Us</a>
-                <a href="{% url 'prop:privacy_policy' %}">Privacy Policy</a>
-                <a href="{% url 'prop:terms' %}">Terms</a>
-            </div>
-            <div class="gn-dev-credit">
-                Developed by <a href="http://ygrgobalitservices.com/" target="_blank">YGR Global IT Services</a>
-            </div>
-        </div>
-    </aside>
+  <div class="gn-aside-footer">
+    <div class="gn-footer-links">
+      <a href="{% url 'prop:about' %}">About Us</a>
+      <a href="{% url 'prop:privacy_policy' %}">Privacy Policy</a>
+      <a href="{% url 'prop:terms' %}">Terms</a>
+    </div>
+    <div class="gn-dev-credit">
+      Developed by <a href="http://ygrgobalitservices.com/" target="_blank">YGR Global IT Services</a>
+    </div>
+  </div>
+</aside>
 
-    <!-- Header -->
-    <header class="gn-top-header navbar-header">
-        <div class="gn-top-left">
-           
-        </div>
-        
-        <div class="gn-top-search" style="flex: 1; max-width: 500px; margin: 0 30px; cursor: pointer;" onclick="openSearch()">
-            <div class="gn-search-box" style="padding: 10px 20px; display: flex; align-items: center; width: 100%;">
-                <i class="bi bi-search" style="color: var(--text-secondary); font-size: 16px;"></i>
-                <input type="text" placeholder="Advanced Search Projects, Builders, Agents..." class="gn-search-field" style="border:none; outline:none; background:transparent; padding-left:12px; width: 100%; font-size: 14px; pointer-events: none;">
-            </div>
-        </div>
+<!-- Header -->
+<header class="gn-top-header navbar-header">
+  <div class="gn-top-left">
 
-        <div class="gn-top-right" style="display: flex; align-items: center; gap: 20px;">
-            <a href="{% url 'prop:add_property' %}" style="text-decoration:none;" class="d-none d-md-block">
-                <button class="gn-post-btn" style="background: var(--status-success); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;"><i class="bi bi-plus-lg"></i> Post property</button>
-            </a>
-            <div class="gn-user-profile" style="display: flex; align-items: center; gap: 12px; cursor: pointer;" onclick="window.location.href='{% url 'prop:profile' %}'">
-                <div class="gn-user-meta d-none d-lg-block" style="text-align: right;">
-                    <div class="name" style="font-weight: 700; font-size: 14px;">{% if user.is_authenticated %}{{ user.company_name|default:user.username|truncatechars:20 }}{% else %}Guest User{% endif %}</div>
-                    <div class="location" style="font-size: 11px;"><i class="bi bi-geo-alt"></i> {% if user.is_authenticated %}{{ user.location|default:"Hyderabad" }}{% else %}Location{% endif %}</div>
-                </div>
-                <div class="avatar-wrapper">
-                    {% if user.is_authenticated %}
-                        {% if user.role == "COMPANY" and user.company_logo_path %}
-                            <img src="{{ user.company_logo_path.url }}" alt="Logo" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(255,255,255,0.1);" onerror="this.src='{% static 'default.jpg' %}'">
-                        {% elif user.profile_image_path %}
-                            <img src="{{ user.profile_image_path.url }}" alt="Profile" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(255,255,255,0.1);" onerror="this.src='{% static 'default.jpg' %}'">
-                        {% else %}
-                            <img src="{% static 'default.jpg' %}" alt="Profile" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-                        {% endif %}
-                    {% else %}
-                        <img src="{% static 'default.jpg' %}" alt="Profile" style="width:40px; height:40px; border-radius:50%; object-fit:cover;">
-                    {% endif %}
-                </a>
-            </div>
+  </div>
+
+  <div class="gn-top-search" style="flex: 1; max-width: 500px; margin: 0 30px; cursor: pointer;" onclick="openSearch()">
+    <div class="gn-search-box" style="padding: 10px 20px; display: flex; align-items: center; width: 100%;">
+      <i class="bi bi-search" style="color: var(--text-secondary); font-size: 16px;"></i>
+      <input type="text" placeholder="Advanced Search Projects, Builders, Agents..." class="gn-search-field"
+        style="border:none; outline:none; background:transparent; padding-left:12px; width: 100%; font-size: 14px; pointer-events: none;">
+    </div>
+  </div>
+
+  <div class="gn-top-right" style="display: flex; align-items: center; gap: 20px;">
+    <a href="{% url 'prop:add_property' %}" style="text-decoration:none;" class="d-none d-md-block">
+      <button class="gn-post-btn"
+        style="background: var(--status-success); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 8px;"><i
+          class="bi bi-plus-lg"></i> Post property</button>
+    </a>
+    <div class="gn-user-profile" style="display: flex; align-items: center; gap: 12px; cursor: pointer;"
+      onclick="window.location.href='{% url 'prop:profile' %}'">
+      <div class="gn-user-meta d-none d-lg-block" style="text-align: right;">
+        <div class="name" style="font-weight: 700; font-size: 14px;">
+          {% if user.is_authenticated %}
+            {{ user.username|truncatechars:20 }}
+          {% else %}
+            Welcome Guest
+          {% endif %}
         </div>
-    </header>
+        <div class="location" style="font-size: 11px;"><i class="bi bi-geo-alt"></i> 
+          {% if user.is_authenticated %}
+            {{ user.location|default:"Hyderabad" }}
+          {% else %}
+            Location
+          {% endif %}
+        </div>
+      </div>
+      <div class="avatar-wrapper">
+        {% if user.is_authenticated %}
+        {% if user.role == "COMPANY" and user.company_logo_path %}
+        <img src="{{ user.company_logo_path.url }}" alt="Logo"
+          style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(255,255,255,0.1);"
+          onerror="this.src='{% static 'images/default-avatar.png' %}'">
+        {% elif user.profile_image_path %}
+        <img src="{{ user.profile_image_path.url }}" alt="Profile"
+          style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(255,255,255,0.1);"
+          onerror="this.src='{% static 'images/default-avatar.png' %}'">
+        {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Profile"
+          style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(0,0,0,0.1);">
+        {% endif %}
+        {% else %}
+        <img src="{% static 'images/default-avatar.png' %}" alt="Profile"
+          style="width:40px; height:40px; border-radius:50%; object-fit:cover; border: 1px solid rgba(0,0,0,0.1);">
+        {% endif %}
+        </a>
+      </div>
+    </div>
+</header>
 
 <style>
-/* Custom Sleek Scrollbar */
-::-webkit-scrollbar {
+  /* Custom Sleek Scrollbar */
+  ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
-}
-::-webkit-scrollbar-track {
+  }
+
+  ::-webkit-scrollbar-track {
     background: transparent;
-}
-::-webkit-scrollbar-thumb {
+  }
+
+  ::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-}
-::-webkit-scrollbar-thumb:hover {
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
-}
-.main-content{
-  margin-left: 0px !important;
-  margin-right: 300px;
-}
-/* For Firefox */
-* {
+  }
+
+  .main-content {
+    margin-left: 0px !important;
+    margin-right: 300px;
+  }
+
+  /* For Firefox */
+  * {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
-}
-
-@media (max-width: 768px) {
-  .main-content-wrapper {
-    margin-left: 0 !important;
-    width: 100% !important;
   }
-}
 
-.gn-aside {
+  @media (max-width: 768px) {
+    .main-content-wrapper {
+      margin-left: 0 !important;
+      width: 100% !important;
+    }
+  }
+
+  .gn-aside {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.05) transparent;
-}
+  }
 </style>
 
 <!-- ================= MAIN CONTENT WRAPPER ================= -->
 <div class="main-content-wrapper" style="margin-left: 240px; width: calc(100% - 240px);">
- 
 
-<div class="page-content-inner" style="min-height: calc(100vh - 70px);">
 
-<!-- ================= MOBILE NAVBAR ================= -->
-<div id="refreshMessage"
-     style="
+  <div class="page-content-inner" style="min-height: calc(100vh - 70px);">
+
+    <!-- ================= MOBILE NAVBAR ================= -->
+    <div id="refreshMessage" style="
         position: fixed;
         top: 0;
         width: 100%;
@@ -260,508 +322,657 @@
         display: none;
         z-index: 9999;
      ">
-  Refreshing...
-</div>
+      Refreshing...
+    </div>
 
-<nav
-  class="navbar-mobile d-md-none shadow-sm"
-  style="box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2); background:#1D4384;"
->
-  <span onclick="redirect('/')">
-    <img src="{% static 'images/logo.jpg' %}" style="height: 60px" />
-  </span>
- 
+    <nav class="navbar-mobile d-md-none shadow-sm"
+      style="box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2); background:#1D4384;">
+      <span onclick="redirect('/')">
+        <img src="{% static 'images/logo.jpg' %}" style="height: 60px" />
+      </span>
 
-  <button class="menu-btn" onclick="toggleMenu()" style="margin-right: 3%; background-color:#1D4384; border: #1D4384; color: white;">
 
-    <i class="fa fa-bars"></i>
-  </button>
+      <button class="menu-btn" onclick="toggleMenu()"
+        style="margin-right: 3%; background-color:#1D4384; border: #1D4384; color: white;">
 
-  <div id="mobile-menu" class="mobile-menu hidden" style="margin-right: 3%">
-    {% if user.is_authenticated %}
-
-    <button
-      onclick="redirect('/saved')"
-      class="btn btn-sm btn-outline-secondary w-100 mb-2"
-    >
-      <i class="fa fa-heart"></i> Saved
-    </button>
-
-{% if user.role != "PROFESSIONAL" %}
-<button onclick="handleAddPost()" class="btn btn-light">
-  <i class="fa fa-plus-square"></i>
-  {% if user.role == "COMPANY" %} Add Project {% else %} Add Property {% endif %}
-</button>
-{% endif %}
-
-    <form action="{% url 'prop:logout' %}" method="post" class="w-100">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-sm btn-outline-danger w-100 mb-2">
-        <i class="fa fa-sign-out-alt"></i> LogOut
+        <i class="fa fa-bars"></i>
       </button>
-    </form>
 
-    {% else %}
-    <button
-      onclick="redirect('/login')"
-      class="btn btn-sm btn-outline-success w-100"
-    >
-      <i class="fa fa-sign-in-alt"></i> Login
-    </button>
-    {% endif %}
-  </div>
-</nav>
+      <div id="mobile-menu" class="mobile-menu hidden" style="margin-right: 3%">
+        {% if user.is_authenticated %}
 
-  <!-- icon--css -->
-<style>
-.footer-nav div i {
-  color: #82a0cc;   /* normal */
-  font-size: 20px;
-  transition: 0.2s;
-}
+        <button onclick="redirect('/saved')" class="btn btn-sm btn-outline-secondary w-100 mb-2">
+          <i class="fa fa-heart"></i> Saved
+        </button>
 
-.footer-nav div.active i {
-  color: blue;   /* active */
-}
-</style>
+        {% if user.role != "PROFESSIONAL" %}
+        <button onclick="handleAddPost()" class="btn btn-light">
+          <i class="fa fa-plus-square"></i>
+          {% if user.role == "COMPANY" %} Add Project {% else %} Add Property {% endif %}
+        </button>
+        {% endif %}
 
+        <button onclick="openLogoutModal()" class="btn btn-sm btn-outline-danger w-100 mb-2">
+          <i class="fa fa-sign-out-alt"></i> LogOut
+        </button>
 
-<!-- ================= MOBILE FOOTER NAV ================= -->
-<style>
-  .footer-nav div i {
-    color: #82a0ccff;
-  }
-    .footer-nav div:hover i {
-    color: #1c4b82; /* change to any color you want */
-  }
-</style>
-<div class="footer-nav d-block d-md-none shadow-sm">
-  <div onclick="redirect('/')">
-    <i class="fa fa-home" style="font-size: 20px"></i>
-  </div>
+        {% else %}
+        <button onclick="redirect('/login')" class="btn btn-sm btn-outline-success w-100">
+          <i class="fa fa-sign-in-alt"></i> Login
+        </button>
+        {% endif %}
+      </div>
+    </nav>
 
-  <div onclick="openSearch()">
-    <i class="fa fa-search" style="font-size: 20px"></i>
-  </div>
+    <!-- icon--css -->
+    <style>
+      .footer-nav div i {
+        color: #82a0cc;
+        /* normal */
+        font-size: 20px;
+        transition: 0.2s;
+      }
 
-   <div onclick="openAddModal()" class="plus-btn">
-    <i class="fa fa-plus"></i>
-  </div>
+      .footer-nav div.active i {
+        color: blue;
+        /* active */
+      }
+    </style>
 
 
-  <div onclick="redirect('/getReel')">
-    <i class="fa fa-video" style="font-size: 20px"></i>
-  </div>
+    <!-- ================= MOBILE FOOTER NAV ================= -->
+    <style>
+      .footer-nav div i {
+        color: #82a0ccff;
+      }
 
-  <div onclick="redirectProfile()">
-    <i class="fa fa-user" style="font-size: 20px"></i>
-  </div>
-</div>
+      .footer-nav div:hover i {
+        color: #1c4b82;
+        /* change to any color you want */
+      }
+    </style>
+    <div class="footer-nav d-block d-md-none shadow-sm">
+      <div onclick="redirect('/')">
+        <i class="fa fa-home" style="font-size: 20px"></i>
+      </div>
 
-<!-- ================== ADD MODAL ================== -->
-<div id="addModal" class="modal-backdrop" onclick="closeAddModal()"></div>
+      <div onclick="openSearch()">
+        <i class="fa fa-search" style="font-size: 20px"></i>
+      </div>
 
-<div id="addModalBox" class="modal-box" style="height: 300px">
-  <button class="close-btn" onclick="closeAddModal()">
-    <i class="fa fa-times"></i>
-  </button>
-
-  <p>Select an action</p>
-
-  {% if user.role == "COMPANY" %}
-<button class="action-btn" onclick="redirect('{% url 'prop:add_project' %}')">    ➕ Add Project
-  </button>
-  {% endif %}
-
- {% if user.role != "PROFESSIONAL" %}
-<button class="action-btn" onclick="redirect('/add-property')">
-  🏠 Add Property
-</button>
-{% endif %}
-
-  {% if user.role != "OWNER"  %}
-  <button class="action-btn" onclick="redirect('/reelUpload')">
-    🎥 Post Reel
-  </button>
-  {% endif %}
-
-  <button class="action-btn" onclick="closeAddModal()">Cancel</button>
-</div>
-
-<script>
+      <div onclick="openAddModal()" class="plus-btn">
+        <i class="fa fa-plus"></i>
+      </div>
 
 
+      <div onclick="redirect('/getReel')">
+        <i class="fa fa-video" style="font-size: 20px"></i>
+      </div>
+
+      <div onclick="redirectProfile()">
+        <i class="fa fa-user" style="font-size: 20px"></i>
+      </div>
+    </div>
+
+    <!-- ================== ADD MODAL ================== -->
+    <div id="addModal" class="modal-backdrop" onclick="closeAddModal()"></div>
+
+    <div id="addModalBox" class="modal-box" style="height: 300px">
+      <button class="close-btn" onclick="closeAddModal()">
+        <i class="fa fa-times"></i>
+      </button>
+
+      <p>Select an action</p>
+
+      {% if user.role == "COMPANY" %}
+      <button class="action-btn" onclick="redirect('{% url 'prop:add_project' %}')"> ➕ Add Project
+      </button>
+      {% endif %}
+
+      {% if user.role != "PROFESSIONAL" %}
+      <button class="action-btn" onclick="redirect('/add-property')">
+        🏠 Add Property
+      </button>
+      {% endif %}
+
+      {% if user.role != "OWNER" %}
+      <button class="action-btn" onclick="redirect('/reelUpload')">
+        🎥 Post Reel
+      </button>
+      {% endif %}
+
+      <button class="action-btn" onclick="closeAddModal()">Cancel</button>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="modal-backdrop" onclick="closeLogoutModal()"></div>
+    <div id="logoutModalBox" class="modal-box"
+      style="height: 250px; max-width: 300px; text-align: center; border-radius: 18px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.15); padding: 25px 20px;">
+      <button class="close-btn" onclick="closeLogoutModal()" style="top: 12px; right: 12px; font-size: 14px;"><i
+          class="fa fa-times"></i></button>
+      <div style="padding: 0;">
+        <div
+          style="width: 50px; height: 50px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+          <i class="bi bi-box-arrow-right" style="font-size: 24px; color: #ef4444;"></i>
+        </div>
+        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #1e293b;">Sure Logout?</h3>
+        <p style="color: #64748b; font-size: 13px; margin-bottom: 20px; line-height: 1.4;">Are you sure you want to sign
+          out from GoNestro?</p>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="action-btn cancel-btn" onclick="closeLogoutModal()"
+            style="flex: 1; margin: 0; background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; font-weight: 600; height: 38px; justify-content: center; font-size: 14px;">Cancel</button>
+          <form action="{% url 'prop:logout' %}" method="post" style="flex: 1;">
+            {% csrf_token %}
+            <button type="submit" class="action-btn"
+              style="width: 100%; margin: 0; background: #ef4444; font-weight: 600; justify-content: center; height: 38px; font-size: 14px;">Logout</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
 
 
-  function redirect(url) {
-      window.location.href = url;
-  }
 
-  function toggleMenu() {
-      document.getElementById("mobile-menu").classList.toggle("show");
-  }
 
-  // Close menu when scrolling (mobile only)
-  window.addEventListener("scroll", function () {
-      if (window.innerWidth < 768) {
+      function redirect(url) {
+        window.location.href = url;
+      }
+
+      function toggleMenu() {
+        document.getElementById("mobile-menu").classList.toggle("show");
+      }
+
+      // Close menu when scrolling (mobile only)
+      window.addEventListener("scroll", function () {
+        if (window.innerWidth < 768) {
           document.getElementById("mobile-menu").classList.remove("show");
+        }
+      });
+
+      function handleAddPost() {
+        let url = "{% url 'prop:add_project' %}";
+        {% if user.role == "COMPANY" %}
+        url = "{% url 'prop:add_project' %}";
+        {% else %}
+        url = "{% url 'prop:add_property' %}";
+        {% endif %}
+        window.location.href = url;
       }
-  });
 
-  function handleAddPost() {
-      let url = "{% url 'prop:add_project' %}";
-      {% if user.role == "COMPANY" %}
-          url = "{% url 'prop:add_project' %}";
-      {% else %}
-          url = "{% url 'prop:add_property' %}";
-      {% endif %}
-      window.location.href = url;
-  }
+      function redirectProfile() {
+        {% if user.role == "COMPANY" %}
+        window.location.href = "{% url 'prop:company_profile' %}";
+        {% elif user.role == "FRANCHISE" %}
+        window.location.href = "{% url 'prop:franchise_profile' %}";
+        {% else %}
+        window.location.href = "{% url 'prop:profile' %}";
+        {% endif %}
+      }
 
-  function redirectProfile() {
-      {% if user.role == "COMPANY" %}
-          window.location.href = "{% url 'prop:company_profile' %}";
-      {% elif user.role == "FRANCHISE" %}
-          window.location.href = "{% url 'prop:franchise_profile' %}";
-      {% else %}
-          window.location.href = "{% url 'prop:profile' %}";
-      {% endif %}
-  }
+      function openAddModal() {
+        document.getElementById("addModal").classList.add("show");
+        document.getElementById("addModalBox").classList.add("show");
+      }
 
-  function openAddModal() {
-      document.getElementById("addModal").classList.add("show");
-      document.getElementById("addModalBox").classList.add("show");
-  }
+      function closeAddModal() {
+        document.getElementById("addModal").classList.remove("show");
+        document.getElementById("addModalBox").classList.remove("show");
+      }
 
-  function closeAddModal() {
-      document.getElementById("addModal").classList.remove("show");
-      document.getElementById("addModalBox").classList.remove("show");
-  }
-</script>
+      function openLogoutModal() {
+        document.getElementById("logoutModal").classList.add("show");
+        document.getElementById("logoutModalBox").classList.add("show");
+      }
 
+      function closeLogoutModal() {
+        document.getElementById("logoutModal").classList.remove("show");
+        document.getElementById("logoutModalBox").classList.remove("show");
+      }
+    </script>
 
 
-<script>
-let startY = 0;
-let isRefreshing = false;
 
-document.addEventListener("touchstart", (e) => {
-    startY = e.touches[0].clientY;
-});
+    <script>
+      let startY = 0;
+      let isRefreshing = false;
 
-document.addEventListener("touchmove", (e) => {
-    if (window.isChatPage) return;    
-    const currentY = e.touches[0].clientY;
+      document.addEventListener("touchstart", (e) => {
+        startY = e.touches[0].clientY;
+      });
 
-    // If user pulls down more than 70px AND is at top of page
-    if (currentY - startY > 70 && !isRefreshing && window.scrollY === 0) {
-        isRefreshing = true;
+      document.addEventListener("touchmove", (e) => {
+        if (window.isChatPage) return;
+        const currentY = e.touches[0].clientY;
 
-        const msg = document.getElementById("refreshMessage");
-        msg.style.display = "block";
+        // If user pulls down more than 70px AND is at top of page
+        if (currentY - startY > 70 && !isRefreshing && window.scrollY === 0) {
+          isRefreshing = true;
 
-        setTimeout(() => {
+          const msg = document.getElementById("refreshMessage");
+          msg.style.display = "block";
+
+          setTimeout(() => {
             location.reload();
-        }, 300);
-    }
-});
-</script>
+          }, 300);
+        }
+      });
+    </script>
 
-<!-- mobile icons --js--active -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const path = window.location.pathname;
+    <!-- mobile icons --js--active -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const path = window.location.pathname;
+        const currentUrl = window.location.href;
 
-  const footerItems = document.querySelectorAll(".footer-nav div");
+        // SIDEBAR ACTIVE STATE
+        const sidebarLinks = document.querySelectorAll(".gn-nav-link");
+        const currentPath = window.location.pathname;
+        const currentSearch = window.location.search;
 
-  footerItems.forEach(item => item.classList.remove("active"));
+        sidebarLinks.forEach(link => {
+          const href = link.getAttribute("href");
+          if (href && href !== "#") {
+            try {
+              // Create a URL object to easily parse path and search
+              const linkUrl = new URL(href, window.location.origin);
+              
+              const isPathMatch = linkUrl.pathname === currentPath;
+              const isSearchMatch = linkUrl.search === "" || linkUrl.search === currentSearch;
 
-  // HOME
-  if (path === "/" || path === "") {
-    footerItems[0].classList.add("active");
-  }
-  // SEARCH
-  else if (path.includes("filterbox")) {
-    footerItems[1].classList.add("active");
-  }
-  // REEL
-  else if (path.includes("getReel")) {
-    footerItems[3].classList.add("active");
-  }
-  // PROFILE (company / normal / franchise)
-  else if (
-    path.includes("profile") ||
-    path.includes("company_profile") ||
-    path.includes("franchise_profile")
-  ) {
-    footerItems[4].classList.add("active");
-  }
-});
-</script>
+              // Special case for home to avoid matching every page
+              if (linkUrl.pathname === "/" && currentPath !== "/") {
+                link.classList.remove("active");
+              } else if (isPathMatch && isSearchMatch) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            } catch (e) {
+              // Fallback for relative URLs if URL constructor fails
+              if (href === currentPath) {
+                link.classList.add("active");
+              } else {
+                link.classList.remove("active");
+              }
+            }
+          }
+        });
 
-<style>
-.floating-message-btn {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  background-color: #1D4384;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-  z-index: 9999;
-  transition: 0.3s ease;
-}
-.floating-message-btn:hover {
-  transform: scale(1.1);
-}
-</style>
+        const footerItems = document.querySelectorAll(".footer-nav div");
+        footerItems.forEach(item => item.classList.remove("active"));
 
-<!-- Advanced Search Overlay -->
-<div id="searchOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 10000; overflow-y: auto; padding: 40px 20px;">
-  <div class="search-content" style="max-width: 900px; margin: 0 auto; background: #ffffff; border-radius: 24px; padding: 40px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: slideDown 0.3s ease-out;">
-    <button class="close-search" onclick="closeSearch()" style="position: absolute; top: 25px; right: 25px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; transition: all 0.2s;"><i class="bi bi-x-lg"></i></button>
+        // HOME
+        if (path === "/" || path === "") {
+          footerItems[0].classList.add("active");
+        }
+        // SEARCH
+        else if (path.includes("filterbox")) {
+          footerItems[1].classList.add("active");
+        }
+        // REEL
+        else if (path.includes("getReel")) {
+          footerItems[3].classList.add("active");
+        }
+        // PROFILE (company / normal / franchise)
+        else if (
+          path.includes("profile") ||
+          path.includes("company_profile") ||
+          path.includes("franchise_profile")
+        ) {
+          footerItems[4].classList.add("active");
+        }
+      });
+    </script>
 
-    <h2 style="font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 30px; letter-spacing: -0.5px;">Advanced Search</h2>
-
-    <div class="search-tabs" style="display: flex; gap: 8px; margin-bottom: 32px; background: #f8fafc; padding: 6px; border-radius: 14px; width: fit-content;">
-      <button class="search-tab active" onclick="switchSearchTab(1, this)" style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Properties</button>
-      <button class="search-tab" onclick="switchSearchTab(2, this)" style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Projects</button>
-      <button class="search-tab" onclick="switchSearchTab(3, this)" style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Builders</button>
-      <button class="search-tab" onclick="switchSearchTab(4, this)" style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Agents</button>
-      <button class="search-tab" onclick="switchSearchTab(5, this)" style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Professionals</button>
-    </div>
-
-    <!-- FORM 1: Properties & Projects -->
-    <div id="searchForm1" class="search-form-container">
-      <form action="{% url 'prop:recent_properties_list' %}" method="GET">
-        <div class="search-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category</label>
-            <select name="type_of_project" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
-              <option value="">Select Category</option>
-              <option value="Plot">Plot</option>
-              <option value="House">House</option>
-              <option value="Flat">Flat</option>
-              <option value="Villa">Villa</option>
-            </select>
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
-            <input type="text" name="location" placeholder="Enter location" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
-            <input type="text" name="city" placeholder="Enter city" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Extent</label>
-            <input type="text" name="extent" placeholder="Ex: 200 sq.yds" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Facing</label>
-            <select name="facing" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
-              <option value="">Select Facing</option>
-              <option value="North">North</option>
-              <option value="East">East</option>
-              <option value="South">South</option>
-              <option value="West">West</option>
-            </select>
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Approval Type</label>
-            <input type="text" name="approval" placeholder="HMDA, DTCP, etc." style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Project Name</label>
-            <input type="text" name="name" placeholder="Enter project name" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Min Price</label>
-            <input type="number" name="minpricing" placeholder="₹ Min" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Max Price</label>
-            <input type="number" name="maxpricing" placeholder="₹ Max" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Looking for</label>
-            <select name="look" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
-              <option value="Buy">Buy</option>
-              <option value="Rent">Rent</option>
-            </select>
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Possession</label>
-            <select name="position" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
-              <option value="">Any</option>
-              <option value="READY">Ready to Move</option>
-              <option value="UNDER">Under Construction</option>
-            </select>
-          </div>
-
-          <div style="grid-column: 1 / -1; margin-top: 10px;">
-            <button type="submit" class="search-submit" style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;"><i class="bi bi-search"></i> Search Properties</button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <!-- FORM 2: Builders -->
-    <div id="searchForm2" class="search-form-container" style="display: none;">
-      <form action="{% url 'prop:all_users' %}" method="GET">
-        <input type="hidden" name="category" value="company">
-        <div class="search-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Builder Name</label>
-            <input type="text" name="name" placeholder="Search builder" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
-            <input type="text" name="location" placeholder="Location" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
-            <input type="text" name="city" placeholder="City" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category</label>
-            <select name="user_category" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none;">
-              <option value="">All Categories</option>
-              <option value="Villa">Villa</option>
-              <option value="Appartment">Apartment</option>
-              <option value="Commercial">Commercial</option>
-            </select>
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Plan Type</label>
-            <select name="plan_type" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none;">
-              <option value="">All Plans</option>
-              <option value="COMPANY_PREMIUM">Premium</option>
-              <option value="COMPANY_PRO">Pro</option>
-              <option value="COMPANY_NORMAL">Normal</option>
-            </select>
-          </div>
-          <div style="grid-column: 1 / -1; margin-top: 10px;">
-            <button type="submit" class="search-submit" style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer;"><i class="bi bi-search"></i> Search Builders</button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <!-- FORM 3: Agents & Professionals -->
-    <div id="searchForm3" class="search-form-container" style="display: none;">
-      <form action="{% url 'prop:all_users' %}" method="GET">
-        <input type="hidden" name="category" id="profCategory" value="marketer">
-        <div class="search-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
-          <div class="search-input-group">
-            <label id="profNameLabel" style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Agent Name</label>
-            <input type="text" name="name" placeholder="Search name" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
-            <input type="text" name="location" placeholder="Location" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
-            <input type="text" name="city" placeholder="City" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category/Expertise</label>
-            <input type="text" name="user_category" placeholder="Ex: Residential, Interior" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div class="search-input-group">
-            <label style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Experience (Years)</label>
-            <input type="number" name="experience" placeholder="Ex: 5" style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
-          </div>
-          <div style="grid-column: 1 / -1; margin-top: 10px;">
-            <button type="submit" class="search-submit" style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer;"><i class="bi bi-search"></i> Search Now</button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<style>
-@keyframes slideDown {
-  from { transform: translateY(-20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-.search-tab.active {
-  background: #ffffff !important;
-  color: #2563eb !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-.search-input-group input:focus, .search-input-group select:focus {
-  border-color: #2563eb !important;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-}
-.close-search:hover {
-  background: #e2e8f0 !important;
-  color: #1e293b !important;
-}
-.search-submit:hover {
-  background: #1d4ed8 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-}
-</style>
-
-<script>
-function openSearch() {
-    document.getElementById('searchOverlay').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeSearch() {
-    document.getElementById('searchOverlay').style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-
-  function switchSearchTab(tabIndex, el) {
-    document.querySelectorAll('.search-tab').forEach(tab => tab.classList.remove('active'));
-    el.classList.add('active');
-
-    document.getElementById('searchForm1').style.display = 'none';
-    document.getElementById('searchForm2').style.display = 'none';
-    document.getElementById('searchForm3').style.display = 'none';
-
-    if (tabIndex === 1 || tabIndex === 2) {
-      const form1 = document.getElementById('searchForm1');
-      form1.style.display = 'block';
-      const form = form1.querySelector('form');
-      if (tabIndex === 1) {
-        form.action = "{% url 'prop:recent_properties_list' %}";
-        form.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-search"></i> Search Properties';
-      } else {
-        form.action = "{% url 'prop:all_projects' %}";
-        form.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-search"></i> Search Projects';
+    <style>
+      .floating-message-btn {
+        position: fixed;
+        bottom: 90px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background-color: #1D4384;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        z-index: 9999;
+        transition: 0.3s ease;
       }
-    } else if (tabIndex === 3) {
-      document.getElementById('searchForm2').style.display = 'block';
-    } else if (tabIndex === 4 || tabIndex === 5) {
-      document.getElementById('searchForm3').style.display = 'block';
-      const catInput = document.getElementById('profCategory');
-      const nameLabel = document.getElementById('profNameLabel');
 
-      if (tabIndex === 4) {
-        catInput.value = 'marketer';
-        nameLabel.innerText = 'Agent Name';
-      } else {
-        catInput.value = 'professional';
-        nameLabel.innerText = 'Professional Name';
+      .floating-message-btn:hover {
+        transform: scale(1.1);
       }
-    }
-  }
+    </style>
 
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSearch();
-  });
-</script>
+    <!-- Advanced Search Overlay -->
+    <div id="searchOverlay"
+      style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 10000; overflow-y: auto; padding: 40px 20px;">
+      <div class="search-content"
+        style="max-width: 900px; margin: 0 auto; background: #ffffff; border-radius: 24px; padding: 40px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); animation: slideDown 0.3s ease-out;">
+        <button class="close-search" onclick="closeSearch()"
+          style="position: absolute; top: 25px; right: 25px; background: #f1f5f9; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #64748b; transition: all 0.2s;"><i
+            class="bi bi-x-lg"></i></button>
+
+        <h2 style="font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 30px; letter-spacing: -0.5px;">
+          Advanced Search</h2>
+
+        <div class="search-tabs"
+          style="display: flex; gap: 8px; margin-bottom: 32px; background: #f8fafc; padding: 6px; border-radius: 14px; width: fit-content;">
+          <button class="search-tab active" onclick="switchSearchTab(1, this)"
+            style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Properties</button>
+          <button class="search-tab" onclick="switchSearchTab(2, this)"
+            style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Projects</button>
+          <button class="search-tab" onclick="switchSearchTab(3, this)"
+            style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Builders</button>
+          <button class="search-tab" onclick="switchSearchTab(4, this)"
+            style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Agents</button>
+          <button class="search-tab" onclick="switchSearchTab(5, this)"
+            style="padding: 10px 20px; border: none; background: transparent; border-radius: 10px; font-weight: 600; font-size: 14px; color: #64748b; cursor: pointer; transition: all 0.2s;">Professionals</button>
+        </div>
+
+        <!-- FORM 1: Properties & Projects -->
+        <div id="searchForm1" class="search-form-container">
+          <form action="{% url 'prop:recent_properties_list' %}" method="GET">
+            <div class="search-form-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category</label>
+                <select name="type_of_project"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
+                  <option value="">Select Category</option>
+                  <option value="Plot">Plot</option>
+                  <option value="House">House</option>
+                  <option value="Flat">Flat</option>
+                  <option value="Villa">Villa</option>
+                </select>
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
+                <input type="text" name="location" placeholder="Enter location"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
+                <input type="text" name="city" placeholder="Enter city"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Extent</label>
+                <input type="text" name="extent" placeholder="Ex: 200 sq.yds"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Facing</label>
+                <select name="facing"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
+                  <option value="">Select Facing</option>
+                  <option value="North">North</option>
+                  <option value="East">East</option>
+                  <option value="South">South</option>
+                  <option value="West">West</option>
+                </select>
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Approval
+                  Type</label>
+                <input type="text" name="approval" placeholder="HMDA, DTCP, etc."
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Project
+                  Name</label>
+                <input type="text" name="name" placeholder="Enter project name"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Min
+                  Price</label>
+                <input type="number" name="minpricing" placeholder="₹ Min"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Max
+                  Price</label>
+                <input type="number" name="maxpricing" placeholder="₹ Max"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none; transition: border-color 0.2s;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Looking
+                  for</label>
+                <select name="look"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
+                  <option value="Buy">Buy</option>
+                  <option value="Rent">Rent</option>
+                </select>
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Possession</label>
+                <select name="position"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none; transition: border-color 0.2s;">
+                  <option value="">Any</option>
+                  <option value="READY">Ready to Move</option>
+                  <option value="UNDER">Under Construction</option>
+                </select>
+              </div>
+
+              <div style="grid-column: 1 / -1; margin-top: 10px;">
+                <button type="submit" class="search-submit"
+                  style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px;"><i
+                    class="bi bi-search"></i> Search Properties</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- FORM 2: Builders -->
+        <div id="searchForm2" class="search-form-container" style="display: none;">
+          <form action="{% url 'prop:all_users' %}" method="GET">
+            <input type="hidden" name="category" value="company">
+            <div class="search-form-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Builder
+                  Name</label>
+                <input type="text" name="name" placeholder="Search builder"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
+                <input type="text" name="location" placeholder="Location"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
+                <input type="text" name="city" placeholder="City"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category</label>
+                <select name="user_category"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none;">
+                  <option value="">All Categories</option>
+                  <option value="Villa">Villa</option>
+                  <option value="Appartment">Apartment</option>
+                  <option value="Commercial">Commercial</option>
+                </select>
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Plan
+                  Type</label>
+                <select name="plan_type"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; background: #fff; outline: none;">
+                  <option value="">All Plans</option>
+                  <option value="COMPANY_PREMIUM">Premium</option>
+                  <option value="COMPANY_PRO">Pro</option>
+                  <option value="COMPANY_NORMAL">Normal</option>
+                </select>
+              </div>
+              <div style="grid-column: 1 / -1; margin-top: 10px;">
+                <button type="submit" class="search-submit"
+                  style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer;"><i
+                    class="bi bi-search"></i> Search Builders</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- FORM 3: Agents & Professionals -->
+        <div id="searchForm3" class="search-form-container" style="display: none;">
+          <form action="{% url 'prop:all_users' %}" method="GET">
+            <input type="hidden" name="category" id="profCategory" value="marketer">
+            <div class="search-form-grid"
+              style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+              <div class="search-input-group">
+                <label id="profNameLabel"
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Agent
+                  Name</label>
+                <input type="text" name="name" placeholder="Search name"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Location</label>
+                <input type="text" name="location" placeholder="Location"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">City</label>
+                <input type="text" name="city" placeholder="City"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Category/Expertise</label>
+                <input type="text" name="user_category" placeholder="Ex: Residential, Interior"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div class="search-input-group">
+                <label
+                  style="display: block; font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px;">Experience
+                  (Years)</label>
+                <input type="number" name="experience" placeholder="Ex: 5"
+                  style="width: 100%; padding: 12px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px; font-size: 14px; color: #1e293b; outline: none;">
+              </div>
+              <div style="grid-column: 1 / -1; margin-top: 10px;">
+                <button type="submit" class="search-submit"
+                  style="width: 100%; background: #2563eb; color: #ffffff; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer;"><i
+                    class="bi bi-search"></i> Search Now</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes slideDown {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .search-tab.active {
+        background: #ffffff !important;
+        color: #2563eb !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-input-group input:focus,
+      .search-input-group select:focus {
+        border-color: #2563eb !important;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+      }
+
+      .close-search:hover {
+        background: #e2e8f0 !important;
+        color: #1e293b !important;
+      }
+
+      .search-submit:hover {
+        background: #1d4ed8 !important;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+      }
+    </style>
+
+    <script>
+      function openSearch() {
+        document.getElementById('searchOverlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeSearch() {
+        document.getElementById('searchOverlay').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      function switchSearchTab(tabIndex, el) {
+        document.querySelectorAll('.search-tab').forEach(tab => tab.classList.remove('active'));
+        el.classList.add('active');
+
+        document.getElementById('searchForm1').style.display = 'none';
+        document.getElementById('searchForm2').style.display = 'none';
+        document.getElementById('searchForm3').style.display = 'none';
+
+        if (tabIndex === 1 || tabIndex === 2) {
+          const form1 = document.getElementById('searchForm1');
+          form1.style.display = 'block';
+          const form = form1.querySelector('form');
+          if (tabIndex === 1) {
+            form.action = "{% url 'prop:recent_properties_list' %}";
+            form.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-search"></i> Search Properties';
+          } else {
+            form.action = "{% url 'prop:all_projects' %}";
+            form.querySelector('button[type="submit"]').innerHTML = '<i class="bi bi-search"></i> Search Projects';
+          }
+        } else if (tabIndex === 3) {
+          document.getElementById('searchForm2').style.display = 'block';
+        } else if (tabIndex === 4 || tabIndex === 5) {
+          document.getElementById('searchForm3').style.display = 'block';
+          const catInput = document.getElementById('profCategory');
+          const nameLabel = document.getElementById('profNameLabel');
+
+          if (tabIndex === 4) {
+            catInput.value = 'marketer';
+            nameLabel.innerText = 'Agent Name';
+          } else {
+            catInput.value = 'professional';
+            nameLabel.innerText = 'Professional Name';
+          }
+        }
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeSearch();
+      });
+    </script>

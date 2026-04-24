@@ -572,6 +572,12 @@ def all_projects(request):
  
 def user_detail(request, user_id):
     user = get_object_or_404(User, id=user_id)
+    
+    # Increase profile views only for visitors
+    if request.user != user:
+        user.click = (user.click or 0) + 1
+        user.save()
+
     reels=Reels.objects.filter(user=user)
 
     qs = AddPropertyModel.objects.filter(user=user)
@@ -1009,8 +1015,10 @@ def profile(request):
     
     return render(request, "owner_profile.html", context) # Fallback
 
-@login_required
 def professional_profile_view(request, user_id=None):
+    if not user_id and not request.user.is_authenticated:
+        return redirect('prop:login')
+        
     user = request.user
     if user_id:
         profile_user = get_object_or_404(User, id=user_id)
@@ -1035,7 +1043,7 @@ def professional_profile_view(request, user_id=None):
             prop.display_status = "Not Verified"
 
     # Increase profile views only for visitors
-    if request.user != profile_user and request.user.is_authenticated:
+    if request.user != profile_user:
         profile_user.click = (profile_user.click or 0) + 1
         profile_user.save()
 
@@ -1126,8 +1134,10 @@ def professional_profile_view(request, user_id=None):
 
     return render(request, "professional_profile.html", context)
 
-@login_required
 def marketer_profile_view(request, user_id=None):
+    if not user_id and not request.user.is_authenticated:
+        return redirect('prop:login')
+        
     user = request.user
     if user_id:
         profile_user = get_object_or_404(User, id=user_id)
@@ -1152,7 +1162,7 @@ def marketer_profile_view(request, user_id=None):
             prop.display_status = "Not Verified"
 
     # Increase profile views only for visitors
-    if request.user != profile_user and request.user.is_authenticated:
+    if request.user != profile_user:
         profile_user.click = (profile_user.click or 0) + 1
         profile_user.save()
 
@@ -1455,6 +1465,7 @@ def filterbox(request):
 from .forms import UserProfileForm
 
 
+@login_required
 def edit_profile(request):
     user = request.user  # currently logged-in user
     if request.method == "POST":
@@ -1465,6 +1476,7 @@ def edit_profile(request):
     form = UserProfileForm(instance=user)
     return render(request, 'edit_profile.html', {'form': form})
 
+@login_required
 def user_uploades(req):
     p= req.user
     D = AddPropertyModel.objects.filter(user = p)
@@ -1504,6 +1516,7 @@ def property_leads_get(req, id):
 
 
 
+@login_required
 def referral(req):
     user = req.user
     referral_code = user.user_referral_code
@@ -1677,6 +1690,8 @@ from .models import User,ContactMessage
 from .forms import CompanyRegisterForm
 
 def company_profile_view(request, user_id=None):
+    if not user_id and not request.user.is_authenticated:
+        return redirect('prop:login')
 
     user = request.user if request.user.is_authenticated else None   # ← FIX
 
@@ -1713,8 +1728,8 @@ def company_profile_view(request, user_id=None):
         return redirect("prop:company_profile")
 
     # Increase profile views only for visitors
-    if request.user != profile_user and request.user.is_authenticated:
-        profile_user.click = profile_user.click + 1 if profile_user.click else 1
+    if request.user != profile_user:
+        profile_user.click = (profile_user.click or 0) + 1
         profile_user.save()
 
     # Owner check
@@ -2926,26 +2941,14 @@ def projectlead_view(req,id,proId):
 
 
 
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import get_user_model
 from django.db.models import Q, Max
 from .models import ChatRoom, ChatMessage
 
 User = get_user_model()
 
-@login_required
-def all_users_to_chat(request):
-    """
-    Show all chat users (normal chats only), 
-    exclude property chats.
-    """
-
-    current_user = request.user
-
+def get_chat_users_data(current_user):
     # Get all other users
     all_users = User.objects.exclude(id=current_user.id)
-
     users_data = []
 
     for user in all_users:
@@ -2976,7 +2979,7 @@ def all_users_to_chat(request):
         })
 
     # Sort: unread first, then last message time
-    users_sorted = sorted(
+    return sorted(
         users_data,
         key=lambda x: (
             -x['unread_count'],
@@ -2984,9 +2987,17 @@ def all_users_to_chat(request):
         )
     )
 
+@login_required
+def all_users_to_chat(request):
+    """
+    Show all chat users (normal chats only), 
+    exclude property chats.
+    """
+    users_sorted = get_chat_users_data(request.user)
     return render(request, "chat/all_chat_users.html", {
         "users_sorted": users_sorted
     })
+
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -3085,12 +3096,16 @@ def chat_room(request, chat_id):
     
     messages = chat.messages.order_by("created_at")
 
+    # Get users list for the left sidebar
+    users_sorted = get_chat_users_data(request.user)
+
     return render(request, "chat/chat_room.html", {
         "chat": chat,
         "messages": messages,
         "other_user": other_user,
         "property": property_obj,
-        "pre_message": pre_message, 
+        "pre_message": pre_message,
+        "users_sorted": users_sorted,
     })
 # Optional AJAX for notifications
 @login_required
