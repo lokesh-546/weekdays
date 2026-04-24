@@ -544,5 +544,25 @@ class ChatMessageForm(forms.ModelForm):
         }
 
 
+from .models import PostFeed, ImagePost
+
+class PostFeedForm(forms.ModelForm):
+    class Meta:
+        model = PostFeed
+        fields = '__all__'
 
 
+class ImagePostForm(forms.ModelForm):
+    class Meta:
+        model = ImagePost
+        fields = ['news_content', 'image', 'video']
+
+
+
+class NewsPostForm(forms.ModelForm):
+    heading = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    news_content = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}))
+
+    class Meta:
+        model = NewsPost
+        fields = ['heading', 'news_content']

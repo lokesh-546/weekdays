@@ -20,8 +20,9 @@
 }
 
       body {
-        background: #f5f6fa;
-        font-family: "Poppins", sans-serif;
+        background: var(--bg-color);
+        font-family: var(--font-body);
+        color: var(--text-primary);
         margin: 0;
       }
 
@@ -33,10 +34,12 @@
       }
 
       .profile-card {
-        background: #ffffff;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
         border-radius: 18px;
         padding: 40px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        color: var(--text-primary);
       }
 
       .top-row {

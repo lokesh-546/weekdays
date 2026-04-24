@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Feed Post</title>
+    <link rel="stylesheet" href="{% static 'css/news_form.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <h2>Create News Post</h2>
+    
+    <form method="POST" enctype="multipart/form-data" id="feed-form">
+        {% csrf_token %}
+
+        <label>Heading (Optional)</label>
+        {{ form.heading }}
+
+        <label>Content / Description</label>
+        {{ form.news_content }}
+
+        <div id="upload-section">
+            <label class="upload-box" id="drop-zone">
+                <span>+</span>
+                <p>Add Image or Video (Max 30s)</p>
+                <input type="file" name="media_file" id="media_file" accept="image/*,video/*">
+            </label>
+        </div>
+
+        <div class="preview" id="preview"></div>
+
+        <button type="submit" id="submit-btn">Publish Post</button>
+    </form>
+</div>
+
+<script>
+    const form = document.getElementById("feed-form");
+    const headingInput = document.querySelector('input[name="heading"]');
+    const contentInput = document.querySelector('textarea[name="news_content"]');
+    const mediaInput = document.getElementById("media_file");
+
+    form.addEventListener("submit", function(e) {
+        if (!headingInput.value.trim() && !contentInput.value.trim() && !mediaInput.files.length) {
+            e.preventDefault();
+            alert("Please provide at least one field (Heading, Content, or Media) to publish.");
+        }
+    });
+
+    const preview = document.getElementById("preview");
+    const fileInput = document.getElementById("media_file");
+
+    fileInput.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        preview.innerHTML = "";
+        if (!file) return;
+
+        if (file.type.startsWith("video")) {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = function() {
+                window.URL.revokeObjectURL(video.src);
+                if (video.duration > 30.5) {
+                    alert("Video must be 30 seconds or less.");
+                    fileInput.value = "";
+                    preview.innerHTML = "";
+                } else {
+                    const url = URL.createObjectURL(file);
+                    preview.innerHTML = `<video src="${url}" controls autoplay muted style="max-width:100%"></video>`;
+                }
+            }
+            video.src = URL.createObjectURL(file);
+        } else {
+            const url = URL.createObjectURL(file);
+            preview.innerHTML = `<img src="${url}" style="max-width:100%">`;
+        }
+    });
+</script>
+
+</body>
+</html>

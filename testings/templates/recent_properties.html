@@ -1,0 +1,151 @@
+{% include 'NavBar.html' %}
+{% load static %}
+
+<style>
+    .page-title-section {
+        padding: 40px 20px 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .page-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin: 0;
+    }
+    .page-subtitle {
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-top: 5px;
+    }
+    .main-wrapper {
+        margin-left: 240px; /* Sidebar width */
+        min-height: 100vh;
+        background: var(--bg-color);
+        padding-bottom: 50px;
+    }
+    @media (max-width: 768px) {
+        .main-wrapper { margin-left: 0; }
+    }
+</style>
+
+<!-- Premium Property Feed CSS -->
+<link rel="stylesheet" href="{% static 'css/property_feed.css' %}">
+
+<div class="main-wrapper">
+    <div class="page-title-section">
+        <h1 class="page-title">Recent Properties</h1>
+        <p class="page-subtitle">Showing all properties, newest first.</p>
+    </div>
+
+    <div class="property-feed-container" style="margin-top: 0;">
+        {% for p in properties %}
+            <div class="property-feed-card" onclick="window.location.href='{% url 'prop:property_detail' p.id %}'" style="cursor: pointer;">
+                <!-- 1. User Header -->
+                <div class="card-user-header">
+                    <a href="{% url 'prop:user_detail' p.user.id %}" onclick="event.stopPropagation();">
+                        {% if p.user.profile_image_path %}
+                            <img src="{{ p.user.profile_image_path.url }}" class="profile-pic" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}" class="profile-pic">
+                        {% endif %}
+                    </a>
+                    <div class="user-info">
+                        <div class="top-row">
+                            <span class="name">{{ p.user.company_name|default:p.user.username|truncatechars:20 }}</span>
+                            <i class="bi bi-patch-check-fill verified"></i>
+                        </div>
+                        <div class="stars">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <a href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' p.user.id %}{% else %}{% url 'prop:login' %}{% endif %}" class="message-btn" onclick="event.stopPropagation();">Message</a>
+                </div>
+
+                <!-- 2. Media -->
+                <div class="card-media">
+                    {% if p.image %}
+                        <img src="{{ p.image.url }}" onerror="this.src='{% static 'default.jpg' %}'">
+                    {% else %}
+                        <img src="{% static 'default.jpg' %}">
+                    {% endif %}
+                </div>
+
+                <!-- 3. Details -->
+                <div class="card-details-body">
+                    <div class="title-row">
+                        <h3 class="p-name">{{ p.projectName|default:"Unnamed Property" }}</h3>
+                        <span class="approval">{{ p.approvalType|default:"Approved" }}</span>
+                    </div>
+                    <div class="description">
+                        {{ p.extent|default:"" }} Sqyd {{ p.facing|default:"" }} {{ p.selectProperty|default:"" }} for {{ p.look|default:"Sale" }}
+                    </div>
+                    <div class="location">
+                        <i class="bi bi-geo-alt-fill"></i> @ {{ p.address|default:"Location"|truncatechars:35 }}
+                    </div>
+                    <span class="price-tag">₹ {{ p.price }}</span>
+                    
+                    <div class="tags-row">
+                        {% if p.selectProperty %}<span class="tag">{{ p.selectProperty }}</span>{% endif %}
+                        {% if p.look %}<span class="tag">{{ p.look }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <!-- 4. Footer Actions -->
+                <div class="card-actions-footer">
+                    <a href="tel:{{ p.user.phone }}" class="contact-btn" onclick="event.stopPropagation();">
+                        <i class="bi bi-telephone-fill"></i> Contact
+                    </a>
+                    <div class="action-icon share" onclick="event.stopPropagation(); shareProject('{{ p.projectName|escapejs }}', '{{ p.address|escapejs }}', '{{ p.price }}', '{% url 'prop:property_detail' p.id %}')" title="Share">
+                        <i class="bi bi-share"></i>
+                    </div>
+                    <div class="action-icon save" onclick="event.stopPropagation(); {% if user.is_authenticated %}toggleSave(event, {{ p.id }}, this){% else %}redirectToLogin(){% endif %}" title="Save">
+                        <i class="bi bi-bookmark"></i>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: var(--text-secondary);">
+                <i class="bi bi-house-slash" style="font-size: 50px;"></i>
+                <h3>No properties found.</h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function shareProject(title, address, price, url) {
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: `${title} at ${address} for ₹${price}`,
+                url: window.location.origin + url
+            });
+        } else {
+            navigator.clipboard.writeText(window.location.origin + url);
+            alert("Link copied to clipboard!");
+        }
+    }
+
+    function toggleSave(event, id, btn) {
+        event.stopPropagation();
+        fetch(`/save/${id}/`)
+            .then(res => res.json())
+            .then(data => {
+                const icon = btn.querySelector("i");
+                if (data.status === "saved") {
+                    icon.classList.remove("bi-bookmark");
+                    icon.classList.add("bi-bookmark-fill");
+                } else {
+                    icon.classList.remove("bi-bookmark-fill");
+                    icon.classList.add("bi-bookmark");
+                }
+            });
+    }
+
+    function redirectToLogin() {
+        window.location.href = "{% url 'prop:login' %}";
+    }
+</script>
+
+{% include 'footer.html' %}

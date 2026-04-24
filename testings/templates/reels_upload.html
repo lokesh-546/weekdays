@@ -2,204 +2,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Upload Reel</title>
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Poppins", sans-serif;
-            background: #fff;
-        }
-
-        .container {
-            max-width: 450px;
-            margin: 0 auto;
-            padding: 25px;
-            text-align: center;
-        }
-
-        h2 {
-            font-weight: 600;
-            margin-bottom: 25px;
-        }
-
-        /* Preview Box */
-        .preview-box {
-            width: 100%;
-            aspect-ratio: 14/16;
-            background: #f1f1f1;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .preview-box video,
-        .preview-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        /* Upload button */
-        .upload-btn {
-            width: 90px;
-            height: 90px;
-            background: #efefef;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            border: 2px solid #dbdbdb;
-            transition: 0.3s;
-        }
-
-        .upload-btn:hover {
-            background: #e3e3e3;
-        }
-
-        .upload-btn span {
-            font-size: 48px;
-            color: #444;
-            font-weight: 600;
-        }
-
-        .file-input {
-            display: none;
-        }
-
-        /* --- Description Styling --- */
-        form p {
-            text-align: left !important;
-            margin-bottom: 12px;
-        }
-
-        form p label {
-            display: block;
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        form p textarea,
-        form p input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 1.5px solid #ddd;
-            border-radius: 10px;
-            background: #fafafa;
-            outline: none;
-            font-size: 15px;
-            resize: none;
-            transition: 0.2s;
-        }
-
-        form p textarea:focus,
-        form p input:focus {
-            border-color: #0095F6;
-            background: #fff;
-        }
-
-        /* Post Button */
-        button {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
-            background: #0095F6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background: #007bd1;
-        }
-    </style>
-</head>
-<body>
-
-{% include 'NavBar.html' %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload Reel</title>
 
 <style>
-    .menu-btn{
-        color: black;
-        margin-bottom:30px;
-    }
-    #id_reel{
-        display: none;
-    }
-    label{
-        display: none;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-    .nav-links button{
-        margin: auto;
-    }
-    .nav-links{
-        align-items: center;
-    }
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Preview Box */
+.preview-box {
+    width: 100%;
+    height: 280px;
+    background: #f9fbff;
+    border-radius: 12px;
+    margin-bottom: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    border: 2px dashed #0095F6;
+    position: relative;
+}
+
+.preview-box video,
+.preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-btn {
+    width: 70px;
+    height: 70px;
+    background: #0095F6;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upload-btn span {
+    font-size: 38px;
+    color: white;
+    font-weight: bold;
+}
+
+#id_reel {
+    display: none;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+/* KEEP SAME LOOK */
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-selected {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+}
+
+.dropdown-list {
+    position: absolute;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background: #f0f6ff;
+}
+
+.line1 {
+    font-weight: bold;
+}
+
+.line2 {
+    font-size: 12px;
+    color: #666;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #0095F6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #007bd1;
+}
 </style>
+
+</head>
+
+<body>
 
 <div class="container">
 
-    <h2>Create Reel</h2>
+<h3 style="text-align:center;">Upload High Quality Video</h3>
 
-    <!-- Preview Box -->
-    <div class="preview-box" id="preview">
-        <label for="id_reel" class="upload-btn">
-            <span>+</span>
-        </label>
-    </div>
-
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-<style>
-        p:has(#id_reel) {
-            display: none !important;
-        }
-    </style>
-        <!-- SHOW Django Form (Description input) -->
-        {{ f.as_p }}
-
-        <button type="submit">Share Reel</button>
-    </form>
+<!-- Preview -->
+<div class="preview-box" id="preview">
+    <label for="id_reel" class="upload-btn">
+        <span>+</span>
+    </label>
 </div>
 
-{% include 'footer.html' %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ f.reel }}
+
+    <div class="form-group">
+        <label>Write about this vedio</label>
+        {{ f.description }}
+    </div>
+
+    <!-- ✅ CUSTOM PROPERTY SELECT (SAME BOX UI) -->
+    <div class="form-group">
+        <label>Select Property</label>
+
+        <div class="custom-dropdown" id="dropdown">
+
+            <div class="dropdown-selected" id="selectedItem">
+                -- Select Property --
+            </div>
+
+            <div class="dropdown-list" id="dropdownList">
+                {% for p in properties %}
+                <div class="dropdown-item"
+                    data-id="{{ p.id }}"
+                    data-name="{{ p.projectName }}"
+                    data-rera="{% if p.reraApproved %}DTCP Approved{% else %}Not Approved{% endif %}"
+                    data-units="{{ p.units }}"
+                    data-type="{{ p.type }}"
+                    data-extent="{{ p.extent }}"
+                    data-facing="{{ p.facing }}"
+                >
+                    <div class="line1">
+                        {{ p.projectName }} - {% if p.reraApproved %}DTCP Approved{% else %}Not Approved{% endif %}
+                    </div>
+                    <div class="line2">
+                        {{ p.units }} Units | {{ p.type }} | {{ p.extent }} Sq.ft | {{ p.facing }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Hidden input for backend -->
+        <input type="hidden" name="propertyId" id="propertyInput">
+
+    </div>
+
+    <button type="submit">Post Reel</button>
+</form>
+
+</div>
 
 <script>
-    const input = document.getElementById("id_reel");
-    const preview = document.getElementById("preview");
 
-    input.addEventListener("change", () => {
-        preview.innerHTML = "";
+const input = document.getElementById("id_reel");
+const preview = document.getElementById("preview");
 
-        const file = input.files[0];
-        if (!file) return;
+/* Preview */
+input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
 
-        const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = "";
 
-        if (file.type.startsWith("video")) {
-            const video = document.createElement("video");
-            video.src = url;
-            video.controls = true;
-            preview.appendChild(video);
-        } else if (file.type.startsWith("image")) {
-            const img = document.createElement("img");
-            img.src = url;
-            preview.appendChild(img);
-        }
+    if (file.type.startsWith("video")) {
+        const video = document.createElement("video");
+        video.src = url;
+        video.controls = true;
+        video.autoplay = true;
+        preview.appendChild(video);
+    }
+});
+
+/* Custom Dropdown */
+const selected = document.getElementById("selectedItem");
+const list = document.getElementById("dropdownList");
+const inputHidden = document.getElementById("propertyInput");
+
+selected.addEventListener("click", () => {
+    list.style.display = list.style.display === "block" ? "none" : "block";
+});
+
+document.querySelectorAll(".dropdown-item").forEach(item => {
+    item.addEventListener("click", () => {
+
+        selected.innerHTML = `
+            <div class="line1">${item.dataset.name} - ${item.dataset.rera}</div>
+            <div class="line2">
+                ${item.dataset.units} Units | ${item.dataset.type} | ${item.dataset.extent} Sq.ft | ${item.dataset.facing}
+            </div>
+        `;
+
+        inputHidden.value = item.dataset.id;
+        list.style.display = "none";
     });
+});
+
+/* Close when clicking outside */
+document.addEventListener("click", function(e) {
+    if (!document.getElementById("dropdown").contains(e.target)) {
+        list.style.display = "none";
+    }
+});
+
 </script>
 
 </body>

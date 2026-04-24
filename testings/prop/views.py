@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db.models import Count, Q
+from django.db.models.functions import TruncDate
 
 import prop
-from .forms import FutureRequirementForm, UserRegisterForm,CompanyRegisterForm,FranchiseForm,AddPropertyForm
+import json
 from django.contrib.auth import login, authenticate
 from django.utils import timezone
+from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import  get_object_or_404
 from .models import *
+from .forms import *
 from django.contrib.auth.decorators import login_required
-
+from django.core.cache import cache
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
@@ -71,7 +75,7 @@ def register_user(request):
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
             messages.success(request, "Account created successfully!")
-            return redirect("prop:login")
+            return redirect("prop:profile")
 
         else:
             print(form.errors)
@@ -80,10 +84,108 @@ def register_user(request):
         form = UserRegisterForm()
 
     return render(request, "register.html", {"form": form})
-    
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.hashers import make_password
+
+@csrf_exempt
+def register_step1_ajax(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except:
+            data = request.POST
+
+        username = data.get("username")
+        email = data.get("email")
+        password = data.get("password")
+        location = data.get("location")
+        referred_by_code = data.get("referred_by_code")
+
+        if not username or not email or not password:
+            return JsonResponse({"success": False, "message": "Required fields missing"}, status=400)
+
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({"success": False, "message": "Username already exists"}, status=400)
+        
+        if User.objects.filter(email=email).exists():
+            return JsonResponse({"success": False, "message": "Email already exists"}, status=400)
+
+        user = User.objects.create(
+            username=username,
+            email=email,
+            password=make_password(password),
+            location=location,
+            referred_by_code=referred_by_code
+        )
+        
+        # Log in the user immediately
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        login(request, user)
+
+        return JsonResponse({"success": True, "message": "Signup successfully!"})
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=405)
+
+@login_required
+@csrf_exempt
+def register_step2_ajax(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+        except:
+            data = request.POST
+            
+        user = request.user
+        user.role = data.get("role")
+        user.description = data.get("description")
+        
+        # Handle experience (IntegerField)
+        exp = data.get("experience")
+        user.experience = int(exp) if exp and str(exp).isdigit() else None
+        
+        user.deals = data.get("deals")
+        user.area_serves = data.get("area_serves")
+        user.whatsapp_number = data.get("whatsapp_number")
+        user.category = data.get("category")
+        
+        m_cat = data.get("marketer_category")
+        if isinstance(m_cat, list):
+            user.marketer_category = ",".join(m_cat)
+        elif m_cat:
+            user.marketer_category = m_cat
+            
+        if user.role == "MARKETER":
+            plan = data.get("plan_type")
+            if plan:
+                user.plan_type = plan
+            
+        try:
+            user.save()
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)}, status=400)
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=405)
+
+@login_required
+def register_subscribe(request):
+    if request.method == "POST":
+        plan_type = request.POST.get("plan_type")
+        if plan_type:
+            request.user.plan_type = plan_type
+            request.user.save()
+            # Redirect to payment or invoice
+            # For now, redirecting to a success page or home
+            return redirect("prop:home")
+    return redirect("prop:home")
+
 def register_choice(request):
     return render(request, 'register_choice.html')    
-    
+ 
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
@@ -286,23 +388,17 @@ def home(request):
 
     featured_companies = User.objects.filter(
         role=Role.COMPANY,
-        plan_type=PlanType.COMPANY_NORMAL,
-        company_subscription_start_date__lte=today,
-        company_subscription_end_date__gte=today
+        plan_type=PlanType.COMPANY_NORMAL
     ).order_by('-id')[:4]
 
     featured_companies_pro = User.objects.filter(
         role=Role.COMPANY,
-        plan_type=PlanType.COMPANY_PRO,
-        company_subscription_start_date__lte=today,
-        company_subscription_end_date__gte=today
+        plan_type=PlanType.COMPANY_PRO
     ).order_by('-id')[:4]
 
     featured_companies_premium = User.objects.filter(
         role=Role.COMPANY,
-        plan_type=PlanType.COMPANY_PREMIUM,
-        company_subscription_start_date__lte=today,
-        company_subscription_end_date__gte=today
+        plan_type=PlanType.COMPANY_PREMIUM
     ).order_by('-id')[:4]
     # ============================
     # PROFESSIONALS
@@ -325,8 +421,65 @@ def home(request):
     premium_projects = AddProject.objects.filter(
         plan_type=PlanType.COMPANY_PREMIUM
     ).order_by('-id')[:4]
-    print("professionals", professionals)
 
+    all_properties = AddPropertyModel.objects.all().order_by('-id')[:10]
+    
+    # ============================
+    # STORIES (ImagePost last 24h)
+    # ============================
+    twenty_four_hours_ago = timezone.now() - timedelta(hours=24)
+    
+    # 1. Automatic Cleanup: Delete posts older than 24h from DB (Run once per hour)
+    if not cache.get('stories_cleaned'):
+        ImagePost.objects.filter(created_at__lt=twenty_four_hours_ago).delete()
+        cache.set('stories_cleaned', True, 3600) # Expire in 1 hour
+    
+    # 2. Optimized Fetch: Only active posts
+    active_news = ImagePost.objects.filter(
+        created_at__gte=twenty_four_hours_ago
+    ).select_related('user').only(
+        'id', 'image', 'heading', 'news_content', 'created_at',
+        'user__username', 'user__company_name', 'user__company_logo_path', 'user__profile_image_path'
+    ).order_by('-created_at') # Most recent users first
+    
+    # Group news posts by user
+    stories_data = {}
+    for post in active_news:
+        if post.user:
+            user_id = post.user.id
+            if user_id not in stories_data:
+                if len(stories_data) >= 20: break 
+                stories_data[user_id] = {
+                    'user': {
+                        'id': post.user.id,
+                        'username': post.user.username,
+                        'company_name': post.user.company_name,
+                        'company_logo_path': post.user.company_logo_path.url if post.user.company_logo_path else None,
+                        'profile_image_path': post.user.profile_image_path.url if post.user.profile_image_path else None,
+                    },
+                    'posts': []
+                }
+            # Add to posts list
+            stories_data[user_id]['posts'].append({
+                'id': post.id,
+                'user_id': post.user.id,
+                'media_type': post.media_type,
+                'image_url': post.image.url if post.image else None,
+                'video_url': post.video.url if post.video else None,
+                'content': post.news_content,
+                'created_at': post.created_at.strftime("%H:%M")
+            })
+
+    # Reverse the posts for each user so they play Oldest -> Newest
+    for user_id in stories_data:
+        stories_data[user_id]['posts'].reverse()
+    
+    # Separate current user's stories for special "Your Story" handling
+    user_stories = stories_data.pop(request.user.id, None) if request.user.is_authenticated else None
+    
+    import json
+    stories_json = json.dumps(list(stories_data.values()))
+    user_stories_json = json.dumps(user_stories) if user_stories else "null"
 
     return render(request, "home.html", {
         "desktop_slides": desktop_slides,
@@ -341,7 +494,19 @@ def home(request):
         "normal_projects": normal_projects,
         "pro_projects": pro_projects,
         "premium_projects": premium_projects,
+        "stories_list": list(stories_data.values()),
+        "stories_json": stories_json,
+        "user_stories": user_stories,
+        "user_stories_json": user_stories_json,
+        "current_user_id": request.user.id if request.user.is_authenticated else None,
+        "feed_posts": NewsPost.objects.all().order_by('-created_at')[:10],
+        "all_properties": all_properties,
     })
+
+
+
+
+
 
 def all_projects(request):
     category = request.GET.get("category")
@@ -351,48 +516,41 @@ def all_projects(request):
     facing = request.GET.get("facing", "")
     min_price = request.GET.get("minpricing")
     max_price = request.GET.get("maxpricing")
-    cname=request.GET.get("cname")
-
-    postion=request.GET.get("position")
+    cname = request.GET.get("cname")
+    position = request.GET.get("position")
+    city = request.GET.get("city")
+    extent = request.GET.get("extent")
+    approval = request.GET.get("approval")
 
     qs = AddProject.objects.all()
 
-    # Name filter
     if name:
         qs = qs.filter(project_name__icontains=name)
-    if postion:
-        qs = qs.filter(position=postion)
+    if position:
+        qs = qs.filter(position=position)
     if cname:
         qs = qs.filter(user_id=cname)
-
-    # Location filter
     if location:
-        qs = qs.filter(project_address__icontains=location)
-
-    # Type of project filter
+        qs = qs.filter(Q(project_address__icontains=location) | Q(project_name__icontains=location))
+    if city:
+        qs = qs.filter(project_address__icontains=city)
     if type_of_project:
         qs = qs.filter(type_of_project__icontains=type_of_project)
-
-    # Facing filter
     if facing:
         qs = qs.filter(available_facing__icontains=facing)
-
-    # Pricing filter (less than or equal)
+    if extent:
+        qs = qs.filter(total_project_area__icontains=extent)
+    if approval:
+        qs = qs.filter(type_of_approval__icontains=approval)
     if min_price:
         qs = qs.filter(pricing__gte=min_price)
-
-    # Max price filter
     if max_price:
         qs = qs.filter(pricing__lte=max_price)
 
-
-    # Category filter (pro / normal)
     if category == "premium":
         qs = qs.filter(plan_type=PlanType.COMPANY_PREMIUM)
-  
     elif category == "pro":
         qs = qs.filter(plan_type=PlanType.COMPANY_PRO)
-
     elif category == "normal":
         qs = qs.filter(plan_type=PlanType.COMPANY_NORMAL)
         
@@ -407,9 +565,8 @@ def all_projects(request):
         "facing": facing,
         "min_price": min_price,
         "max_price": max_price,
-        "cname":cname,
-        "postion":postion,
-      
+        "cname": cname,
+        "position": position,
     })
 
  
@@ -551,6 +708,8 @@ def all_users(request):
     user_category = request.GET.get("user_category", "")
     experience = request.GET.get("experience", "")
     location = request.GET.get("location", "")
+    city = request.GET.get("city", "")
+    plan_type = request.GET.get("plan_type", "")
 
     # ❤️ CATEGORY FIELD FIX (IMPORTANT)
     def apply_filters(queryset):
@@ -558,9 +717,8 @@ def all_users(request):
             return None
 
         if name:
-            queryset = queryset.filter(username__icontains=name)
+            queryset = queryset.filter(Q(username__icontains=name) | Q(company_name__icontains=name))
 
-        # ----- CATEGORY HANDLING FIX -----
         if user_category:
             if category.startswith("company"):
                 queryset = queryset.filter(category__icontains=user_category)
@@ -570,10 +728,16 @@ def all_users(request):
                 queryset = queryset.filter(category__icontains=user_category)
 
         if experience:
-            queryset = queryset.filter(experience__icontains=experience)
+            queryset = queryset.filter(experience__gte=experience)
 
         if location:
             queryset = queryset.filter(location__icontains=location)
+            
+        if city:
+            queryset = queryset.filter(location__icontains=city)
+            
+        if plan_type:
+            queryset = queryset.filter(plan_type=plan_type)
 
         return queryset.order_by('-id')
 
@@ -760,7 +924,19 @@ def profile(request):
     user = request.user
 
     # ===== Upload Count =====
-    upload_count = AddPropertyModel.objects.filter(user=user).count()
+    properties = AddPropertyModel.objects.filter(user=user)
+    upload_count = properties.count()
+    sold_count = properties.filter(status="Sold Out").count()
+    pending_count = properties.filter(is_verified=False).count()
+
+    # Decorate properties with status
+    for prop in properties:
+        if prop.is_verifiedproperty:
+            prop.display_status = "Verified"
+        elif prop.is_verified: # Franchise has verified it
+            prop.display_status = "Pending"
+        else:
+            prop.display_status = "Not Verified"
 
     # ===== Leads =====
     leads = ProfileLeadsModel.objects.filter(leadTo=user)
@@ -810,7 +986,10 @@ def profile(request):
 
     context = {
         "data": user,
+        "properties": properties,
         "upload_count": upload_count,
+        "sold_count": sold_count,
+        "pending_count": pending_count,
         "lcount1": lcount1,
         "luser_list": luser_list,
         "is_expired": is_expired,
@@ -819,7 +998,251 @@ def profile(request):
         "days_left": days_left,
     }
 
-    return render(request, "profile.html", context)
+    if user.role == "OWNER":
+        return render(request, "owner_profile.html", context)
+    elif user.role == "PROFESSIONAL":
+        return redirect("prop:professional_profile")
+    elif user.role == "MARKETER":
+        return redirect("prop:marketer_profile")
+    elif user.role == "COMPANY":
+        return redirect("prop:company_profile")
+    
+    return render(request, "owner_profile.html", context) # Fallback
+
+@login_required
+def professional_profile_view(request, user_id=None):
+    user = request.user
+    if user_id:
+        profile_user = get_object_or_404(User, id=user_id)
+    else:
+        profile_user = user
+
+    is_owner = (user.id == profile_user.id)
+
+    # Properties/Stats
+    properties = AddPropertyModel.objects.filter(user=profile_user).order_by('-id')
+    upload_count = properties.count()
+    sold_count = properties.filter(status="Sold Out").count()
+    pending_count = properties.filter(is_verified=False).count()
+
+    # Decorate properties with status
+    for prop in properties:
+        if prop.is_verifiedproperty:
+            prop.display_status = "Verified"
+        elif prop.is_verified:
+            prop.display_status = "Pending"
+        else:
+            prop.display_status = "Not Verified"
+
+    # Increase profile views only for visitors
+    if request.user != profile_user and request.user.is_authenticated:
+        profile_user.click = (profile_user.click or 0) + 1
+        profile_user.save()
+
+    # Chart Data Setup
+    from django.db.models.functions import TruncDate
+    from django.db.models import Count
+    from datetime import date, timedelta
+    import json
+    
+    today_date = date.today()
+    last_7_days = [(today_date - timedelta(days=i)).strftime("%d %b") for i in range(6, -1, -1)]
+
+    # Leads aggregation
+    leads_qs = ProfileLeadsModel.objects.filter(leadTo=profile_user)
+    lcount = leads_qs.count()
+    leads_labels = last_7_days[:]
+    leads_counts = [0] * 7
+    leads_by_date = leads_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+    for item in leads_by_date:
+        d_str = item['date'].strftime("%d %b")
+        if d_str in leads_labels:
+            leads_counts[leads_labels.index(d_str)] = item['count']
+
+    # Referrals aggregation
+    referrals_labels = last_7_days[:]
+    referrals_counts = [0] * 7
+    if profile_user.user_referral_code:
+        referrals_qs = User.objects.filter(referred_by_code=profile_user.user_referral_code)
+        referrals_by_date = referrals_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+        for item in referrals_by_date:
+            d_str = item['date'].strftime("%d %b")
+            if d_str in referrals_labels:
+                referrals_counts[referrals_labels.index(d_str)] = item['count']
+
+    # Activity Pie Data
+    reels_count = Reels.objects.filter(user=profile_user).count()
+    props_count = properties.count()
+    projects_count = AddProject.objects.filter(user=profile_user).count()
+    
+    activity_labels = ["Reels", "Properties", "Projects"]
+    activity_counts = [reels_count, props_count, projects_count]
+
+    # Area Serves tags
+    area_tags = []
+    if profile_user.area_serves:
+        area_tags = [tag.strip() for tag in profile_user.area_serves.split(",") if tag.strip()]
+
+    # Subscription
+    today = timezone.now().date()
+    is_expired = False
+    show_expiry_warning = False
+    days_left = None
+    expiry_date = profile_user.professionals_subscription_end_date
+    news_posts = NewsPost.objects.filter(user=profile_user).order_by('-created_at')
+    
+    if expiry_date:
+        days_left = (expiry_date - today).days
+        if days_left < 0:
+            is_expired = True
+        elif days_left <= 7:
+            show_expiry_warning = True
+
+    context = {
+        "data": profile_user,
+        "is_owner": is_owner,
+        "news_posts": news_posts,
+        "polls": Poll.objects.filter(user=profile_user).order_by("-created_at"),
+        "properties": properties,
+        "upload_count": upload_count,
+        "sold_count": sold_count,
+        "pending_count": pending_count,
+        "lcount": lcount,
+        "area_tags": area_tags,
+        "is_expired": is_expired,
+        "show_expiry_warning": show_expiry_warning,
+        "days_left": days_left,
+        "rating": 4.5,
+        "rating_count": 200,
+
+        # Chart Data
+        "leads_labels": json.dumps(leads_labels),
+        "leads_counts": json.dumps(leads_counts),
+        "referrals_labels": json.dumps(referrals_labels),
+        "referrals_counts": json.dumps(referrals_counts),
+        "activity_labels": json.dumps(activity_labels),
+        "activity_counts": json.dumps(activity_counts),
+    }
+
+    return render(request, "professional_profile.html", context)
+
+@login_required
+def marketer_profile_view(request, user_id=None):
+    user = request.user
+    if user_id:
+        profile_user = get_object_or_404(User, id=user_id)
+    else:
+        profile_user = user
+
+    is_owner = (user.id == profile_user.id)
+
+    # Properties/Stats
+    properties = AddPropertyModel.objects.filter(user=profile_user).order_by('-id')
+    upload_count = properties.count()
+    sold_count = properties.filter(status="Sold Out").count()
+    pending_count = properties.filter(is_verified=False).count()
+
+    # Decorate properties with status
+    for prop in properties:
+        if prop.is_verifiedproperty:
+            prop.display_status = "Verified"
+        elif prop.is_verified:
+            prop.display_status = "Pending"
+        else:
+            prop.display_status = "Not Verified"
+
+    # Increase profile views only for visitors
+    if request.user != profile_user and request.user.is_authenticated:
+        profile_user.click = (profile_user.click or 0) + 1
+        profile_user.save()
+
+    # Chart Data Setup
+    from datetime import date, timedelta
+    from django.db.models.functions import TruncDate
+    from django.db.models import Count
+    import json
+    
+    leads_qs = ProfileLeadsModel.objects.filter(leadTo=profile_user)
+    lcount = leads_qs.count()
+    
+    today_date = date.today()
+    last_7_days = [(today_date - timedelta(days=i)).strftime("%d %b") for i in range(6, -1, -1)]
+
+    # Leads aggregation
+    leads_labels = last_7_days[:]
+    leads_counts = [0] * 7
+    leads_by_date = leads_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+    for item in leads_by_date:
+        d_str = item['date'].strftime("%d %b")
+        if d_str in leads_labels:
+            leads_counts[leads_labels.index(d_str)] = item['count']
+
+    # Referrals aggregation
+    referrals_labels = last_7_days[:]
+    referrals_counts = [0] * 7
+    if profile_user.user_referral_code:
+        referrals_qs = User.objects.filter(referred_by_code=profile_user.user_referral_code)
+        referrals_by_date = referrals_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+        for item in referrals_by_date:
+            d_str = item['date'].strftime("%d %b")
+            if d_str in referrals_labels:
+                referrals_counts[referrals_labels.index(d_str)] = item['count']
+
+    # Activity Pie Data
+    reels_count = Reels.objects.filter(user=profile_user).count()
+    props_count = properties.count()
+    projects_count = AddProject.objects.filter(user=profile_user).count()
+    
+    activity_labels = ["Reels", "Properties", "Projects"]
+    activity_counts = [reels_count, props_count, projects_count]
+
+    # Area Serves tags
+    area_tags = []
+    if profile_user.area_serves:
+        area_tags = [tag.strip() for tag in profile_user.area_serves.split(",") if tag.strip()]
+
+    # Subscription
+    today = timezone.now().date()
+    is_expired = False
+    show_expiry_warning = False
+    days_left = None
+    expiry_date = profile_user.marketer_subscription_end_date
+    news_posts = NewsPost.objects.filter(user=profile_user).order_by('-created_at')
+    
+    if expiry_date:
+        days_left = (expiry_date - today).days
+        if days_left < 0:
+            is_expired = True
+        elif days_left <= 7:
+            show_expiry_warning = True
+
+    context = {
+        "data": profile_user,
+        "is_owner": is_owner,
+        "news_posts": news_posts,
+        "polls": Poll.objects.filter(user=profile_user).order_by("-created_at"),
+        "properties": properties,
+        "upload_count": upload_count,
+        "sold_count": sold_count,
+        "pending_count": pending_count,
+        "lcount": lcount,
+        "area_tags": area_tags,
+        "is_expired": is_expired,
+        "show_expiry_warning": show_expiry_warning,
+        "days_left": days_left,
+        
+        "rating": 4.8,
+        "rating_count": 150,
+
+        "leads_labels": json.dumps(leads_labels),
+        "leads_counts": json.dumps(leads_counts),
+        "referrals_labels": json.dumps(referrals_labels),
+        "referrals_counts": json.dumps(referrals_counts),
+        "activity_labels": json.dumps(activity_labels),
+        "activity_counts": json.dumps(activity_counts),
+    }
+
+    return render(request, "marketer_profile.html", context)
     
   
 from datetime import timedelta
@@ -1244,6 +1667,7 @@ def company_register(request):
         form = CompanyRegisterForm()
 
     return render(request, "company_register.html", {"form": form})
+
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
@@ -1299,35 +1723,45 @@ def company_profile_view(request, user_id=None):
     # Contact count
     contact_count = ContactMessage.objects.filter(cid=str(profile_user.id)).count()
 
-    # Projects
-    projects = AddProject.objects.filter(user=profile_user)
+    # Projects/Stats
+    projects = AddProject.objects.filter(user=profile_user).order_by('-id')
+    upload_count = projects.count()
+    # Assuming 'Sold' projects are marked somehow, otherwise 0 for now or use completed_projects
+    sold_count = profile_user.completed_projects or 0
+    # Assuming 'Pending' are ongoing
+    pending_count = profile_user.ongoing_projects or 0
 
-    # Leads section
-    lead_list = []
-    count = 0
+    # Chart Data Setup
+    today_date = date.today()
+    last_7_days = [(today_date - timedelta(days=i)).strftime("%d %b") for i in range(6, -1, -1)]
 
-    if user:
-        # Get all leads to this profile user, newest first
-        leads_qs = (
-            ProfileLeadsModel.objects
-            .filter(leadTo=profile_user)
-            .select_related("leadFrom")
-            .order_by('-created_at')
-        )
+    # Leads aggregation
+    leads_qs = ProfileLeadsModel.objects.filter(leadTo=profile_user)
+    lcount = leads_qs.count()
+    leads_labels = last_7_days[:]
+    leads_counts = [0] * 7
+    leads_by_date = leads_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+    for item in leads_by_date:
+        d_str = item['date'].strftime("%d %b")
+        if d_str in leads_labels:
+            leads_counts[leads_labels.index(d_str)] = item['count']
 
-        # Deduplicate: one lead per unique leadFrom user
-        unique_users = {}
-        for lead in leads_qs:
-            if lead.leadFrom and lead.leadFrom.id not in unique_users:
-                unique_users[lead.leadFrom.id] = lead
+    # Referrals aggregation
+    referrals_labels = last_7_days[:]
+    referrals_counts = [0] * 7
+    if profile_user.user_referral_code:
+        referrals_qs = User.objects.filter(referred_by_code=profile_user.user_referral_code)
+        referrals_by_date = referrals_qs.annotate(date=TruncDate('created_at')).values('date').annotate(count=Count('id')).order_by('date')
+        for item in referrals_by_date:
+            d_str = item['date'].strftime("%d %b")
+            if d_str in referrals_labels:
+                referrals_counts[referrals_labels.index(d_str)] = item['count']
 
-        # Prepare final lead list for template
-        lead_list = [
-            {"username": lead.leadFrom.username, "phone": lead.leadFrom.phone}
-            for lead in unique_users.values()
-        ]
-        count = len(lead_list)
-            
+    # Activity Data (Example: Projects, Leads, etc.)
+    activity_labels = ['Projects', 'Leads', 'Referrals']
+    total_referrals = sum(referrals_counts)
+    activity_counts = [upload_count, lcount, total_referrals]
+
     show_expiry_warning = False
     is_expired = False
     days_left = None
@@ -1344,14 +1778,22 @@ def company_profile_view(request, user_id=None):
 
     return render(request, "company_profile.html", {
         "profile_user": profile_user,
-        "contact_count": contact_count,
         "projects": projects,
         "is_owner": is_owner,
-        "count": count,
-        "lead_list": lead_list,
-        "show_expiry_warning": show_expiry_warning,
-        "is_expired": is_expired,
+        "upload_count": upload_count,
+        "sold_count": sold_count,
+        "pending_count": pending_count,
+        "lcount": lcount,
+        "news_posts": NewsPost.objects.filter(user=profile_user).order_by('-created_at'),
+        "leads_labels": json.dumps(leads_labels),
+        "leads_counts": json.dumps(leads_counts),
+        "referrals_labels": json.dumps(referrals_labels),
+        "referrals_counts": json.dumps(referrals_counts),
+        "activity_labels": json.dumps(activity_labels),
+        "activity_counts": json.dumps(activity_counts),
         "days_left": days_left,
+        "is_expired": is_expired,
+        "show_expiry_warning": show_expiry_warning,
     })
 # project_edit----------------------------
 
@@ -1521,42 +1963,51 @@ def franchise_register(request):
         form = FranchiseForm()
 
     return render(request, "franchise_register.html", {"form": form})
-
+ 
 # =============================
 # FRANCHISE PROFILE & EDIT
 # =============================
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import FranchiseProperty
+from .models import FranchiseProperty, AddPropertyModel
+
 @login_required
 def franchise_profile(request):
     if request.user.role != "FRANCHISE":
         return redirect("prop:home")
 
-    user_location = request.user.location
+    # Get properties explicitly assigned to this franchise
+    assigned_tasks = FranchiseProperty.objects.filter(
+        franchise=request.user
+    ).select_related('property')
 
-    assigned_properties = AddPropertyModel.objects.filter(
-        location=user_location,
-        is_verified=False
-    )
+    # Pending are those where AddPropertyModel is still is_verified=False
+    pending_properties = [task.property for task in assigned_tasks if not task.property.is_verified]
+    
+    # Verified are those where AddPropertyModel is is_verified=True
+    verified_properties = [task.property for task in assigned_tasks if task.property.is_verified]
 
-    verified_properties = AddPropertyModel.objects.filter(
-        location=user_location,
-        is_verified=True
-    )
+    # Fetch referred users
+    referred_users = []
+    if request.user.user_referral_code:
+        referred_users = User.objects.filter(referred_by_code=request.user.user_referral_code)
+
+    # All assigned properties (verified + pending)
+    all_assigned_properties = [task.property for task in assigned_tasks]
 
     return render(request, "franchise_profile.html", {
         "profile": request.user,
+        "news_posts": NewsPost.objects.filter(user=request.user).order_by('-created_at'),
 
-        "assigned": assigned_properties.count(),
-        "pending": assigned_properties.count(),
-        "verified": verified_properties.count(),
+        "assigned": assigned_tasks.count(),
+        "pending": len(pending_properties),
+        "verified": len(verified_properties),
 
-        "properties": assigned_properties,
+        "properties": all_assigned_properties, # Now shows EVERYTHING assigned
         "verified_properties": verified_properties,
-        "not_verified_properties": assigned_properties,
+        "not_verified_properties": pending_properties,
+        "referred_users": referred_users,
     })
-
 
 
 @login_required
@@ -2026,21 +2477,39 @@ def project_leads_page(request, project_id):
     })
 
 
-
 from .forms import ReelsForm
+from .models import AddPropertyModel
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+
 @login_required
-def reels_upload(req):
-    user=req.user
-    f=ReelsForm()
-    if req.method=="POST":
-        f=ReelsForm(req.POST,req.FILES)
-        if f.is_valid():
-            reel=f.save(commit=False)
-            reel.user=user
+def reels_upload(request):
+    user = request.user
+
+    # ✅ ONLY LOGGED-IN USER PROPERTIES
+    properties = AddPropertyModel.objects.filter(user=user)
+
+    if request.method == "POST":
+        form = ReelsForm(request.POST, request.FILES)
+        if form.is_valid():
+            reel = form.save(commit=False)
+            reel.user = user
+
+            # ✅ Get selected property
+            property_id = request.POST.get("propertyId")
+
+            if property_id:
+                reel.linked_property_id = property_id
+
             reel.save()
             return redirect("prop:home")
-    return render(req,"reels_upload.html",{"f":f})
+    else:
+        form = ReelsForm()
 
+    return render(request, "reels_upload.html", {
+        "f": form,
+        "properties": properties
+    })
 import random 
 def get_reel(req):
     clicked_id = req.GET.get("reel")
@@ -2050,10 +2519,20 @@ def get_reel(req):
     if clicked_id:
         clicked_id = int(clicked_id)
         reels.sort(key=lambda r: 0 if r.id == clicked_id else 1)
+ 
+    return render(req,'reelViewer.html',{'data':reels})
 
-      
-    
-    
+import random 
+def get_reel(req):
+    clicked_id = req.GET.get("reel")
+    # Exclude reels with no uploaded file to avoid ValueError on .url access
+    reels = list(Reels.objects.exclude(reel='').exclude(reel__isnull=True))
+    random.shuffle(reels) 
+    # If user clicked a specific reel, move that reel to the first position
+    if clicked_id:
+        clicked_id = int(clicked_id)
+        reels.sort(key=lambda r: 0 if r.id == clicked_id else 1)
+  
     return render(req,'reelViewer.html',{'data':reels})
     
 def like_reel(req, id):
@@ -3149,7 +3628,14 @@ def about_us(request):
 def terms(request):
     return render(request, 'terms.html')
 
+def help_view(request):
+    return render(request, 'help.html')
 
+def refund_policy(request):
+    return render(request, 'refund_policy.html')
+
+def disclaimer(request):
+    return render(request, 'disclaimer.html')
 
 
 def privacy_policy(request):
@@ -3162,3 +3648,302 @@ def contact(request):
 
 def unsubscribe(request):
     return render(request, 'unsubscribe.html')
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import PostFeed, ImagePost
+from .forms import PostFeedForm, ImagePostForm
+
+
+# =========================
+# IMAGE STORIES (CRUD)
+# =========================
+
+@login_required
+def news_list(request):
+    posts = ImagePost.objects.all().order_by('-created_at')
+    return render(request, 'news_list.html', {'posts': posts})
+
+
+@login_required
+def news_create(request):
+    if request.method == 'POST':
+        form = ImagePostForm(request.POST)
+        media_file = request.FILES.get('media_file')
+        
+        if form.is_valid() and media_file:
+            post = form.save(commit=False)
+            post.user = request.user
+            
+            # Detect media type
+            content_type = media_file.content_type
+            if content_type.startswith('image'):
+                post.media_type = 'image'
+                post.image = media_file
+            elif content_type.startswith('video'):
+                post.media_type = 'video'
+                post.video = media_file
+            
+            post.save()
+            return redirect('prop:home')
+    else:
+        form = ImagePostForm()
+    return render(request, 'news_form.html', {'form': form})
+
+
+@login_required
+def news_edit(request, pk):
+    post = get_object_or_404(ImagePost, pk=pk)
+    if post.user and post.user != request.user:
+        return redirect('prop:home')
+
+    if request.method == 'POST':
+        form = ImagePostForm(request.POST, instance=post)
+        media_file = request.FILES.get('media_file')
+        
+        if form.is_valid():
+            edited_post = form.save(commit=False)
+            if media_file:
+                content_type = media_file.content_type
+                if content_type.startswith('image'):
+                    edited_post.media_type = 'image'
+                    edited_post.image = media_file
+                    edited_post.video = None
+                elif content_type.startswith('video'):
+                    edited_post.media_type = 'video'
+                    edited_post.video = media_file
+                    edited_post.image = None
+            edited_post.save()
+            return redirect('prop:home')
+    else:
+        form = ImagePostForm(instance=post)
+    return render(request, 'news_form.html', {'form': form})
+
+
+@login_required
+def news_delete(request, pk):
+    post = get_object_or_404(ImagePost, pk=pk)
+
+    if post.user == request.user:
+        post.delete()
+
+    return redirect('prop:home')
+
+
+@login_required
+def news_detail(request, pk):
+    post = get_object_or_404(ImagePost, pk=pk)
+    return render(request, 'news_detail.html', {'post': post})
+
+
+# =========================
+# FEED POST
+# =========================
+
+@login_required
+def feed_list(request):
+    feeds = PostFeed.objects.all().order_by('-created_at')
+    return render(request, 'feed_list.html', {'feeds': feeds})
+
+
+@login_required
+def feed_create(request):
+    form = PostFeedForm(request.POST or None, request.FILES or None)
+
+    if form.is_valid():
+        feed = form.save(commit=False)
+        feed.user = request.user
+        feed.save()
+        return redirect('prop:feed_list')
+
+    return render(request, 'feed_form.html', {'form': form})
+
+
+@login_required
+def feed_edit(request, pk):
+    feed = get_object_or_404(PostFeed, pk=pk)
+
+    if feed.user and feed.user != request.user:
+        return redirect('prop:feed_list')
+
+    form = PostFeedForm(request.POST or None, request.FILES or None, instance=feed)
+
+    if form.is_valid():
+        form.save()
+        return redirect('prop:feed_list')
+
+    return render(request, 'feed_form.html', {'form': form})
+
+
+@login_required
+def feed_delete(request, pk):
+    feed = get_object_or_404(PostFeed, pk=pk)
+
+    if feed.user == request.user:
+        feed.delete()
+
+    return redirect('prop:feed_list')
+
+
+
+
+# =========================
+# PROFILE PAGE
+# =========================
+
+@login_required
+def profile_pagess(request):
+    return render(request, 'profile_menu.html')
+
+# =========================
+# NEWSPOS FEED
+# =========================
+
+@login_required
+def feed_list(request):
+    posts = NewsPost.objects.all().order_by('-created_at')
+    return render(request, 'feed_list.html', {'posts': posts})
+
+@login_required
+def feed_create(request):
+    if request.method == 'POST':
+        form = NewsPostForm(request.POST)
+        media_file = request.FILES.get('media_file')
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            if media_file:
+                content_type = media_file.content_type
+                if content_type.startswith('image'):
+                    post.media_type = 'image'
+                    post.image = media_file
+                elif content_type.startswith('video'):
+                    post.media_type = 'video'
+                    post.video = media_file
+            else:
+                post.media_type = 'text'
+            post.save()
+            return redirect('prop:feed_list')
+    else:
+        form = NewsPostForm()
+    return render(request, 'feed_form.html', {'form': form})
+
+@login_required
+def feed_detail(request, pk):
+    post = get_object_or_404(NewsPost, pk=pk)
+    return render(request, 'feed_detail.html', {'post': post})
+@login_required
+def poll_create(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        if question:
+            poll = Poll.objects.create(user=request.user, question=question)
+            for i in range(1, 6):
+                option_text = request.POST.get('option_' + str(i))
+                if option_text:
+                    PollOption.objects.create(poll=poll, option_text=option_text)
+            messages.success(request, 'Poll created successfully!')
+    return redirect(request.META.get('HTTP_REFERER', 'prop:profile'))
+
+
+@login_required
+def poll_vote(request, pk):
+    poll = get_object_or_404(Poll, pk=pk)
+    if request.method == 'POST':
+        option_id = request.POST.get('option')
+        if option_id:
+            option = get_object_or_404(PollOption, pk=option_id, poll=poll)
+            if PollVote.objects.filter(user=request.user, poll=poll).exists():
+                messages.warning(request, 'You have already voted on this poll.')
+            else:
+                PollVote.objects.create(user=request.user, poll=poll, option=option)
+                messages.success(request, 'Your vote has been recorded.')
+        else:
+            messages.error(request, 'Please select an option.')
+    return redirect(request.META.get('HTTP_REFERER', 'prop:profile'))
+
+@login_required
+def poll_delete(request, pk):
+    poll = get_object_or_404(Poll, pk=pk)
+    if poll.user == request.user:
+        poll.delete()
+        messages.success(request, 'Poll deleted.')
+    else:
+        messages.error(request, 'Not authorized.')
+    return redirect(request.META.get('HTTP_REFERER', 'prop:profile'))
+
+def recent_properties_list(request):
+    """
+    New page showing all properties with advanced search filters.
+    """
+    name = request.GET.get("name", "")
+    location = request.GET.get("location", "")
+    city = request.GET.get("city", "")
+    type_of_project = request.GET.get("type_of_project", "") # Used for selectProperty
+    facing = request.GET.get("facing", "")
+    extent = request.GET.get("extent")
+    approval = request.GET.get("approval")
+    min_price = request.GET.get("minpricing")
+    max_price = request.GET.get("maxpricing")
+    look = request.GET.get("look")
+
+    qs = AddPropertyModel.objects.all()
+
+    if name:
+        qs = qs.filter(projectName__icontains=name)
+    if location:
+        qs = qs.filter(Q(address__icontains=location) | Q(projectName__icontains=location))
+    if city:
+        qs = qs.filter(address__icontains=city)
+    if type_of_project:
+        qs = qs.filter(selectProperty__icontains=type_of_project)
+    if facing:
+        qs = qs.filter(facing__icontains=facing)
+    if extent:
+        qs = qs.filter(extent__icontains=extent)
+    if approval:
+        qs = qs.filter(approvalType__icontains=approval)
+    if min_price:
+        qs = qs.filter(price__gte=min_price)
+    if max_price:
+        qs = qs.filter(price__lte=max_price)
+    if look:
+        qs = qs.filter(look=look)
+
+    qs = qs.order_by('-id')
+    return render(request, 'recent_properties.html', {'properties': qs})
+@login_required
+def check_property_details(request, property_id):
+    prop = get_object_or_404(AddPropertyModel, id=property_id, user=request.user)
+    
+    # Get the verification data from franchise
+    verification = FranchiseProperty.objects.filter(property=prop).order_by('-created_at').first()
+    
+    if request.method == "POST":
+        action = request.POST.get('action')
+        
+        if action == "confirm":
+            prop.is_verifiedproperty = True
+            prop.is_verified = True
+            prop.save()
+            messages.success(request, f"Property '{prop.projectName}' has been successfully verified!")
+            return redirect('prop:profile')
+            
+        elif action == "reverify":
+            reason = request.POST.get('reason')
+            if verification:
+                verification.owner_feedback = reason
+                verification.save()
+            
+            # Reset verification status so it goes back to "Not Verified" / "Needs Verification"
+            prop.is_verified = False
+            prop.is_verifiedproperty = False
+            prop.save()
+            
+            messages.info(request, "Re-verification request submitted successfully.")
+            return redirect('prop:profile')
+
+    return render(request, 'property_check_details.html', {
+        'prop': prop,
+        'verification': verification
+    })

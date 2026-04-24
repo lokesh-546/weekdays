@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add New Property</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
 
@@ -1051,49 +1052,252 @@ document.addEventListener("DOMContentLoaded", function () {
         <!-- Step 4: Media Upload -->
         <div class="form-step" id="step-4">
           <h2>Upload Media</h2>
-          <div class="input-grid">
-            <div class="form-field">
-              <span id="imageError" style="color:red; font-size:14px; display:none; margin-top:6px;"> 
-        Please upload at least one property image.
-    </span>
-                {{ form.image.label_tag }} {{ form.image }}
-<button type="button" id="addMoreImages"
-        style="margin-top:10px; background:#3b82f6; color:white; padding:8px 14px; border:none; border-radius:6px;">
-        + Add More
-    </button>
-    <div style="display:none;">
-    
-    {{ form.image1 }}
-     
-    {{ form.image2 }}
-    {{ form.image3 }}
-    {{ form.image4 }}
-</div>            </div>
-            <div class="form-field">
-         
-              {{ form.video.label_tag }} {{ form.video }}
+
+          <style>
+            .prop-upload-btn {
+              width: 45px;
+              height: 45px;
+              min-width: 45px;
+              background: #eef2ff;
+              color: #6366f1;
+              border: 2px dashed #6366f1;
+              border-radius: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 20px;
+              cursor: pointer;
+              transition: 0.3s;
+              flex-shrink: 0;
+            }
+            .prop-upload-btn:hover { background: #e0e7ff; }
+            .prop-upload-btn input[type="file"] { display: none; }
+
+            .prop-preview-box {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 10px;
+              flex: 1;
+              align-items: center;
+            }
+
+            .prop-preview-box img {
+              width: 70px;
+              height: 70px;
+              border-radius: 8px;
+              object-fit: cover;
+              border: 1px solid #e5e7eb;
+            }
+
+            .prop-file-chip {
+              padding: 6px 12px;
+              background: #f1f5f9;
+              border: 1px solid #e5e7eb;
+              border-radius: 8px;
+              font-size: 12px;
+              color: #555;
+              display: flex;
+              align-items: center;
+              gap: 6px;
+            }
+
+            .prop-media-item {
+              background: #f8fafc;
+              padding: 15px;
+              border-radius: 12px;
+              border: 1px solid #eee;
+              margin-bottom: 15px;
+            }
+
+            .prop-media-item .item-label {
+              font-weight: 600;
+              margin-bottom: 10px;
+              display: block;
+              font-size: 14px;
+              color: #374151;
+            }
+
+            .prop-media-row {
+              display: flex;
+              align-items: flex-start;
+              gap: 15px;
+              flex-wrap: wrap;
+            }
+
+            .prop-add-more-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              background: #eef2ff;
+              color: #6366f1;
+              border: 1px dashed #6366f1;
+              padding: 6px 14px;
+              border-radius: 8px;
+              font-size: 13px;
+              cursor: pointer;
+              transition: 0.2s;
+              margin-top: 10px;
+            }
+            .prop-add-more-btn:hover { background: #e0e7ff; }
+          </style>
+
+          <span id="imageError" style="color:red; font-size:13px; display:none; margin-bottom:8px;">Please upload at least one property image.</span>
+
+          <!-- UPLOAD IMAGES -->
+          <div class="prop-media-item">
+            <span class="item-label">Upload Images</span>
+            <div class="prop-media-row">
+              <label class="prop-upload-btn" title="Upload Image">
+                <i class="fa-solid fa-plus"></i>
+                {{ form.image }}
+              </label>
+              <div id="propImagePreview" class="prop-preview-box"></div>
             </div>
-            {% if request.user.role == 'OWNER' %}
-            <div class="form-field">
-              {{ form.document.label_tag }} {{ form.document }}
+            <div id="extraImageSlots"></div>
+            <button type="button" id="addMoreImages" class="prop-add-more-btn">
+              <i class="fa-solid fa-plus"></i> Add More Images
+            </button>
+            <div style="display:none;">
+              {{ form.image1 }}
+              {{ form.image2 }}
+              {{ form.image3 }}
+              {{ form.image4 }}
             </div>
-            {% endif %}
           </div>
-          
-            <div class="form-field">
-    <label>Price</label>
-    <input type="text" value="{{ form.price.value|default:'17999' }}" readonly>
-</div>
-           
-          <div class="buttons">
-            <button type="button" onclick="prevStep()">&larr; Back</button>
+
+          <!-- UPLOAD VIDEO -->
+          <div class="prop-media-item">
+            <span class="item-label">Upload Video</span>
+            <div class="prop-media-row">
+              <label class="prop-upload-btn" title="Upload Video">
+                <i class="fa-solid fa-plus"></i>
+                {{ form.video }}
+              </label>
+              <div id="propVideoPreview" class="prop-preview-box"></div>
+            </div>
+          </div>
+
+          <!-- UPLOAD DOCUMENT (Owner only) -->
+          {% if request.user.role == 'OWNER' %}
+          <div class="prop-media-item">
+            <span class="item-label">Upload Document / Brochure</span>
+            <div class="prop-media-row">
+              <label class="prop-upload-btn" title="Upload Document">
+                <i class="fa-solid fa-plus"></i>
+                {{ form.document }}
+              </label>
+              <div id="propDocPreview" class="prop-preview-box"></div>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="buttons" style="justify-content: space-between; margin-top: 20px;">
+            <button type="button" onclick="prevStep()">&#8592; Back</button>
             <button type="submit" id="submitBtn">
-  <span id="btnText">Post Property</span>
-</button>
-
-
+              <span id="btnText">Post Property</span>
+            </button>
           </div>
         </div>
+
+        <script>
+          // Image preview
+          document.getElementById('id_image').addEventListener('change', function() {
+            const preview = document.getElementById('propImagePreview');
+            preview.innerHTML = '';
+            Array.from(this.files).forEach(file => {
+              const reader = new FileReader();
+              reader.onload = e => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+              };
+              reader.readAsDataURL(file);
+            });
+          });
+
+          // Video preview
+          document.getElementById('id_video').addEventListener('change', function() {
+            const preview = document.getElementById('propVideoPreview');
+            preview.innerHTML = '';
+            const file = this.files[0];
+            if (file) {
+              const chip = document.createElement('div');
+              chip.className = 'prop-file-chip';
+              chip.innerHTML = '<i class="fa-solid fa-film"></i> ' + file.name;
+              preview.appendChild(chip);
+            }
+          });
+
+          // Document preview
+          const propDocInput = document.getElementById('id_document');
+          if (propDocInput) {
+            propDocInput.addEventListener('change', function() {
+              const preview = document.getElementById('propDocPreview');
+              preview.innerHTML = '';
+              const file = this.files[0];
+              if (file) {
+                const chip = document.createElement('div');
+                chip.className = 'prop-file-chip';
+                chip.innerHTML = '<i class="fa-solid fa-file"></i> ' + file.name;
+                preview.appendChild(chip);
+              }
+            });
+          }
+
+          // Add more images
+          document.addEventListener('DOMContentLoaded', () => {
+            const addMoreBtn = document.getElementById('addMoreImages');
+            const extraSlots = document.getElementById('extraImageSlots');
+            const hiddenImages = [
+              document.getElementById('id_image2'),
+              document.getElementById('id_image3'),
+              document.getElementById('id_image4'),
+            ];
+            let idx = 0;
+
+            addMoreBtn.addEventListener('click', () => {
+              if (idx < hiddenImages.length) {
+                const sourceInput = hiddenImages[idx];
+                const previewId = 'extraPreview_' + idx;
+
+                const row = document.createElement('div');
+                row.className = 'prop-media-row';
+                row.style.marginTop = '10px';
+
+                const label = document.createElement('label');
+                label.className = 'prop-upload-btn';
+                label.title = 'Upload Image';
+                label.innerHTML = '<i class="fa-solid fa-plus"></i>';
+                sourceInput.parentElement.removeChild(sourceInput);
+                label.appendChild(sourceInput);
+
+                const previewDiv = document.createElement('div');
+                previewDiv.id = previewId;
+                previewDiv.className = 'prop-preview-box';
+
+                sourceInput.addEventListener('change', function() {
+                  previewDiv.innerHTML = '';
+                  Array.from(this.files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                      const img = document.createElement('img');
+                      img.src = e.target.result;
+                      previewDiv.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                  });
+                });
+
+                row.appendChild(label);
+                row.appendChild(previewDiv);
+                extraSlots.appendChild(row);
+
+                idx++;
+                if (idx >= hiddenImages.length) addMoreBtn.style.display = 'none';
+              }
+            });
+          });
+        </script>
 
         <!-- Step 4: Success Message (Optional) -->
         <div class="form-step" id="step-5">

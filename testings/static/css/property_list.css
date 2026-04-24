@@ -1,0 +1,891 @@
+/* ================= ROOT ================= */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow-x: hidden;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont;
+      }
+
+      /* ================= FILTER (DESKTOP) ================= */
+      .filter-box {
+        background: #ffffff;
+        padding: 18px;
+        border-radius: 16px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+        position: sticky;
+        top: 100px;
+        left: 5px;
+        max-width: 300px;
+        margin-top: 90px;
+        border: 1px solid #e6e9ef;
+      }
+
+      /* ================= HEADER ================= */
+      .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 14px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid #eef1f6;
+      }
+
+      .filter-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .filter-close {
+        display: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #ff3b30;
+      }
+
+      /* ================= FIELDS ================= */
+      .field {
+        margin-bottom: 16px;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #d0d7e2;
+        font-size: 14px;
+        background: #f9fbff;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        outline: none;
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+      }
+
+      /* Price */
+      .price-row {
+        display: flex;
+        gap: 10px;
+      }
+
+      /* ================= ACTIONS ================= */
+      .filter-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .apply-btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: #0d6efd;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .reset-btn {
+        flex: 1;
+        padding: 12px;
+        border-radius: 12px;
+        background: #f1f3f6;
+        text-align: center;
+        text-decoration: none;
+        color: #333;
+      }
+
+      /* ================= FILTER TOGGLE ================= */
+      .filter-toggle-btn {
+        display: none;
+        margin-top: 80px;
+        margin-left: 10px;
+        background: #fff;
+        border: 1px solid #0d6efd;
+        color: #0d6efd;
+        padding: 8px 14px;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+
+      /* ================= MOBILE ================= */
+      @media (max-width: 768px) {
+        .filter-toggle-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .filter-box {
+          position: fixed;
+          top: -3%; /* NAVBAR HEIGHT */
+          left: 5;
+          width: 100%;
+          height: 80vh;
+          border-radius: 0;
+          display: none;
+          z-index: 99999;
+          overflow-y: auto;
+          box-shadow: none;
+        }
+
+        .filter-box.open {
+          display: block;
+        }
+
+        .filter-close {
+          display: inline;
+        }
+      }
+      /* ===== MOBILE FILTER BAR ===== */
+      .mobile-filters {
+        display: none;
+        gap: 8px;
+        padding: 8px;
+      }
+
+      .quick-filter-btn {
+        flex: 1;
+        background: #fff;
+        border: 1px solid #0d6efd;
+        color: #0d6efd;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .quick-filter-btn.active {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* Mobile only */
+      @media (max-width: 768px) {
+        .mobile-filters {
+          display: flex;
+        }
+      }
+
+      /* MOBILE FIRST */
+      .right-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 10px;
+      }
+
+      .property-card {
+        background: #fff;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 190px;
+        object-fit: cover;
+      }
+
+      .card-body {
+        padding: 12px;
+      }
+
+      .card-body .price {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .card-body .meta {
+        font-size: 13px;
+        color: #666;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        padding: 12px;
+        border-top: 1px solid #eee;
+      }
+
+      .btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        font-weight: 600;
+      }
+
+      .btn.primary {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+   /* 🔥 FIX Google Places dropdown hidden issue */
+.pac-container {
+  z-index: 100000 !important;
+}
+
+/* Ghost button */
+.btn.ghost {
+  background-color: #f1f3f6;
+}
+
+/* ===== MOBILE FIRST (default) ===== */
+.main-layout {
+  display: block; /* full width on mobile */
+}
+
+.filter-box {
+  display: none; /* hide filter on mobile */
+}
+
+.right-list {
+  width: 100%;
+  padding: 12px;
+}
+
+/* Card image mobile */
+.card-image img {
+  width: 100%;
+}
+
+/* ===== DESKTOP ===== */
+@media (min-width: 992px) {
+  .main-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .filter-box {
+    display: block;
+    flex: 0 0 280px;
+  }
+
+  .right-list {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin-top: 100px;
+  }
+
+  .card-image img {
+    height: 210px;
+    object-fit: cover;
+  }
+}
+
+      /* ================= ACTION BUTTONS ================= */
+      .card-actions {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        border-top: 1px solid #eee;
+      }
+
+      /* Common button */
+      .action-btn {
+        width: 100%;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+
+        color: white;
+        border: none;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 16px;
+      }
+
+      .action-btn:hover {
+        background: #f0f6ff;
+      }
+
+      .action-btn i {
+        color: #0d6efd;
+      }
+
+      /* CONTACT BUTTON */
+      .contact-btn {
+        flex: 1;
+        background: #0d6efd;
+        color: #fff;
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      .contact-btn:hover {
+        background: #0b5ed7;
+      }
+
+      /* SAVE ICON BUTTON */
+      .save-btn {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #f1f3f6;
+        font-size: 18px;
+      }
+
+      .save-btn:hover {
+        background: #e2e6ea;
+      }
+
+      /* Saved state */
+      .save-btn.saved {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 768px) {
+        .contact-btn {
+          font-size: 14px;
+          padding: 10px;
+        }
+
+        .save-btn {
+          width: 42px;
+          height: 42px;
+        }
+      }
+
+      /* ================= CARD ACTIONS ================= */
+      .card-actions {
+        display: flex;
+        gap: 10px;
+        padding: 12px;
+        border-top: 1px solid #eee;
+        align-items: center;
+      }
+
+      /* Base button */
+      .card-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: all 0.25s ease;
+      }
+
+      /* Contact */
+      .card-btn.contact {
+        flex: 1;
+        background: #0d6efd;
+        color: #fff;
+        padding: 12px;
+      }
+
+      .card-btn.contact:hover {
+        background: #0b5ed7;
+      }
+
+      /* Icon buttons */
+      .card-btn.icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f1f3f6;
+        font-size: 18px;
+      }
+
+      .card-btn.icon:hover {
+        background: #e2e6ea;
+      }
+
+      /* Saved state */
+      .card-btn.saved {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+        .card-actions {
+          gap: 8px;
+        }
+
+        .card-btn.contact {
+          font-size: 14px;
+          padding: 10px;
+        }
+
+        .card-btn.icon {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      /* Hover */
+      .action-btn:hover,
+      .contact-btn-main:hover {
+        background: #f0f6ff;
+      }
+
+      /* Icon color */
+      .action-btn i,
+      .contact-btn-main i {
+        color: #0d6efd;
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+
+        height: 44px;
+        padding: 0 14px;
+
+        border-radius: 8px;
+        border: 1px solid #0d6efd;
+        background: #fff;
+
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .action-btn:hover {
+        background: #f0f6ff;
+      }
+
+      .action-btn i {
+        color: #0d6efd;
+      }
+
+      /* 🔒 Anchor point */
+      .card-actions {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: nowrap; /* 🔥 PREVENT STACKING */
+      }
+
+      /* Share wrapper must NOT stretch */
+      .share-wrapper {
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      /* FLOATING share box */
+      .share-box {
+        position: absolute;
+        bottom: 52px; /* ⬆ above buttons */
+        right: 0;
+        display: none; /* hidden by default */
+        flex-direction: column;
+        width: 170px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+      }
+      @media (max-width: 768px) {
+        /* Contact stays full */
+        .card-btn.contact {
+          flex: 1;
+        }
+
+        /* Share & Save = icon only */
+        .action-btn span {
+          display: none; /* 🔥 hide text */
+        }
+
+        .action-btn {
+          width: 44px;
+          padding: 0;
+        }
+      }
+
+      /* 🔵 COMMON ACTION BUTTON STYLE */
+      .action-btn,
+      .contact-btn-main {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        height: 44px;
+        padding: 0 14px;
+
+        background: #fff; /* ✅ white */
+        border: 1.5px solid #0d6efd; /* ✅ blue border */
+        border-radius: 8px;
+
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      /* Hover */
+      .action-btn:hover,
+      .contact-btn-main:hover {
+        background: #f0f6ff;
+      }
+
+      /* Icon + text color */
+      .action-btn i,
+      .contact-btn-main i,
+      .contact-btn-main span {
+        color: #0d6efd;
+      }
+
+      /* Icon-only buttons (Share & Save) */
+      .action-btn.icon {
+        width: 44px;
+        padding: 0;
+      }
+      .save-btn {
+        width: 10px;
+      }
+
+      /* Mobile consistency */
+      @media (max-width: 768px) {
+        .action-btn,
+        .contact-btn-main {
+          height: 42px;
+          font-size: 13px;
+        }
+      }
+      /* ❌ REMOVE THIS */
+      .card-btn.contact {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      /* ❌ REMOVE THIS */
+      .contact-btn {
+        background: #0d6efd;
+        color: #fff;
+      }
+
+      .card-actions button {
+        background-color: white;
+      }
+
+      /* ================= USER HEADER ================= */
+      .user-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        padding: 10px;
+      }
+
+      .user-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #eee;
+        flex-shrink: 0;
+      }
+
+      .user-name-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        justify-content: space-between;
+        padding: 10px;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .user-name {
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .user-time {
+        font-size: 11px;
+        color: #777;
+      }
+
+      .verified-badge {
+        width: 90px;
+        height: auto;
+      }
+
+      .chat-inline-btn {
+        margin-left: auto;
+        border: 1.5px solid #000;
+        background: transparent;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .chat-inline-btn:hover {
+        background: #000;
+        color: #fff;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 768px) {
+        .user-avatar {
+          width: 34px;
+          height: 34px;
+        }
+
+        .chat-inline-btn {
+          font-size: 12px;
+          padding: 5px 10px;
+        }
+      }
+      /* ===== USER HEADER LAYOUT FIX ===== */
+      .user-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-name-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .chat-inline-btn {
+        margin-left: auto; /* 🔥 PUSH TO RIGHT */
+        border: 1.5px solid #000;
+        background: transparent;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .chat-inline-btn:hover {
+        background: #000;
+        color: #fff;
+      }
+
+      /* Mobile */
+      @media (max-width: 768px) {
+        .chat-inline-btn {
+          font-size: 12px;
+          padding: 5px 10px;
+        }
+      }
+
+      .chat-inline-btn {
+        display: inline-flex; /* 🔥 force visible */
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+        white-space: nowrap;
+        flex-shrink: 0; /* 🔥 never collapse */
+      }
+
+      /* =====================================================
+                                   CARD BODY – MATCH OLD DESIGN EXACTLY
+                                   ===================================================== */
+
+      .property-card .card-body {
+        padding: 5px 18px;
+        font-family: "Poppins", system-ui, sans-serif;
+      }
+
+      /* Project + approval row */
+      .property-card .card-body > div:first-child p {
+        font-size: 14px;
+        color: #444;
+        margin: 0;
+        line-height: 1.4;
+      }
+
+      /* Main meta line (extent, facing, type, sell/rent) */
+      .property-card .card-body span {
+        font-size: 16px;
+        color: #444;
+        line-height: 1.6;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      /* Location */
+      .property-card .card-body p:nth-of-type(2) {
+        font-size: 16px;
+        color: #444;
+        margin: 7px 0;
+      }
+
+      /* Price */
+      .property-card .card-body p:last-of-type {
+        font-size: 16px;
+        color: #444;
+        margin: 7px 0;
+        font-weight: 400;
+      }
+
+      /* Remove old small meta styles */
+      .property-card .card-body .meta {
+        display: none;
+      }
+
+      /* Mobile – match old mobile sizing */
+      @media (max-width: 768px) {
+        .property-card .card-body span,
+        .property-card .card-body p {
+          font-size: 14px;
+        }
+      }
+      /* ===== NEARBY LOCATIONS ===== */
+      .nearby-container {
+        display: flex;
+        gap: 8px;
+        /* margin-top: 6px; */
+        flex-wrap: wrap;
+      }
+
+      .nearby-box {
+        padding: 3px 3px;
+        background: #f1f3f6;
+        color: #444;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+      .property-card .card-body span,
+      .property-card .card-body p {
+        font-size: 11px;
+      }
+
+      /* CARD ACTIONS LAYOUT */
+      .card-actions {
+        display: flex;
+        justify-content: space-between; /* 🔥 space between */
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* LEFT SIDE (CONTACT) */
+      .actions-left {
+        flex: 1; /* 🔥 take more space */
+      }
+
+      /* Make contact button wider */
+      .actions-left .contact-btn-main {
+        width: 100%;
+        height: 26px;
+        font-size: 14px;
+      }
+
+      /* RIGHT SIDE (SHARE + SAVE) */
+      .actions-right {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      /* Icon buttons */
+      .actions-right .action-btn.icon {
+        width: 44px;
+        height: 24px;
+        padding: 0;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 768px) {
+        .actions-left .contact-btn-main {
+          height: 22px;
+          font-size: 1px;
+        }
+
+        .actions-right .action-btn.icon {
+          width: 40px;
+          height: 20px;
+        }
+      }
+
+      /* ===== NEARBY LOCATIONS (HORIZONTAL SCROLL) ===== */
+     .nearby-wrapper {
+    padding-top: 1px;   /* small trick */
+    margin-top: -7px;
+    margin-bottom: -10px;
+}
+
+      /* horizontal row */
+      .nearby-container {
+        display: flex;
+        gap: 8px;
+        padding-bottom: 3px;
+        flex-wrap: nowrap;
+        width: max-content;
+      }
+
+      /* hide scrollbar (mobile friendly) */
+      .nearby-wrapper::-webkit-scrollbar {
+        display: none;
+      }
+      .nearby-wrapper {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* individual tag */
+      .nearby-box {
+        padding: 4px 8px;
+        font-size: 12px;
+        background: #f1f3f6;
+        color: #444;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        white-space: nowrap;
+      }

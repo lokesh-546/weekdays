@@ -1,12 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.utils import timezone
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 import random
 import re
+import os
 from datetime import timedelta
 
-
-# ===== Enum Classes =====
 
 # ===== Enum Classes =====
 
@@ -41,11 +42,6 @@ class MarketingSubscriptionType(models.TextChoices):
     EXPORT_PRO = 'EXPORT_PRO', 'Export Pro'
     EXPORT_PREMIUM = 'EXPORT_PREMIUM', 'Export Premium'
 
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.utils import timezone
-import random, re
-from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 class User(AbstractUser):
     # === your fields ===
@@ -56,6 +52,8 @@ class User(AbstractUser):
     category = models.CharField(max_length=100, null=True, blank=True)
     marketer_category = models.CharField(max_length=100, null=True, blank=True)
     company_category = models.CharField(max_length=100, null=True, blank=True)
+    area_serves = models.CharField(max_length=255, null=True, blank=True)
+    whatsapp_number = models.CharField(max_length=15, null=True, blank=True)
     role = models.CharField(max_length=20, choices=Role.choices, default=Role.PROFESSIONAL)
     plan_type = models.CharField(max_length=30, choices=PlanType.choices, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -420,7 +418,13 @@ class ProjectImage(models.Model):
     def __str__(self):
         return f"Image for {self.project.project_name}"
     
+class ProjectLegalDocument(models.Model):
+    project = models.ForeignKey(AddProject, related_name="legal_documents", on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    file = models.FileField(upload_to="project_legal_docs/")
 
+    def __str__(self):
+        return f"{self.name} for {self.project.project_name}"
 
 class SavedProperty(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -472,10 +476,12 @@ class Reels(models.Model):
     commentCount = models.IntegerField(default=0)
     shareCount = models.IntegerField(default=0)
     viewers = models.ManyToManyField(User, related_name='viewed_reels', blank=True)
-
+    linked_property = models.ForeignKey(AddPropertyModel, on_delete=models.SET_NULL, null=True, blank=True)
+   
     @property
     def view_count(self):
         return self.viewers.count()
+    
 class Comment(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     reel=models.ForeignKey(Reels,on_delete=models.CASCADE)
@@ -573,4 +579,109 @@ class SlideImage(models.Model):
         return f"{self.slide_type} - {self.id}"
 
  
-        
+# =========================
+# TABLE 2 - Post Feed
+# =========================
+class PostFeed(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
+    MEDIA_TYPE = (
+        ('image', 'Image'),
+        ('video', 'Video'),
+    )
+
+    media_type = models.CharField(max_length=10, choices=MEDIA_TYPE)
+    image = models.ImageField(upload_to='feed_images/', blank=True, null=True)
+    video = models.FileField(upload_to='feed_videos/', blank=True, null=True)
+
+    description = models.TextField()
+    link = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.description[:30]
+
+
+# =========================
+# TABLE 3 - Image Posts
+# =========================
+class ImagePost(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    MEDIA_TYPE = (
+        ('image', 'Image'),
+        ('video', 'Video'),
+    )
+    media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, default='image')
+    image = models.ImageField(upload_to='image_posts/', null=True, blank=True)
+    video = models.FileField(upload_to='video_posts/', null=True, blank=True)
+    heading = models.CharField(max_length=255, null=True, blank=True)
+    news_content = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.heading if self.heading else str(self.id)
+
+# =========================
+# Signals for Cleanup
+# =========================
+@receiver(post_delete, sender=ImagePost)
+def auto_delete_file_on_delete(sender, instance, **kwargs):
+    """
+    Deletes file from filesystem
+    when corresponding ImagePost object is deleted.
+    """
+    if instance.image:
+        if os.path.isfile(instance.image.path):
+            os.remove(instance.image.path)
+    if instance.video:
+        if os.path.isfile(instance.video.path):
+            os.remove(instance.video.path)
+
+# =========================
+# TABLE 4 - News Posts Feed
+# =========================
+class NewsPost(models.Model):
+    MEDIA_TYPE = (
+        ('image', 'Image'),
+        ('video', 'Video'),
+        ('text', 'Text Only'),
+    )
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, default='image')
+    image = models.ImageField(upload_to='news_images/', blank=True, null=True)
+    video = models.FileField(upload_to='news_videos/', blank=True, null=True)
+
+    heading = models.CharField(max_length=255, blank=True, null=True)
+    news_content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.heading if self.heading else self.news_content[:20]
+class Poll(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='polls')
+    question = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.question
+
+class PollOption(models.Model):
+    poll = models.ForeignKey(Poll, related_name='options', on_delete=models.CASCADE)
+    option_text = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f"{self.poll.question} - {self.option_text}"
+
+    @property
+    def vote_count(self):
+        return self.votes.count()
+
+class PollVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    option = models.ForeignKey(PollOption, related_name='votes', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'poll')

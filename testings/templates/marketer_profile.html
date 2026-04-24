@@ -1,0 +1,509 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.username }} | Real Estate Agent Profile</title>
+    <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="{% static 'css/marketer_profile.css' %}">
+</head>
+
+<body>
+    {% include 'NavBar.html' %}
+
+    <div class="container">
+        <!-- HEADER CARD -->
+        <div class="header-card">
+            {% if is_owner %}
+            <button class="edit-btn" onclick="location.href='{% url 'prop:edit_profile' %}'">
+                <i class="bi bi-pencil-fill"></i>
+            </button>
+            {% endif %}
+
+            <div class="profile-top">
+                <div class="avatar-box">
+                    <img src="{% if data.profile_image_path %}{{ data.profile_image_path.url }}{% else %}{% static 'images/Default_profile_picture.jpeg' %}{% endif %}" alt="Profile">
+                </div>
+                <div class="name-box">
+                    <h1>{{ data.username }} <i class="bi bi-patch-check-fill verified-icon"></i></h1>
+                    <div class="rating">
+                        <span class="rating-val">{{ rating|default:"4.8" }}</span>
+                        <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+                        <span>({{ rating_count|default:"150" }} Reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="referral-section">
+                <span>Referral Code</span>
+                <b>{{ data.user_referral_code|default:"NOT SET" }}</b>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3>{{ upload_count }}</h3>
+                    <p>Posted</p>
+                </div>
+                <div class="stat-item">
+                    <h3>{{ sold_count }}</h3>
+                    <p>Sold</p>
+                </div>
+                <div class="stat-item">
+                    <h3>{{ pending_count }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Agent Experience</label>
+                    <p>{{ data.experience|default:"0" }} Years</p>
+                </div>
+                <div class="info-item">
+                    <label>Property Specialist</label>
+                    <p>{{ data.marketer_category|default:"General Agent" }}</p>
+                </div>
+            </div>
+
+            <div class="area-tags">
+                {% for tag in area_tags %}
+                <span class="tag">{{ tag }}</span>
+                {% empty %}
+                <span class="tag">Serving Multiple Locations</span>
+                {% endfor %}
+            </div>
+
+            <div class="bio-section">
+                <h4>Biography</h4>
+                <p>{{ data.description|default:"Licensed Real Estate Agent dedicated to helping you find your dream home or the perfect investment property. Specialized in luxury villas, residential plots, and commercial lands." }}</p>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <a href="{% url 'prop:referral' %}" class="action-btn">
+                <i class="bi bi-person-lines-fill"></i>
+                <span>My Referrals</span>
+            </a>
+            <button class="action-btn" onclick="shareProfile()">
+                <i class="bi bi-send-fill"></i>
+                <span>Share</span>
+            </button>
+            <button class="action-btn" onclick="referOthers()">
+                <i class="bi bi-gift-fill"></i>
+                <span>Refer</span>
+            </button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-container">
+            <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
+            <div class="tab" onclick="switchTab('feed')">Feed</div>
+            <div class="tab" onclick="switchTab('sales')">Sales</div>
+            <div class="tab" onclick="switchTab('rentals')">Rentals</div>
+            <div class="tab" onclick="switchTab('bytes')">Bytes</div>
+            <div class="tab" onclick="switchTab('polls')">Polls</div>
+            <div class="tab" onclick="switchTab('news')">News</div>
+            <div class="tab" onclick="switchTab('leads')">Leads</div>
+            <div class="tab" onclick="switchTab('subscription')">Subscription</div>
+        </div>
+
+        <!-- DASHBOARD CONTENT -->
+        <div id="dashboard-content" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="chart-card full-width">
+                    <h4>Visitor Traffic <span>Total Views: {{ data.click|default:"0" }}</span></h4>
+                    <div class="chart-container">
+                        <canvas id="viewsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <h4>Recent Leads <span>Total: {{ lcount }}</span></h4>
+                    <div class="chart-container">
+                        <canvas id="leadsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h4>Activity</h4>
+                    <div class="chart-container">
+                        <canvas id="activityPieChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h4>Referrals</h4>
+                    <div class="chart-container">
+                        <canvas id="referralLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBSCRIPTION CONTENT -->
+        <div id="subscription-content" class="tab-content" style="display: none;">
+            <div class="chart-card">
+                <h4>Your Plan</h4>
+                {% if data.marketing_subscription_type %}
+                <div style="background: #f0f9ff; border-radius: 20px; padding: 25px; border: 1px solid #bae6fd;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="color: #0369a1; font-size: 20px;">{{ data.marketing_subscription_type }}</h3>
+                        <span style="background: #0369a1; color: white; padding: 4px 12px; border-radius: 100px; font-size: 12px;">Active</span>
+                    </div>
+                    <p style="font-size: 14px; color: #0c4a6e; margin-bottom: 5px;">Valid until: <b>{{ data.marketer_subscription_end_date }}</b></p>
+                    <p style="font-size: 13px; color: #0c4a6e;">Days remaining: <b style="color: {% if is_expired %}#ef4444{% else %}#059669{% endif %};">{{ days_left }}</b></p>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 50px; margin-bottom: 20px;">🚀</div>
+                    <h3 style="font-size: 18px; margin-bottom: 10px;">No Active Subscription</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">Subscribe to a plan to unlock premium features and grow your network.</p>
+                    <a href="{% url 'prop:update_plans' %}" class="action-btn" style="display: inline-flex; width: auto; padding: 12px 30px; background: var(--accent) !important; color: white !important; border: none !important;">View Plans</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- LISTINGS SECTION -->
+        <div id="sales-content" class="tab-content" style="display: none;">
+            <h3 style="margin-bottom: 20px; font-size: 18px; color: var(--primary);">Active Sales Listings</h3>
+            {% for prop in properties %}
+                {% if prop.look == "Sell" %}
+                <div class="property-item">
+                    <div style="width: 90px; height: 90px; border-radius: 16px; overflow: hidden; background: #eee;">
+                        <img src="{% if prop.image %}{{ prop.image.url }}{% else %}{% static 'images/logo.jpg' %}{% endif %}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);">{{ prop.projectName|default:prop.selectProperty }}</h4>
+                        <p style="font-size: 12px; color: var(--text-muted);"><i class="bi bi-geo-alt-fill"></i> {{ prop.location }}</p>
+                        <span class="status-badge" style="padding: 3px 10px; border-radius: 100px; background: {% if prop.display_status == 'Verified' %}#ecfdf5; color: #065f46;{% elif prop.display_status == 'Pending' %}#fffbeb; color: #92400e;{% else %}#fef2f2; color: #991b1b;{% endif %}">
+                            {{ prop.display_status }}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+                <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">No sales listings found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- RENTALS SECTION -->
+        <div id="rentals-content" class="tab-content" style="display: none;">
+            <h3 style="margin-bottom: 20px; font-size: 18px; color: var(--primary);">Rental Properties</h3>
+            {% for prop in properties %}
+                {% if prop.look == "Rent" %}
+                <div class="property-item">
+                    <div style="width: 90px; height: 90px; border-radius: 16px; overflow: hidden; background: #eee;">
+                        <img src="{% if prop.image %}{{ prop.image.url }}{% else %}{% static 'images/logo.jpg' %}{% endif %}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="font-size: 15px; margin-bottom: 4px; color: var(--primary);">{{ prop.projectName|default:prop.selectProperty }}</h4>
+                        <p style="font-size: 12px; color: var(--text-muted);"><i class="bi bi-geo-alt-fill"></i> {{ prop.location }}</p>
+                        <span class="status-badge" style="padding: 3px 10px; border-radius: 100px; background: {% if prop.display_status == 'Verified' %}#ecfdf5; color: #065f46;{% elif prop.display_status == 'Pending' %}#fffbeb; color: #92400e;{% else %}#fef2f2; color: #991b1b;{% endif %}">
+                            {{ prop.display_status }}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            {% empty %}
+                <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">No rental listings found.</p>
+            {% endfor %}
+        </div>
+
+        <!-- LEADS SECTION -->
+        <div id="leads-content" class="tab-content" style="display: none;">
+            <h3 style="margin-bottom: 20px; font-size: 18px; color: var(--primary);">Recent Leads</h3>
+            <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">Detailed lead management coming soon.</p>
+        </div>
+        <!-- POLLS CONTENT -->
+        <div id="polls-content" class="tab-content" style="display: none;">
+            {% if is_owner %}
+            <div style="margin-bottom: 25px;">
+                <button onclick="document.getElementById('poll-creation-card-marketer').style.display='block'; this.style.display='none'" class="action-btn" style="width: auto; padding: 12px 25px; background: var(--accent); border-radius: 15px;">
+                    <i class="bi bi-plus-lg"></i> Add Poll
+                </button>
+            </div>
+
+            <div id="poll-creation-card-marketer" style="display: none; background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #f1f5f9;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h4 style="font-weight: 700; color: var(--primary);">Create New Poll</h4>
+                    <button onclick="document.getElementById('poll-creation-card-marketer').style.display='none'; document.querySelector('.action-btn[onclick*=\'poll-creation-card-marketer\']').style.display='block'" style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;">&times;</button>
+                </div>
+                <form action="{% url 'prop:poll_create' %}" method="POST">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">Question</label>
+                        <input type="text" name="question" required placeholder="What's on your mind?" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit;">
+                    </div>
+                    <div id="poll-options-container-marketer">
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">Options</label>
+                        <input type="text" name="option_1" required placeholder="Option 1" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;">
+                        <input type="text" name="option_2" required placeholder="Option 2" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;">
+                    </div>
+                    <button type="button" onclick="addPollOptionFieldMarketer()" style="background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px;">+ Add more options</button>
+                    <button type="submit" class="action-btn" style="width: 100%; background: var(--primary);">Post Poll</button>
+                </form>
+            </div>
+            <script>
+                let optionCountMarketer = 2;
+                function addPollOptionFieldMarketer() {
+                    if (optionCountMarketer < 5) {
+                        optionCountMarketer++;
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = 'option_' + optionCountMarketer;
+                        input.placeholder = 'Option ' + optionCountMarketer;
+                        input.style = 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;';
+                        document.getElementById('poll-options-container-marketer').appendChild(input);
+                    } else {
+                        alert('Maximum 5 options allowed');
+                    }
+                }
+            </script>
+            {% endif %}
+
+            <div class="polls-list">
+                {% for poll in polls %}
+                <div style="background: white; padding: 25px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <h4 style="font-size: 17px; font-weight: 700; color: var(--primary); line-height: 1.4;">{{ poll.question }}</h4>
+                        {% if is_owner %}
+                        <a href="{% url 'prop:poll_delete' poll.pk %}" style="color: #ef4444;" onclick="return confirm('Delete this poll?')"><i class="bi bi-trash3"></i></a>
+                        {% endif %}
+                    </div>
+                    
+                    <form action="{% url 'prop:poll_vote' poll.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            {% for option in poll.options.all %}
+                            <label style="position: relative; display: block; cursor: pointer;">
+                                <input type="radio" name="option" value="{{ option.id }}" style="display: none;" onchange="this.form.submit()">
+                                <div style="padding: 12px 15px; border: 1px solid #f1f5f9; border-radius: 12px; background: #fafafa; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
+                                    <span style="font-size: 14px; font-weight: 500;">{{ option.option_text }}</span>
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">{{ option.vote_count }} votes</span>
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </form>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px;">Posted {{ poll.created_at|timesince }} ago</p>
+                </div>
+                {% empty %}
+                <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 20px;">
+                    <i class="bi bi-bar-chart-fill" style="font-size: 40px; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                    <p style="color: var(--text-muted);">No polls available.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- NEWS SECTION -->
+        <div id="news-content" class="tab-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 18px; color: var(--primary);">News Feed</h3>
+                {% if is_owner %}
+                <a href="{% url 'prop:news_create' %}" class="action-btn" style="width: auto; padding: 8px 20px; font-size: 13px; background: var(--accent) !important; color: white !important; border: none; text-decoration: none;">
+                    <i class="bi bi-plus-circle-fill"></i> Create News
+                </a>
+                {% endif %}
+            </div>
+            
+            {% for post in news_posts %}
+            <div class="news-item" style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; background: #eee;">
+                        {% if data.profile_image_path %}
+                        <img src="{{ data.profile_image_path.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #666;">
+                            {{ data.username|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 2px;">{{ data.username }}</h4>
+                        <p style="font-size: 12px; color: var(--text-muted);">{{ post.created_at|date:"d M Y" }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'prop:news_detail' post.pk %}" style="text-decoration: none;"><h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--primary);">{{ post.heading }}</h4></a>
+                <p style="font-size: 14px; color: var(--text-main); line-height: 1.6; margin-bottom: 15px;">{{ post.news_content }}</p>
+                
+                {% if post.media_type == 'image' and post.image %}
+                <div style="border-radius: 15px; overflow: hidden; margin-bottom: 15px;">
+                    <img src="{{ post.image.url }}" style="width: 100%; max-height: 300px; object-fit: cover;">
+                </div>
+                {% elif post.media_type == 'video' and post.video %}
+                <div style="border-radius: 15px; overflow: hidden; margin-bottom: 15px;">
+                    <video controls style="width: 100%; max-height: 300px;">
+                        <source src="{{ post.video.url }}" type="video/mp4">
+                    </video>
+                </div>
+                {% endif %}
+                
+                {% if is_owner %}
+                <div style="display: flex; gap: 10px;">
+                    <a href="{% url 'prop:news_edit' post.pk %}" style="font-size: 13px; color: var(--accent); text-decoration: none;">Edit</a>
+                    <a href="{% url 'prop:news_delete' post.pk %}" style="font-size: 13px; color: #ef4444; text-decoration: none;" onclick="return confirm('Delete this post?')">Delete</a>
+                </div>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 20px;">
+                <i class="bi bi-newspaper" style="font-size: 40px; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                <p style="color: var(--text-muted);">No news posts yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '{{ data.username }} | Real Estate Expert',
+                    text: 'View the latest property listings from {{ data.username }} on Weekdays!',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Profile link copied to clipboard!');
+            }
+        }
+
+        function referOthers() {
+            const referralCode = '{{ data.user_referral_code }}';
+            const msg = `Connect with top Real Estate Agents on Weekdays! Use my referral code: ${referralCode} to explore premium property listings.`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Refer a Friend',
+                    text: msg,
+                    url: window.location.origin
+                });
+            } else {
+                navigator.clipboard.writeText(msg);
+                alert('Invitation message copied to clipboard!');
+            }
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+
+            const contentId = tab + '-content';
+            const contentEl = document.getElementById(contentId);
+            if (contentEl) {
+                contentEl.style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Views Chart
+            new Chart(document.getElementById('viewsChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Total Profile Views'],
+                    datasets: [{
+                        label: 'Visits',
+                        data: [{{ data.click|default:"0" }}],
+                        backgroundColor: '#4f46e5',
+                        borderRadius: 12,
+                        barThickness: 40
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        y: { display: false, beginAtZero: true }, 
+                        x: { grid: { display: false }, border: { display: false } } 
+                    } 
+                }
+            });
+
+            // Leads Chart
+            new Chart(document.getElementById('leadsChart'), {
+                type: 'bar',
+                data: {
+                    labels: {{ leads_labels|safe }},
+                    datasets: [{
+                        label: 'Leads',
+                        data: {{ leads_counts|safe }},
+                        backgroundColor: '#10b981',
+                        borderRadius: 12,
+                        barThickness: 20
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        y: { display: false, beginAtZero: true }, 
+                        x: { grid: { display: false }, border: { display: false } } 
+                    } 
+                }
+            });
+
+            // Activity Chart
+            new Chart(document.getElementById('activityPieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: {{ activity_labels|safe }},
+                    datasets: [{
+                        data: {{ activity_counts|safe }},
+                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    cutout: '70%' 
+                }
+            });
+
+            // Referrals Chart
+            new Chart(document.getElementById('referralLineChart'), {
+                type: 'line',
+                data: {
+                    labels: {{ referrals_labels|safe }},
+                    datasets: [{
+                        data: {{ referrals_counts|safe }},
+                        borderColor: '#4f46e5',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#4f46e5',
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(79, 70, 229, 0.05)'
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        x: { display: true, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8' } }, 
+                        y: { display: false, beginAtZero: true, suggestedMax: 5 } 
+                    } 
+                }
+            });
+        });
+    </script>
+
+    {% include 'footer.html' %}
+</body>
+
+</html>

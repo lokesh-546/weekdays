@@ -4,512 +4,698 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Reels</title>
+<title>Reels — Weekdays Properties</title>
 <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
-/* ---------- Basic ---------- */
+/* ── Page reset ─────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── Design tokens ─────────────────────────────────────────────── */
 :root{
-  --max-card-width:450px;
-  --bg:#000;
-  --muted: rgba(255,255,255,0.85);
+  --reel-bg:#0a0a0a;
+  --reel-card-bg:#111;
+  --reel-accent:#ff2e55;
+  --reel-text:#fff;
+  --reel-muted:rgba(255,255,255,.78);
+  --reel-icon-bg:rgba(255,255,255,.10);
+  --reel-icon-bg-hover:rgba(255,255,255,.22);
+  --reel-drawer-bg:#0f0f10;
+  --reel-border:rgba(255,255,255,.07);
+  --reel-max-w:460px;
+  --reel-radius:20px;
+  --reel-icon-sz:42px;
+  --reel-avatar-sz:40px;
+  --font-heading:'Poppins',sans-serif;
+  --font-body:'Roboto',sans-serif;
 }
-*{box-sizing:border-box}
+
+/* ── Base ───────────────────────────────────────────────────────── */
 body{
-  margin:0;
-  font-family:Arial, Helvetica, sans-serif;
-  background:var(--bg);
-  color: #fff;
+  background:var(--reel-bg);
+  color:var(--reel-text);
+  font-family:var(--font-body);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* ---------- Reels scroll container ---------- */
-.reels-container{
-  height:100vh;
-  height:100dvh;
+/* ── Feed container ─────────────────────────────────────────────── */
+.fc-feed{
+  height:100vh;height:100dvh;
   width:100%;
   overflow-y:scroll;
   scroll-snap-type:y mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
+.fc-feed::-webkit-scrollbar{display:none}
 
-.reel-item{
-  height:100vh;
-  height:100dvh;
+/* ── Viewport slot ──────────────────────────────────────────────── */
+.fc-slot{
+  height:100vh;height:100dvh;
   width:100%;
-  position:relative;
   scroll-snap-align:start;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#fff;
+  background:var(--reel-bg);
 }
 
-.reel-card{
-  width:100%;
-  max-width:var(--max-card-width);
-  height:100vh;
-  height:100dvh;
+/* ── Featured card ──────────────────────────────────────────────── */
+.fc-card{
   position:relative;
-  background:#000;
-}
-
-.reel-video{
   width:100%;
-  height:100%;
+  max-width:var(--reel-max-w);
+  height:100vh;height:100dvh;
+  background:var(--reel-card-bg);
+  border-radius:var(--reel-radius);
+  overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.4);
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── Media area ─────────────────────────────────────────────────── */
+.fc-card__media{
+  position:relative;
+  flex:1 1 auto;
+  width:100%;
+  overflow:hidden;
+  background:var(--reel-bg);
+}
+.fc-card__media::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,
+    rgba(0,0,0,.92) 0%,
+    rgba(0,0,0,.55) 22%,
+    rgba(0,0,0,.08) 55%,
+    transparent 100%);
+  pointer-events:none;
+  z-index:2;
+}
+.fc-card__video{
+  width:100%;height:100%;
   object-fit:contain;
-  background:#000;
-}
-
-
-/* ---------- Right vertical actions ---------- */
-.reel-actions{
-  position:absolute;
-  right:14px;
-  bottom:130px;       /* FIXED - Like Instagram */
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  align-items:center;
-  z-index:40;
-}
-
-.action-item{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
+  background:var(--reel-bg);
+  display:block;
+  position:relative;
+  z-index:1;
   cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.action-icon{
-  font-size:20px;
-  color:#fff;
- margin-bottom: -10px;
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
- 
-  transition: all 0.2s ease;
-}
-
-.action-icon:hover{
-  transform: scale(1.1);
-}
-
-.action-icon.liked{
-  color:#ff2e55 !important;
- 
-}
-.action-count{
-  margin-top:6px;
-  font-size:12px;
-  color:#fff;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-}
-
-/* ---------- Bottom-left user info & description ---------- */
-.reel-info{
+/* ── Sound flash ────────────────────────────────────────────────── */
+.fc-card__sound{
   position:absolute;
-  left:14px;
-  bottom:96px;
-  z-index:35;
-  width:66%;
-  color:var(--muted);
-}
-
-.reel-user{ display:flex; align-items:center; gap:10px; margin-bottom:6px;}
-
-.reel-user img{
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #fff;
-    box-shadow: 0 0 6px rgba(0,0,0,0.6);
-}
-
-.reel-username{
-  font-weight:600;
-  font-size:15px;
-  color:#fff;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-}
-.reel-description{
-  font-size:13px;
-  line-height:18px;
-  color: rgba(255,255,255,0.95);
-  margin-top:4px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.9);
-}
-/* ---------- Sound flash icon ---------- */
-.sound-icon{
-  position:absolute;
- 
-  bottom:50%;
-  right: 45%;
-  font-size:34px;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-size:38px;
   color:#fff;
   opacity:0;
   transition:opacity .25s ease;
   z-index:50;
+  pointer-events:none;
 }
-.sound-icon.show{ opacity:1; }
+.fc-card__sound.show{opacity:1}
 
-/* ---------- Overlay for modals/drawers ---------- */
+/* ── Icon button mixin ──────────────────────────────────────────── */
+.fc-btn-icon{
+  width:var(--reel-icon-sz);
+  height:var(--reel-icon-sz);
+  border-radius:50%;
+  background:var(--reel-icon-bg);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border:1px solid var(--reel-border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  transition:background .2s,transform .18s,box-shadow .2s;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  font-size:18px;
+  color:var(--reel-text);
+}
+.fc-btn-icon:hover{
+  background:var(--reel-icon-bg-hover);
+  transform:scale(1.12);
+  box-shadow:0 4px 18px rgba(0,0,0,.45);
+}
+.fc-btn-icon:active{transform:scale(.95)}
+.fc-btn-icon.liked{color:var(--reel-accent)!important}
+
+/* ── Vertical action panel ──────────────────────────────────────── */
+.fc-card__actions{
+  position:absolute;
+  right:14px;
+  bottom:200px;
+  z-index:40;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  align-items:center;
+}
+.fc-card__action{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.fc-card__action-label{
+  font-size:11px;
+  color:var(--reel-text);
+  text-shadow:0 1px 4px rgba(0,0,0,.8);
+  line-height:1;
+  font-family:var(--font-heading);
+}
+
+/* ── Bottom info bar ────────────────────────────────────────────── */
+.fc-card__info{
+  position:absolute;
+  left:0; right:0;
+  bottom:0;
+  z-index:35;
+  padding:14px 14px 18px;
+  background:linear-gradient(to top,
+    rgba(0,0,0,.96) 0%,
+    rgba(0,0,0,.82) 45%,
+    transparent 100%);
+  color:var(--reel-muted);
+}
+
+/* user row: avatar + name/stars + cta */
+.fc-card__user-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:8px;
+  /* leave gap on right so action panel doesn't overlap */
+  padding-right:calc(var(--reel-icon-sz) + 20px);
+}
+.fc-card__user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:inherit;
+  flex:1;
+  min-width:0;
+}
+.fc-card__user-avatar{
+  width:var(--reel-avatar-sz);
+  height:var(--reel-avatar-sz);
+  border-radius:50%;
+  object-fit:cover;
+  border:2.5px solid rgba(255,255,255,.8);
+  box-shadow:0 2px 12px rgba(0,0,0,.6);
+  flex-shrink:0;
+}
+.fc-card__user-meta{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  gap:3px;
+}
+/* username + verified on same line */
+.fc-card__user-name-row{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.fc-card__user-name{
+  font-weight:700;
+  font-size:14px;
+  color:#fff;
+  text-shadow:0 1px 6px rgba(0,0,0,.9);
+  font-family:var(--font-heading);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+/* verified badge */
+.fc-card__verified{
+  width:15px;
+  height:15px;
+  border-radius:50%;
+  background:#1da1f2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+.fc-card__verified i{
+  font-size:8px;
+  color:#fff;
+}
+/* stars row */
+.fc-card__stars{
+  display:flex;
+  align-items:center;
+  gap:2px;
+}
+.fc-card__stars i{
+  font-size:11px;
+  color:#f5c518;
+  text-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+/* CTA button */
+.fc-card__cta{
+  flex-shrink:0;
+  padding:6px 14px;
+  border-radius:20px;
+  border:1.5px solid rgba(255,255,255,.8);
+  background:rgba(255,255,255,.10);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  font-family:var(--font-heading);
+  cursor:pointer;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background .2s,border-color .2s,color .2s;
+  display:inline-block;
+  line-height:1.4;
+}
+.fc-card__cta:hover{
+  background:var(--reel-accent);
+  border-color:var(--reel-accent);
+  color:#fff;
+}
+/* Description */
+.fc-card__desc{
+  font-size:13px;
+  line-height:1.5;
+  color:rgba(255,255,255,.9);
+  text-shadow:0 1px 4px rgba(0,0,0,.7);
+  margin-bottom:4px;
+  word-break:break-word;
+  /* keep clear of right action panel */
+  padding-right:calc(var(--reel-icon-sz) + 20px);
+}
+.fc-card__desc.clamped{
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.fc-card__read-more{
+  background:none;
+  border:none;
+  color:rgba(255,255,255,.5);
+  font-size:12px;
+  cursor:pointer;
+  padding:0;
+  font-family:var(--font-body);
+}
+.fc-card__read-more:hover{color:#fff}
+.fc-card__link a{
+  color:#5aafff;
+  font-size:12px;
+  text-decoration:none;
+}
+.fc-card__link a:hover{text-decoration:underline}
+
+/* ── Dim overlay ────────────────────────────────────────────────── */
 .overlay-bg{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.6);
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
   z-index:1000;
-  opacity:0;
-  visibility:hidden;
-  transition:opacity .25s ease, visibility .25s ease;
+  opacity:0;visibility:hidden;
+  transition:opacity .25s,visibility .25s;
 }
-.overlay-bg.active{ opacity:1; visibility:visible; }
+.overlay-bg.active{opacity:1;visibility:visible}
 
-/* ---------- Comment drawer (bottom sliding) ---------- */
+/* ── Comment drawer ─────────────────────────────────────────────── */
 .comment-drawer{
   position:fixed;
   left:50%;
   transform:translateX(-50%) translateY(110%);
   bottom:0;
-  width:100%;
-  max-width:var(--max-card-width);
-  height:62vh;               /* Instagram-like half to two-thirds */
-  background:#0f0f10;
-  border-radius:16px 16px 0 0;
+  width:100%;max-width:var(--reel-max-w);
+  height:62vh;
+  background:var(--reel-drawer-bg);
+  border-radius:18px 18px 0 0;
   z-index:1100;
-  box-shadow:0 -8px 30px rgba(0,0,0,0.6);
+  box-shadow:0 -8px 32px rgba(0,0,0,.6);
   transition:transform .28s cubic-bezier(.2,.9,.2,1);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,0.03);
+  display:flex;flex-direction:column;overflow:hidden;
+  border-top:1px solid var(--reel-border);
 }
-.comment-drawer.active{
-  transform:translateX(-50%) translateY(0%);
-}
+.comment-drawer.active{transform:translateX(-50%) translateY(0%)}
 
-/* Drawer header */
 .drawer-header{
-  padding:12px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  border-bottom:1px solid rgba(255,255,255,0.03);
+  padding:14px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--reel-border);
+  flex-shrink:0;
 }
-.drawer-title{ font-weight:700; color:#fff; font-size:16px; }
-.drawer-count{ color:var(--muted); font-size:13px; }
+.drawer-title{font-weight:700;font-size:16px;font-family:var(--font-heading)}
+.drawer-count{font-size:12px;color:var(--reel-muted);margin-top:2px}
 
-/* Comments scroll area */
 .comment-list{
-  padding:12px 14px;
-  overflow-y:auto;
   flex:1 1 auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y:auto;
+  padding:12px 16px;
+  -webkit-overflow-scrolling:touch;
 }
-
-/* single comment */
 .comment-item{
-  margin-bottom:12px;
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
+  display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;
 }
-.comment-item .meta{ font-weight:700; color:#fff; margin-right:6px; font-size:13px; }
-.comment-item .text{ font-size:13px; color:var(--muted); line-height:1.2; }
+.comment-item .meta{font-weight:700;color:#fff;margin-right:6px;font-size:13px}
+.comment-item .text{font-size:13px;color:var(--reel-muted);line-height:1.3}
 
-/* sticky input area */
-.comment-input {
-  border-top:1px solid rgba(255,255,255,0.04);
-  padding:10px 12px;
-  display:flex;
-  gap:8px;
-  align-items:center;
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
+.comment-input{
+  display:flex;gap:8px;align-items:center;
+  padding:10px 14px;
+  border-top:1px solid var(--reel-border);
+  background:linear-gradient(180deg,rgba(255,255,255,.01),transparent);
+  flex-shrink:0;
 }
 .comment-input input{
   flex:1;
-  padding:10px 12px;
-  border-radius:20px;
-  border:1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.02);
-  color:#fff;
-  font-size:14px;
+  padding:10px 14px;
+  border-radius:22px;
+  border:1px solid var(--reel-border);
+  background:rgba(255,255,255,.04);
+  color:#fff;font-size:14px;outline:none;
+  transition:border-color .2s;
 }
+.comment-input input:focus{border-color:rgba(255,255,255,.2)}
 .comment-input button{
-  background:transparent;
-  border:none;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
+  background:transparent;border:none;color:#fff;font-size:18px;cursor:pointer;
 }
 
-/* ---------- Share bottom sheet ---------- */
+/* ── Share sheet ─────────────────────────────────────────────────── */
 .share-sheet{
   position:fixed;
   left:50%;
   transform:translateX(-50%) translateY(110%);
   bottom:0;
-  width:100%;
-  max-width:var(--max-card-width);
-  background:#0f0f10;
-  border-radius:16px 16px 0 0;
-  padding:12px;
+  width:100%;max-width:var(--reel-max-w);
+  background:var(--reel-drawer-bg);
+  border-radius:18px 18px 0 0;
+  padding:16px;
   z-index:1200;
   transition:transform .28s cubic-bezier(.2,.9,.2,1);
-  box-shadow:0 -8px 30px rgba(0,0,0,0.6);
+  box-shadow:0 -8px 32px rgba(0,0,0,.6);
+  border-top:1px solid var(--reel-border);
 }
-.share-sheet.active{ transform:translateX(-50%) translateY(0%); }
-.share-row{ display:flex; gap:12px; align-items:center; padding:8px 6px; }
+.share-sheet.active{transform:translateX(-50%) translateY(0%)}
 .share-item{
-  background:rgba(255,255,255,0.02);
-  padding:10px;
-  border-radius:10px;
-  text-align:center;
-  cursor:pointer;
-  min-width:64px;
+  background:var(--reel-icon-bg);
+  padding:10px;border-radius:12px;
+  text-align:center;cursor:pointer;min-width:64px;
+  transition:background .2s;
 }
-.share-label{ font-size:13px; margin-top:6px; color:var(--muted); }
+.share-item:hover{background:var(--reel-icon-bg-hover)}
+.share-label{font-size:12px;margin-top:6px;color:var(--reel-muted)}
 
-/* ---------- small screens ---------- */
-@media (max-width:520px){
-  .reel-info{ width:62%; bottom:86px; left:12px; }
-  .action-icon{ font-size:20px; }
-  .reel-user img{ width:36px; height:36px; }
-  .comment-drawer{ height:38vh; }
-  .sound-icon{bottom:50%; right: 45%;}
+/* ── Empty state ─────────────────────────────────────────────────── */
+.fc-empty{
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:12px;
+  height:100vh;color:var(--reel-muted);font-size:16px;
 }
+.fc-empty i{font-size:42px;opacity:.35}
 
-/* reduce overscroll bounce on iOS */
-.reel-card, .reels-container { -webkit-overflow-scrolling: touch; }
+.fc-card__property{margin-bottom:10px;display:flex;align-items:center;gap:6px}.property-tag{background:rgba(255,255,255,.15);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:6px 12px;border-radius:12px;color:#fff;font-size:12px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border:1px solid rgba(255,255,255,.1);transition:background .2s}.property-tag:hover{background:rgba(255,255,255,.25)}.property-tag i{color:var(--reel-accent);font-size:14px}
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media(max-width:768px){
+  .fc-card{border-radius:0;max-width:100%}
+  .fc-card__actions{right:10px;bottom:80px;gap:12px}
+  .fc-btn-icon{width:36px;height:36px;font-size:15px}
+  .fc-card__info{padding:12px 12px 16px}
+  .comment-drawer{height:42vh}
+}
+@media(max-width:520px){
+  .fc-card__user-avatar{width:36px;height:36px}
+  .fc-card__user-name{font-size:13px}
+  .fc-card__cta{padding:5px 10px;font-size:10px}
+}
 </style>
 </head>
 <body>
- 
-<style>
-    .footer-nav{
-        color: black;
-    }
-    .reel-link a{
-  color:#4da6ff;
-  font-size:13px;
-  text-decoration:none;
-}
 
-.reel-link a:hover{
-  text-decoration:underline;
-}
-.video-gradient{
-  position:absolute;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:55%;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,1) 0%,
-    rgba(0,0,0,0.9) 0%,
-    rgba(0,0,0,0.6) 0%,
-    rgba(0,0,0,0.3) 70%,
-    transparent 100%
-  );
-  z-index:2;
-  pointer-events:none;
-}
-.reel-video{ z-index:1; position:relative; }
-.video-gradient{ z-index:2; }
-.reel-info{ z-index:10; }
-.reel-actions{ z-index:15; }
-</style>
-
-<!-- overlay for both comment drawer and share sheet -->
+<!-- ── Dim overlay ───────────────────────────────────────────────── -->
 <div id="overlay" class="overlay-bg" onclick="closeActiveSheets()"></div>
 
-<div class="reels-container">
-    {%if data%}
-  {% for i in data %}
-  <div class="reel-item" data-reel-id="{{ i.id }}">
-    <div class="reel-card">
+<!-- ── Reel feed ─────────────────────────────────────────────────── -->
+<div class="fc-feed">
 
-      <!-- video element (uses uploaded video url) -->
-    <video class="reel-video" src="{{ i.reel.url }}" playsinline loop autoplay onclick="toggleUserSound(this)"></video>
+  {% if data %}
+    {% for i in data %}
+    <div class="fc-slot">
+      <div class="fc-card" data-reel-id="{{ i.id }}">
 
-
-
-      <!-- small temporary sound icon -->
-      <div class="sound-icon"><i class="fa-solid fa-volume-xmark"></i></div>
-
-      <!-- bottom-left info -->
-     <div class="reel-info">
-<div class="reel-user">
-<a href="{% url 'prop:user_detail' i.user.id %}" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
-        {% if i.user.role|lower == "company" %}
-          {% if i.user.company_logo_path %}
-              <img src="{{ i.user.company_logo_path.url }}" alt="Company Logo">
+        <!-- Media -->
+        <div class="fc-card__media">
+          {% if i.reel %}
+          <video class="reel-video fc-card__video"
+                 src="{{ i.reel.url }}"
+                 playsinline loop autoplay
+                 onclick="toggleUserSound(this)"></video>
           {% endif %}
-      {% else %}
-          {% if i.user.profile_image_path and i.user.profile_image_path.url != '/media/images/Default_profile_picture.jpeg' %}
-              <img src="{{ i.user.profile_image_path.url }}" alt="Profile">
-          {% endif %}
-      {% endif %}
-      <span class="reel-username">{{ i.user.username }}</span>
-  </a>
-</div>
 
-    <div class="reel-description">{{ i.description }}</div>
-   {% if i.link %}
-<div class="reel-link">
-    <a href="{{ i.link }}" target="_blank" style="color:#4da6ff; text-decoration:none; font-size:13px;">
-        {{ i.link }}
-    </a>
-</div>
-{% endif %}
-</div>
-
-      <!-- right side actions -->
-      <div class="reel-actions">
-        <div class="action-item" onclick="toggleLike(this, {{ i.id }})">
-          <i class="fa-solid fa-heart action-icon {% if i.id in request.session.liked_reels %}liked{% endif %}"></i>
-          <div class="action-count">{{ i.likeCount }}</div>
+          <!-- Sound flash -->
+          <div class="sound-icon fc-card__sound"><i class="fa-solid fa-volume-xmark"></i></div>
         </div>
 
-        <div class="action-item" onclick="openCommentDrawer({{ i.id }})">
-          <i class="fa-regular fa-comment action-icon"></i>
-          <div class="action-count">Comment</div>
-        </div>
+        <!-- Right action panel -->
+        <div class="reel-actions fc-card__actions">
 
-        <div class="action-item" onclick="openShareSheet({{ i.id }}, '{{ i.reel.url }}')">
-          <i class="fa-solid fa-paper-plane action-icon"></i>
-          <div class="action-count">Share</div>
-        </div>
-      </div>
-
-      <!-- COMMENT DRAWER (per reel) -->
-      <div id="commentDrawer_{{ i.id }}" class="comment-drawer" aria-hidden="true">
-        <div class="drawer-header">
-          <div>
-            <div class="drawer-title">Comments</div>
-            <div class="drawer-count" id="drawerCount_{{ i.id }}">0</div>
+          <!-- Like -->
+          <div class="action-item fc-card__action" onclick="toggleLike(this, {{ i.id }})">
+            <div class="fc-btn-icon action-icon {% if i.id in request.session.liked_reels %}liked{% endif %}">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <span class="action-count fc-card__action-label">{{ i.likeCount }}</span>
           </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <button aria-label="close" onclick="closeCommentDrawer({{ i.id }})" 
-              style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;">
+
+          <!-- Comment -->
+          <div class="action-item fc-card__action" onclick="openCommentDrawer({{ i.id }})">
+            <div class="fc-btn-icon action-icon">
+              <i class="fa-regular fa-comment"></i>
+            </div>
+            <span class="fc-card__action-label">Comment</span>
+          </div>
+
+          <!-- Share -->
+          <div class="action-item fc-card__action"
+               onclick="openShareSheet({{ i.id }}, '{% if i.reel %}{{ i.reel.url }}{% endif %}')">
+            <div class="fc-btn-icon action-icon">
+              <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <span class="fc-card__action-label">Share</span>
+          </div>
+
+          <!-- Save -->
+          <div class="action-item fc-card__action">
+            <div class="fc-btn-icon action-icon">
+              <i class="fa-regular fa-bookmark"></i>
+            </div>
+            <span class="fc-card__action-label">Save</span>
+          </div>
+
+          <!-- Download -->
+          {% if i.reel %}
+          <div class="action-item fc-card__action">
+            <a href="{{ i.reel.url }}" download
+               style="display:flex;flex-direction:column;align-items:center;gap:5px;text-decoration:none;">
+              <div class="fc-btn-icon action-icon">
+                <i class="fa-solid fa-download"></i>
+              </div>
+              <span class="fc-card__action-label">Save</span>
+            </a>
+          </div>
+          {% endif %}
+
+        </div><!-- /.fc-card__actions -->
+
+        <!-- Bottom info -->
+        <div class="reel-info fc-card__info">
+
+          <!-- User row: [avatar] [username ✓ / ★★★★★] [View Profile] -->
+          <div class="fc-card__user-row">
+
+            <a href="{% url 'prop:user_detail' i.user.id %}" class="fc-card__user">
+              <!-- Avatar -->
+              {% if i.user.role|lower == "company" %}
+                {% if i.user.company_logo_path %}
+                  <img src="{{ i.user.company_logo_path.url }}" alt="Logo" class="fc-card__user-avatar">
+                {% else %}
+                  <div class="fc-card__user-avatar" style="background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-building" style="color:#fff;font-size:16px"></i></div>
+                {% endif %}
+              {% else %}
+                {% if i.user.profile_image_path and i.user.profile_image_path.url != '/media/images/Default_profile_picture.jpeg' %}
+                  <img src="{{ i.user.profile_image_path.url }}" alt="Profile" class="fc-card__user-avatar">
+                {% else %}
+                  <div class="fc-card__user-avatar" style="background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-user" style="color:#fff;font-size:16px"></i></div>
+                {% endif %}
+              {% endif %}
+
+              <!-- Name + Verified + Stars -->
+              <div class="fc-card__user-meta">
+                <!-- Row 1: username + blue tick -->
+                <div class="fc-card__user-name-row">
+                  <span class="reel-username fc-card__user-name">{{ i.user.username }}</span>
+                  <span class="fc-card__verified" title="Verified">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                </div>
+                <!-- Row 2: 5 stars -->
+                <div class="fc-card__stars">
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-solid fa-star"></i>
+                  <i class="fa-regular fa-star"></i>
+                </div>
+              </div>
+            </a>
+
+            <!-- CTA: View Profile -->
+            <a href="{% url 'prop:user_detail' i.user.id %}" class="fc-card__cta">View Profile</a>
+
+          </div>
+
+          {% if i.linked_property %}
+          <div class="fc-card__property">
+            <a href="{% url 'prop:property_detail' i.linked_property.id %}" class="property-tag">
+              <i class="bi bi-building"></i> {{ i.linked_property.projectName }}
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Description with Read More -->
+          {% if i.description %}
+          <div class="reel-description fc-card__desc clamped" id="desc_{{ i.id }}">{{ i.description }}</div>
+          <button class="fc-card__read-more" onclick="toggleDesc({{ i.id }})" id="rm_{{ i.id }}">more</button>
+          {% endif %}
+
+          {% if i.link %}
+          <div class="reel-link fc-card__link">
+            <a href="{{ i.link }}" target="_blank">{{ i.link }}</a>
+          </div>
+          {% endif %}
+
+        </div><!-- /.fc-card__info -->
+
+        <!-- Comment drawer (per reel — JS targets id) -->
+        <div id="commentDrawer_{{ i.id }}" class="comment-drawer" aria-hidden="true">
+          <div class="drawer-header">
+            <div>
+              <div class="drawer-title">Comments</div>
+              <div class="drawer-count" id="drawerCount_{{ i.id }}">0</div>
+            </div>
+            <button aria-label="close"
+                    onclick="closeCommentDrawer({{ i.id }})"
+                    style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;">
               <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+
+          <div id="commentList_{{ i.id }}" class="comment-list"></div>
+
+          <div class="comment-input">
+            <input id="commentInput_{{ i.id }}"
+                   type="text"
+                   placeholder="Add a comment…"
+                   onkeypress="handleCommentKeypress(event, {{ i.id }})">
+            <button onclick="sendComment({{ i.id }})" title="Send">
+              <i class="fa-solid fa-paper-plane"></i>
             </button>
           </div>
         </div>
 
-        <div id="commentList_{{ i.id }}" class="comment-list">
-          <!-- comments will be injected here -->
-        </div>
+      </div><!-- /.fc-card -->
+    </div><!-- /.fc-slot -->
+    {% endfor %}
 
-        <div class="comment-input">
-          <input id="commentInput_{{ i.id }}" type="text" placeholder="Add a comment..." 
-                 onkeypress="handleCommentKeypress(event, {{ i.id }})">
-          <button onclick="sendComment({{ i.id }})" title="Send">
-            <i class="fa-solid fa-paper-plane"></i>
-          </button>
-        </div>
-      </div>
-
-     <div class="video-gradient"></div>
+  {% else %}
+    <div class="fc-empty">
+      <i class="fa-solid fa-film"></i>
+      <p>No Reels Found</p>
     </div>
-  </div>
-  {% endfor %}
-  {%else%}
-  
-  <span> <p style="color: white;margin-top: 250px;text-align: center;">No Reels Found</p></span>
-  {%endif%}
-</div>
+  {% endif %}
 
-<!-- single share sheet element (reused for all reels) -->
+</div><!-- /.fc-feed -->
+
+<!-- Share sheet (single, reused for all reels) -->
 <div id="shareSheet" class="share-sheet" aria-hidden="true">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-    <div style="font-weight:700;color:#fff">Share</div>
-    <button onclick="closeShareSheet()" style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div style="font-weight:700;font-size:16px;font-family:var(--font-heading)">Share</div>
+    <button onclick="closeShareSheet()"
+            style="background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer">
       <i class="fa-solid fa-xmark"></i>
     </button>
   </div>
 
   <div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px">
-    <!-- top row share shortcuts -->
     <div class="share-item" onclick="shareToWhatsApp()">
-      <div style="font-size:20px">🟢</div>
+      <div style="font-size:22px">🟢</div>
       <div class="share-label">WhatsApp</div>
     </div>
     <div class="share-item" onclick="shareToFacebook()">
-      <div style="font-size:20px">🔵</div>
+      <div style="font-size:22px">🔵</div>
       <div class="share-label">Facebook</div>
     </div>
     <div class="share-item" onclick="copyReelLink()">
-      <div style="font-size:20px">🔗</div>
+      <div style="font-size:22px">🔗</div>
       <div class="share-label">Copy link</div>
     </div>
   </div>
 
-  <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.03); padding-top:10px; font-size:13px; color:var(--muted)">
-    You can share this reel with others.
+  <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--reel-border);font-size:12px;color:var(--reel-muted)">
+    Share this reel with others.
   </div>
 </div>
 
 <script>
-/* ---------- Utilities ---------- */
+/* ── Utilities ─────────────────────────────────────────────────── */
 const overlay = document.getElementById('overlay');
 let activeCommentDrawerId = null;
 let currentReelLink = '';
 
 function closeActiveSheets(){
-  // close comment drawer or share sheet
-  if(activeCommentDrawerId !== null){
-    closeCommentDrawer(activeCommentDrawerId);
-    return;
-  }
+  if(activeCommentDrawerId !== null){ closeCommentDrawer(activeCommentDrawerId); return; }
   closeShareSheet();
 }
 
-/* ---------- Like ---------- */
+/* ── Like ──────────────────────────────────────────────────────── */
 function toggleLike(el, id){
   try{
-    const icon = el.querySelector('i');
+    const icon    = el.querySelector('.fc-btn-icon');
     const countEl = el.querySelector('.action-count');
     let v = parseInt(countEl.innerText.replace(/[^0-9]/g,'')) || 0;
     icon.classList.toggle('liked');
-    countEl.innerText = icon.classList.contains('liked') ? v + 1 : Math.max(0, v - 1);
-    fetch(`/likeReel/${id}`, { method: 'GET' }).catch(()=>{ /* ignore */});
-  } catch(e){ console.warn(e) }
+    countEl.innerText = icon.classList.contains('liked') ? v+1 : Math.max(0,v-1);
+    fetch(`/likeReel/${id}`,{method:'GET'}).catch(()=>{});
+  }catch(e){ console.warn(e) }
 }
 
-/* ---------- Comment drawer functions (bottom sheet) ---------- */
+/* ── Comment drawer ────────────────────────────────────────────── */
 function openCommentDrawer(id){
-  // close any share sheet
   closeShareSheet();
-
   const drawer = document.getElementById(`commentDrawer_${id}`);
   if(!drawer) return;
   drawer.classList.add('active');
   drawer.setAttribute('aria-hidden','false');
   overlay.classList.add('active');
   activeCommentDrawerId = id;
-
-  // wait a tick then focus input
-  setTimeout(()=> {
-    const input = document.getElementById(`commentInput_${id}`);
-    if(input) input.focus();
-  }, 220);
-
+  setTimeout(()=>{ const inp=document.getElementById(`commentInput_${id}`); if(inp) inp.focus(); },220);
   loadComments(id);
 }
-
 function closeCommentDrawer(id){
   const drawer = document.getElementById(`commentDrawer_${id}`);
   if(!drawer) return;
@@ -518,228 +704,130 @@ function closeCommentDrawer(id){
   overlay.classList.remove('active');
   activeCommentDrawerId = null;
 }
-
 function loadComments(id){
-  const list = document.getElementById(`commentList_${id}`);
+  const list    = document.getElementById(`commentList_${id}`);
   const countEl = document.getElementById(`drawerCount_${id}`);
   if(!list) return;
-  list.innerHTML = `<div style="padding:12px;color:var(--muted);">Loading comments…</div>`;
+  list.innerHTML=`<div style="padding:12px;color:var(--reel-muted)">Loading comments…</div>`;
   fetch(`/getAllComments/${id}`)
     .then(r=>r.json())
     .then(d=>{
-      list.innerHTML = '';
-      if(!d.comments || d.comments.length===0){
-        list.innerHTML = `<div style="padding:12px;color:var(--muted)">No comments yet. Be the first!</div>`;
-        if(countEl) countEl.innerText = '0';
+      list.innerHTML='';
+      if(!d.comments||d.comments.length===0){
+        list.innerHTML=`<div style="padding:12px;color:var(--reel-muted)">No comments yet. Be the first!</div>`;
+        if(countEl) countEl.innerText='0';
         return;
       }
       d.comments.forEach(c=>{
-        const node = document.createElement('div');
-        node.className = 'comment-item';
-        node.innerHTML = `<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);flex:0 0 36px"></div>
-                          <div>
-                            <div class="meta">${escapeHtml(c.user__username)}</div>
-                            <div class="text">${escapeHtml(c.comment)}</div>
-                          </div>`;
+        const node=document.createElement('div');
+        node.className='comment-item';
+        node.innerHTML=`<div style="width:34px;height:34px;border-radius:50%;background:var(--reel-icon-bg);flex:0 0 34px"></div>
+          <div><span class="meta">${escapeHtml(c.user__username)}</span>
+          <span class="text">${escapeHtml(c.comment)}</span></div>`;
         list.appendChild(node);
       });
-      if(countEl) countEl.innerText = d.comments.length;
-      // scroll to bottom
-      list.scrollTop = list.scrollHeight;
+      if(countEl) countEl.innerText=d.comments.length;
+      list.scrollTop=list.scrollHeight;
     })
-    .catch(e=>{
-      list.innerHTML = `<div style="padding:12px;color:#e88">Failed to load comments</div>`;
-      console.error(e);
-    });
+    .catch(()=>{ list.innerHTML=`<div style="padding:12px;color:#e88">Failed to load.</div>`; });
 }
-
 function sendComment(id){
-  const input = document.getElementById(`commentInput_${id}`);
-  if(!input) return;
-  const val = input.value.trim();
+  const inp=document.getElementById(`commentInput_${id}`);
+  if(!inp) return;
+  const val=inp.value.trim();
   if(!val) return;
-  // call endpoint and reload
-  fetch(`/comment/${id}/${encodeURIComponent(val)}`, { method: 'GET' })
-    .then(()=> {
-      input.value = '';
-      loadComments(id);
-    })
-    .catch(e=>{
-      console.error(e);
-      loadComments(id);
-    });
+  fetch(`/comment/${id}/${encodeURIComponent(val)}`,{method:'GET'})
+    .then(()=>{ inp.value=''; loadComments(id); })
+    .catch(()=>loadComments(id));
+}
+function handleCommentKeypress(ev,id){
+  if(ev.key==='Enter'){ ev.preventDefault(); sendComment(id); }
 }
 
-function handleCommentKeypress(ev, id){
-  if(ev.key === 'Enter') {
-    ev.preventDefault();
-    sendComment(id);
-  }
+/* ── Share sheet ───────────────────────────────────────────────── */
+const shareSheet=document.getElementById('shareSheet');
+function openShareSheet(id,reelUrl){
+  if(activeCommentDrawerId!==null) closeCommentDrawer(activeCommentDrawerId);
+  currentReelLink=window.location.origin+'/getReel?reel='+id;
+  shareSheet.classList.add('active');
+  overlay.classList.add('active');
+}
+function closeShareSheet(){
+  shareSheet.classList.remove('active');
+  overlay.classList.remove('active');
+}
+function shareToWhatsApp(){
+  if(!currentReelLink) return;
+  window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(currentReelLink)}`,'_blank');
+}
+function shareToFacebook(){
+  if(!currentReelLink) return;
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentReelLink)}`,'_blank');
+}
+function copyReelLink(){
+  if(!currentReelLink) return;
+  navigator.clipboard.writeText(currentReelLink)
+    .then(()=>{ alert('Link copied!'); closeShareSheet(); })
+    .catch(()=>alert('Copy failed'));
 }
 
-/* ---------- Share sheet ---------- */
-const shareSheet = document.getElementById("shareSheet");
-
-      function openShareSheet(id, reelUrl) {
-        // close any comment drawer
-        if (activeCommentDrawerId !== null) {
-          closeCommentDrawer(activeCommentDrawerId);
-        }
-        // store current link
-        currentReelLink = window.location.origin + "/getReel?reel=" + id;
-        shareSheet.classList.add("active");
-        overlay.classList.add("active");
-      }
-
-      function closeShareSheet() {
-        shareSheet.classList.remove("active");
-        overlay.classList.remove("active");
-      }
-
-      /* share actions */
-      function shareToWhatsApp() {
-        if (!currentReelLink && activeCommentDrawerId) {
-          currentReelLink =
-            window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
-        }
-        if (!currentReelLink) return;
-
-        window.open(
-          `https://api.whatsapp.com/send?text=${encodeURIComponent(
-            currentReelLink
-          )}`,
-          "_blank"
-        );
-      }
-
-      function shareToFacebook() {
-        if (!currentReelLink && activeCommentDrawerId) {
-          currentReelLink =
-            window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
-        }
-        if (!currentReelLink) return;
-
-        window.open(
-          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-            currentReelLink
-          )}`,
-          "_blank"
-        );
-      }
-
-      function copyReelLink() {
-        if (!currentReelLink) {
-          // build correct link if not present
-          if (activeCommentDrawerId) {
-            currentReelLink =
-              window.location.origin + "/getReel?reel=" + activeCommentDrawerId;
-          } else return;
-        }
-
-        navigator.clipboard
-          .writeText(currentReelLink)
-          .then(() => {
-            alert("Link copied to clipboard");
-            closeShareSheet();
-          })
-          .catch(() => alert("Copy failed"));
-      }
-
-/* ---------- Video autoplay/visibility handling ---------- */
-const videos = document.querySelectorAll('.reel-video');
-let viewedReels = new Set();   // 🔥 prevents multiple counts
-const observer = new IntersectionObserver((entries)=>{
+/* ── Video autoplay + view tracking ──────────────────────────────── */
+const videos=document.querySelectorAll('.reel-video');
+let viewedReels=new Set();
+const observer=new IntersectionObserver((entries)=>{
   entries.forEach(entry=>{
-    const v = entry.target;
-
-    try {
+    const v=entry.target;
+    try{
       if(entry.isIntersecting){
-
         v.play().catch(()=>{});
-
-        // 🔥 GET REEL ID
-        const reelId = v.closest(".reel-item").dataset.reelId;
-
-        // 🔥 ONLY COUNT ONCE
+        const reelId=v.closest('[data-reel-id]').dataset.reelId;
         if(!viewedReels.has(reelId)){
-            viewedReels.add(reelId);
-
-            fetch(`/reel/view/${reelId}/`, {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": getCSRFToken(),
-                    "X-Requested-With": "XMLHttpRequest"
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log("View counted:", reelId);
-            })
-            .catch(err => console.error(err));
+          viewedReels.add(reelId);
+          fetch(`/reel/view/${reelId}/`,{
+            method:'POST',
+            headers:{'X-CSRFToken':getCSRFToken(),'X-Requested-With':'XMLHttpRequest'}
+          }).then(r=>r.json()).catch(()=>{});
         }
-
-      } else {
-        v.pause();
-      }
-    } catch(e) {}
+      }else{ v.pause(); }
+    }catch(e){}
   });
-}, { threshold: 0.6 });
+},{threshold:0.6});
+videos.forEach(v=>observer.observe(v));
 
-videos.forEach(v => observer.observe(v));
-function getCSRFToken() {
-    return document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
+function getCSRFToken(){
+  return document.cookie.split('; ').find(r=>r.startsWith('csrftoken='))?.split('=')[1];
 }
-/* sound toggle */
+
+/* ── Sound toggle ──────────────────────────────────────────────── */
 function toggleUserSound(video){
-    if(!video) return;
-
-    const iconBox = video.parentElement.querySelector('.sound-icon i');
-    
-    // toggle mute
-    video.muted = !video.muted;
-
-    // update icon
-    if(video.muted){
-        iconBox.className = 'fa-solid fa-volume-xmark';
-    } else {
-        iconBox.className = 'fa-solid fa-volume-high';
-    }
-
-    // flash icon
-    const icon = video.parentElement.querySelector('.sound-icon');
-    icon.classList.add('show');
-    setTimeout(() => icon.classList.remove('show'), 1100);
+  if(!video) return;
+  const iconBox=video.closest('.fc-card__media').querySelector('.fc-card__sound i');
+  video.muted=!video.muted;
+  if(iconBox) iconBox.className=video.muted?'fa-solid fa-volume-xmark':'fa-solid fa-volume-high';
+  const flash=video.closest('.fc-card__media').querySelector('.fc-card__sound');
+  if(flash){ flash.classList.add('show'); setTimeout(()=>flash.classList.remove('show'),1100); }
 }
 
-/* ---------- Utility: escape text for innerHTML ---------- */
-function escapeHtml(unsafe){
-  if(!unsafe && unsafe !== 0) return '';
-  return String(unsafe)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+/* ── Overlay body-scroll lock ──────────────────────────────────── */
+overlay.addEventListener('click',closeActiveSheets);
+new MutationObserver(()=>{
+  document.body.style.overflow=overlay.classList.contains('active')?'hidden':'';
+}).observe(overlay,{attributes:true,attributeFilter:['class']});
+
+/* ── Escape text for innerHTML ─────────────────────────────────── */
+function escapeHtml(s){
+  if(!s&&s!==0) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
 }
-
-/* ---------- Close overlay click handles: close sheets ---------- */
-overlay.addEventListener('click', closeActiveSheets);
-
-/* ---------- Prevent body scroll when a sheet is active on mobile ---------- */
-const body = document.body;
-const observerForSheet = new MutationObserver(() => {
-  // if overlay visible => freeze body scroll (simple)
-  if(overlay.classList.contains('active')) {
-    body.style.overflow = 'hidden';
-  } else {
-    body.style.overflow = '';
-  }
-});
-observerForSheet.observe(overlay, { attributes: true, attributeFilter: ['class'] });
-
+/* ── Read More toggle ──────────────────────────────────────────── */
+function toggleDesc(id){
+  const desc = document.getElementById(`desc_${id}`);
+  const btn  = document.getElementById(`rm_${id}`);
+  if(!desc||!btn) return;
+  const clamped = desc.classList.toggle('clamped');
+  btn.textContent = clamped ? 'more' : 'less';
+}
 </script>
 </body>
 </html>

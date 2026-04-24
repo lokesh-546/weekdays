@@ -15,8 +15,11 @@ def assetlinks(request):
 app_name = 'prop'
 
 urlpatterns = [
-     path('.well-known/assetlinks.json', assetlinks),
+    path('.well-known/assetlinks.json', assetlinks),
     path("login/register", views.register_user, name="register"),
+    path("register/step1/", views.register_step1_ajax, name="register_step1_ajax"),
+    path("register/step2/", views.register_step2_ajax, name="register_step2_ajax"),
+    path("register/subscribe/", views.register_subscribe, name="register_subscribe"),
     path("login/", views.login_user, name="login"),
     path('register_choice/', views.register_choice, name='register_choice'),
     path('logout/', LogoutView.as_view(next_page='/login/'),name='logout'),
@@ -44,15 +47,18 @@ urlpatterns = [
     path("franchise-profile/", views.franchise_profile, name="franchise_profile"),
     path("franchise-edit/", views.franchise_edit, name="franchise_edit"),
     path("verify-property/", views.verify_property, name="verify_property"),
-
+    path("verify-property/<int:property_id>/", views.verify_property, name="verify_property_with_id"),
     #my requremt form
     path('require/', views.requirement_form, name="require"),
 
     path('profile/', views.profile , name='profile'),
+    path("professional/profile/", views.professional_profile_view, name="professional_profile"),
+    path("professional/profile/<int:user_id>/", views.professional_profile_view, name="professional_profile_with_id"),
+    path("marketer/profile/", views.marketer_profile_view, name="marketer_profile"),
+    path("marketer/profile/<int:user_id>/", views.marketer_profile_view, name="marketer_profile_with_id"),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
     path('user_uploades/',views.user_uploades, name='user_uploades'),
     path('referral/', views.referral, name='referral'),
-
     path('loan-form/', views.loan_form, name='loan_form'),
 
     path("contact/", views.contact_form_view, name="contact_form"),
@@ -169,7 +175,7 @@ path("futureRequirement/",views.FutureRequire,name="futureRequirement"),
 path("franchise-list/", views.franchies_list, name="franchise_list"),
 path("property/stats/", views.property_stats, name="property_stats"),
 path('marketing/renew/', views.marketing_renew_plans, name='marketing_renew_plan'),  
-
+path("property/check-details/<int:property_id>/", views.check_property_details, name="check_property_details"),
 
     path("create-order/", views.create_order, name="create_order"),
     path("verify-payment/", views.verify_payment, name="verify_payment"),
@@ -187,7 +193,27 @@ path('marketing/renew/', views.marketing_renew_plans, name='marketing_renew_plan
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
     path('contact-us/', views.contact, name='contact'),
     path('unsubscribe/', views.unsubscribe, name='unsubscribe'),
-
-
+    path('help/', views.help_view, name='help'),
+    path('refund-policy/', views.refund_policy, name='refund_policy'),
+    path('disclaimer/', views.disclaimer, name='disclaimer'),
     
+    path('news/', views.news_list, name='news_list'),
+    path('news/create/', views.news_create, name='news_create'),
+    path('news/edit/<int:pk>/', views.news_edit, name='news_edit'),
+    path('news/delete/<int:pk>/', views.news_delete, name='news_delete'),
+    path('news/<int:pk>/', views.news_detail, name='news_detail'),
+
+    # Feed
+    path('feed/', views.feed_list, name='feed_list'),
+    path('feed/create/', views.feed_create, name='feed_create'),
+    path('feed/edit/<int:pk>/', views.feed_edit, name='feed_edit'),
+    path('feed/delete/<int:pk>/', views.feed_delete, name='feed_delete'),
+
+
+    path('profiless/', views.profile_pagess, name='profiless'),
+    path('recent-properties/', views.recent_properties_list, name='recent_properties_list'),
+ 
+path('poll/create/', views.poll_create, name='poll_create'),
+path('poll/vote/<int:pk>/', views.poll_vote, name='poll_vote'),
+path('poll/delete/<int:pk>/', views.poll_delete, name='poll_delete'),
 ]

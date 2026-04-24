@@ -1,714 +1,466 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    
-<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
-<title>{{ profile_user.company_name }}  Profile</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    
 
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_user.company_name }} | Company Profile</title>
+    <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <body>
-    {% include 'NavBar.html' %}
-    <!-- Banner -->
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
+    <link rel="stylesheet" href="{% static 'css/company_profile.css' %}">
     <style>
-/* ================= GLOBAL STYLES ================= */
-body {
-  background: #eef1f6;
-  font-family: "Poppins", sans-serif;
-  margin: 0;
-  overflow-x:hidden;
-  max-width:100%;
-}
-
-.page-content {
-  padding-bottom: 90px !important;
-}
-
-/* ================= BANNER ================= */
-.page-content .banner {
-  width: 100%;
-  height: 260px;
-  background-size: cover;
-  background-position: center;
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
-  position: relative;
-  margin-top: 70px;
-}
-
-/* ================= PROFILE HEADER ================= */
-.page-content .profile-header {
-  display: flex;
-  align-items: flex-start; /* Align top */
-  justify-content: flex-start;
-  margin-top: 0;
-  padding: 0 15px;
-  flex-wrap: wrap;
-  position: relative;
-}
-
-/* ================= LOGO ================= */
-.page-content .logo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 5px solid #fff;
-  object-fit: cover;
-  margin-top: -60px; /* Half overlapping banner */
-  z-index: 10;
-}
-
-/* ================= COMPANY INFO ================= */
-.page-content .company-info {
-  margin-left: 150px; /* space for logo */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
-.page-content .company-info h2 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 22px;
-  margin-left: -45%;
-}
-
-.page-content .company-info p {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
-  margin-left: -50%;
-}
-
-/* ================= BUTTON GROUP ================= */
-.page-content .btn-group-custom {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-left: auto; /* push to right */
-  margin-top: 15px;
-}
-
-.page-content .btn-group-custom button,
-.page-content .post-btn {
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 10px 18px;
-}
-
-.page-content .post-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-}
-
-/* ================= CARD BOX ================= */
-.page-content .card-box {
-  border-radius: 12px;
-  padding: 20px;
-  background: #fff;
-  margin-top: 25px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-}
-
-/* ================= PROJECT BUTTON ================= */
-.page-content .project-btn {
-  background: #2563eb;
-  color: #fff;
-  width: 100%;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* ================= LIST GROUP ================= */
-.page-content .list-group-item {
-  border: none;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  background: #f6f8fc;
-  padding: 15px;
-  font-size: 15px;
-  cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  transition: background 0.2s ease;
-}
-
-.page-content .list-group-item:hover {
-  background: #e2ebff;
-}
-
-/* ================= MOBILE RESPONSIVE ================= */
-@media (max-width: 768px) {
-  .page-content .banner {
-    height: 180px !important;
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-position: left top !important;
-    background-color: #fff !important;
-  }
-
-  .page-content .logo {
-    margin-top: -90px !important; /* Half overlapping banner */
-    margin-left: -15px; /* Keep left aligned */
-    border: 4px solid #fff;
-  }
-
-  .page-content .company-info h2 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 18px;
-  }
-  .page-content .company-info p {
-    margin: 0;
-    color: #666;
-    font-size: 16px;
-  }
-  .page-content .company-info {
-    margin: 0 0 0 15px !important;
-    text-align: left !important;
-    position: relative !important;
-    bottom: 0 !important;
-  }
-
-  .page-content .profile-header {
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    text-align: left !important;
-    gap: 10px !important;
-  }
-
-  .page-content .btn-group-custom {
-    position: static !important; /* Remove desktop alignment */
-    width: fit-content!important;
-    gap: 10px !important;
-    margin-top: 10px !important;
-    padding-left: 15px;
-  }
-
-  .page-content .btn-group-custom button,
-  .page-content .post-btn {
-    width: fit-content !important;
-    margin: 0 !important;
-    font-size: 15px !important;
-    padding: 12px !important;
-  }
-
-  .page-content .card-box {
-    margin-top: 15px !important;
-    padding: 16px !important;
-  }
-
-  .list-group-item {
-    font-size: 14px !important;
-    padding: 12px !important;
-  }
-
-  .footer-nav {
-    display: flex !important;
-    justify-content: space-around !important;
-    align-items: center !important;
-    position: fixed !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 60px !important;
-    background: #fff !important;
-    border-top: 1px solid #ddd !important;
-    z-index: 2500 !important;
-  }
-
-  .company-stats {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 15px !important;
-    text-align: center;
-  }
-
-  .company-stats .col {
-    flex: unset !important;
-    max-width: 100% !important;
-  }
-}
-
-/* Desktop footer hidden */
-@media (min-width: 769px) {
-  .footer-nav {
-    display: none !important;
-  }
-}
-
-/* ================= PROJECTS AND REELS BUTTONS ================= */
-.button-container1 {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: nowrap;
-  margin: 30px 0;
-}
-
-.button-container1 a {
-  text-align: center;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  color: white;
-  background-color: blue;
-  padding: 12px 0;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-  width: 250px;
-}
-
-.button-container1 a:hover {
-  background-color: darkblue;
-  transform: translateY(-2px);
-}
-
-@media (max-width: 480px) {
-  .button-container1 a {
-    font-size: 14px;
-  }
-  .button-container1 {
-    padding: 10px;
-  }
-}
-
-.btn-mobile-icon {
-  width: 40px;
-  height: 40px;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 1.2rem;
-
-  position: relative; /* relative positioning */
-  top: 15px;          /* move it down 50px from its normal position */
-  left: 250px;        /* move it right if needed */
-}
-
-/* Optional hover shadow */
-.btn-mobile-icon:hover {
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-
-
+        :root {
+            --banner-url: url("{% if profile_user.company_wallpaper_path %}{{ profile_user.company_wallpaper_path.url }}{% else %}{% static 'images/default_banner.jpg' %}{% endif %}");
+        }
     </style>
+</head>
 
-    <div class="page-content">
-      <div
-        class="banner"
-        style="background-image:url('/media/{{ profile_user.company_wallpaper_path }}')"
-      ></div>
-<!-- Mobile Icon Button -->
-{% if is_owner %}
-<button
-  class="btn btn-primary d-inline-flex d-md-none btn-mobile-icon"
-  data-bs-toggle="modal"
-  data-bs-target="#editModal"
->
-  <i class="bi bi-pencil-square"></i>
-</button>
-{% endif %}
+<body>
+    {% include 'NavBar.html' %}
 
-      <!-- HEADER -->
-      <div class="container">
-        <div class="profile-header">
-          <div style="display: flex; align-items: center; gap: 18px">
-            <img
-              src="/media/{{ profile_user.company_logo_path }}"
-              class="logo"
-            />
-          </div>
-          <div class="company-info">
-            <h2>{{ profile_user.company_name }}</h2>
-            <p>@{{ profile_user.address }}</p>
-          </div>
+    <div class="banner"></div>
 
-          <!-- ACTION BUTTONS -->
-          <div class="btn-group-custom">
+    <div class="container">
+        <div class="header-card">
             {% if is_owner %}
-            <!-- Desktop: full button -->
-            <button
-              class="btn btn-primary d-none d-md-inline-flex"
-              data-bs-toggle="modal"
-              data-bs-target="#editModal"
-            >
-              Edit Profile
+            <button class="edit-btn" onclick="location.href='{% url 'prop:edit_profile' %}'">
+                <i class="bi bi-pencil-fill"></i>
             </button>
-            <!-- Desktop Button -->
-            
-
-
-            <!-- <a href="{% url 'prop:add_project' %}">
-              <button class="post-btn">➕ Add Project</button>
-            </a> -->
-
-            {% else %}  
-
             {% endif %}
+
+            <div class="profile-top">
+                <div class="avatar-box">
+                    <img src="{% if profile_user.company_logo_path %}{{ profile_user.company_logo_path.url }}{% else %}{% static 'images/logo.jpg' %}{% endif %}" alt="Logo">
+                </div>
+                <div class="name-box">
+                    <h1>{{ profile_user.company_name }} <i class="bi bi-patch-check-fill verified-icon"></i></h1>
+                    <div class="rating">
+                        <span class="rating-val">4.9</span>
+                        <i class="bi bi-star-fill" style="color: #f59e0b;"></i>
+                        <span>(250 Reviews)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="referral-section">
+                <span>Referral Code</span>
+                <b>{{ profile_user.user_referral_code|default:"NOT SET" }}</b>
+            </div>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h3>{{ upload_count }}</h3>
+                    <p>Posted</p>
+                </div>
+                <div class="stat-item">
+                    <h3>{{ sold_count }}</h3>
+                    <p>Sold</p>
+                </div>
+                <div class="stat-item">
+                    <h3>{{ pending_count }}</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Experience</label>
+                    <p>{{ profile_user.experience|default:"0" }} Years</p>
+                </div>
+                <div class="info-item">
+                    <label>Expert In</label>
+                    <p>{{ profile_user.category|default:"Infrastructure" }}</p>
+                </div>
+            </div>
+
+            <div class="area-tags">
+                <span class="tag">Regional Office: {{ profile_user.location|default:"Main City" }}</span>
+            </div>
+
+            <div class="bio-section">
+                <h4>Biography</h4>
+                <p>{{ profile_user.description|default:"Leading construction and development company providing end-to-end infrastructure solutions." }}</p>
+            </div>
+        </div>
+
+        <!-- ACTION ROW -->
+        <div class="action-row">
+            <a href="{% url 'prop:referral' %}" class="action-btn">
+                <i class="bi bi-person-lines-fill"></i>
+                <span>My Referrals</span>
+            </a>
+            <button class="action-btn" onclick="shareProfile()">
+                <i class="bi bi-send-fill"></i>
+                <span>Share</span>
+            </button>
+            <button class="action-btn" onclick="referOthers()">
+                <i class="bi bi-gift-fill"></i>
+                <span>Refer</span>
+            </button>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs-container">
+            <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
+            <div class="tab" onclick="switchTab('feed')">Feed</div>
+            <div class="tab" onclick="switchTab('sales')">Sales</div>
+            <div class="tab" onclick="switchTab('rentals')">Rentals</div>
+            <div class="tab" onclick="switchTab('bytes')">Bytes</div>
+            <div class="tab" onclick="switchTab('polls')">Polls</div>
+            <div class="tab" onclick="switchTab('news')">News</div>
+            <div class="tab" onclick="switchTab('subscription')">Subscription</div>
+        </div>
+
+        <!-- DASHBOARD CONTENT -->
+        <div id="dashboard-content" class="tab-content">
+            <div class="dashboard-grid">
+                <div class="chart-card full-width">
+                    <h4>Profile Traffic <span>Total: {{ profile_user.click|default:"0" }} Views</span></h4>
+                    <div class="chart-container">
+                        <canvas id="viewsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <h4>Recent Leads <span>Total: {{ lcount }}</span></h4>
+                    <div class="chart-container">
+                        <canvas id="leadsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h4>Platform Activity</h4>
+                    <div class="chart-container" style="height: 180px;">
+                        <canvas id="activityPieChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h4>Referral Network</h4>
+                    <div class="chart-container" style="height: 180px;">
+                        <canvas id="referralLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUBSCRIPTION CONTENT -->
+        <div id="subscription-content" class="tab-content" style="display: none;">
+            <div class="chart-card">
+                <h4>Your Plan</h4>
+                {% if profile_user.company_subscription_type %}
+                <div style="background: #f0f9ff; border-radius: 20px; padding: 25px; border: 1px solid #bae6fd;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="color: #0369a1; font-size: 20px;">{{ profile_user.company_subscription_type }}</h3>
+                        <span style="background: #0369a1; color: white; padding: 4px 12px; border-radius: 100px; font-size: 12px;">Active</span>
+                    </div>
+                    <p style="font-size: 14px; color: #0c4a6e; margin-bottom: 5px;">Valid until: <b>{{ profile_user.company_subscription_end_date }}</b></p>
+                    <p style="font-size: 13px; color: #0c4a6e;">Days remaining: <b style="color: {% if is_expired %}#ef4444{% else %}#059669{% endif %};">{{ days_left }}</b></p>
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 50px; margin-bottom: 20px;">🚀</div>
+                    <h3 style="font-size: 18px; margin-bottom: 10px;">No Active Subscription</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 25px;">Subscribe to a plan to unlock premium features and grow your network.</p>
+                    <a href="{% url 'prop:update_plans' %}" class="action-btn" style="display: inline-flex; width: auto; padding: 12px 30px; background: var(--accent) !important; color: white !important; border: none !important;">View Plans</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- PROJECTS CONTENT (SALES) -->
+        <div id="sales-content" class="tab-content" style="display: none;">
+            <h3 style="margin-bottom: 20px; font-size: 18px; color: var(--primary);">Featured Projects</h3>
+            {% for project in projects %}
+            <div class="project-item">
+                <div style="width: 80px; height: 80px; border-radius: 15px; overflow: hidden; background: #eee;">
+                    <img src="{% if project.image %}{{ project.image.url }}{% else %}{% static 'images/logo.jpg' %}{% endif %}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="flex: 1;">
+                    <h4 style="font-size: 15px; margin-bottom: 4px;">{{ project.project_name }}</h4>
+                    <p style="font-size: 12px; color: var(--text-muted);">{{ project.project_address }}</p>
+                    <span style="font-size: 11px; background: #eef2ff; color: #4f46e5; padding: 2px 8px; border-radius: 100px;">{{ project.type_of_project }}</span>
+                </div>
+            </div>
+            {% empty %}
+            <p style="text-align: center; color: var(--text-muted); padding: 40px 0;">No projects available.</p>
+            {% endfor %}
+        </div>
+        <!-- POLLS CONTENT -->
+        <div id="polls-content" class="tab-content" style="display: none;">
+            {% if is_owner %}
+            <div style="margin-bottom: 25px;">
+                <button onclick="document.getElementById('poll-creation-card-company').style.display='block'; this.style.display='none'" class="action-btn" style="width: auto; padding: 12px 25px; background: var(--accent); border-radius: 15px;">
+                    <i class="bi bi-plus-lg"></i> Add Poll
+                </button>
+            </div>
+
+            <div id="poll-creation-card-company" style="display: none; background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #f1f5f9;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h4 style="font-weight: 700; color: var(--primary);">Create New Poll</h4>
+                    <button onclick="document.getElementById('poll-creation-card-company').style.display='none'; document.querySelector('.action-btn[onclick*=\'poll-creation-card-company\']').style.display='block'" style="background: none; border: none; font-size: 20px; color: var(--text-muted); cursor: pointer;">&times;</button>
+                </div>
+                <form action="{% url 'prop:poll_create' %}" method="POST">
+                    {% csrf_token %}
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">Question</label>
+                        <input type="text" name="question" required placeholder="What's on your mind?" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit;">
+                    </div>
+                    <div id="poll-options-container-company">
+                        <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px;">Options</label>
+                        <input type="text" name="option_1" required placeholder="Option 1" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;">
+                        <input type="text" name="option_2" required placeholder="Option 2" style="width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;">
+                    </div>
+                    <button type="button" onclick="addPollOptionFieldCompany()" style="background: none; border: none; color: var(--accent); font-size: 13px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 20px;">+ Add more options</button>
+                    <button type="submit" class="action-btn" style="width: 100%; background: var(--primary);">Post Poll</button>
+                </form>
+            </div>
+            <script>
+                let optionCountCompany = 2;
+                function addPollOptionFieldCompany() {
+                    if (optionCountCompany < 5) {
+                        optionCountCompany++;
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = 'option_' + optionCountCompany;
+                        input.placeholder = 'Option ' + optionCountCompany;
+                        input.style = 'width: 100%; padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; font-family: inherit; margin-bottom: 10px;';
+                        document.getElementById('poll-options-container-company').appendChild(input);
+                    } else {
+                        alert('Maximum 5 options allowed');
+                    }
+                }
+            </script>
+            {% endif %}
+
+            <div class="polls-list">
+                {% for poll in polls %}
+                <div style="background: white; padding: 25px; border-radius: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <h4 style="font-size: 17px; font-weight: 700; color: var(--primary); line-height: 1.4;">{{ poll.question }}</h4>
+                        {% if is_owner %}
+                        <a href="{% url 'prop:poll_delete' poll.pk %}" style="color: #ef4444;" onclick="return confirm('Delete this poll?')"><i class="bi bi-trash3"></i></a>
+                        {% endif %}
+                    </div>
+                    
+                    <form action="{% url 'prop:poll_vote' poll.pk %}" method="POST">
+                        {% csrf_token %}
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            {% for option in poll.options.all %}
+                            <label style="position: relative; display: block; cursor: pointer;">
+                                <input type="radio" name="option" value="{{ option.id }}" style="display: none;" onchange="this.form.submit()">
+                                <div style="padding: 12px 15px; border: 1px solid #f1f5f9; border-radius: 12px; background: #fafafa; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;">
+                                    <span style="font-size: 14px; font-weight: 500;">{{ option.option_text }}</span>
+                                    <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">{{ option.vote_count }} votes</span>
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </form>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px;">Posted {{ poll.created_at|timesince }} ago</p>
+                </div>
+                {% empty %}
+                <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 20px;">
+                    <i class="bi bi-bar-chart-fill" style="font-size: 40px; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                    <p style="color: var(--text-muted);">No polls available.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- NEWS CONTENT -->
+        <div id="news-content" class="tab-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 18px; color: var(--primary);">Company News</h3>
+                {% if is_owner %}
+                <a href="{% url 'prop:news_create' %}" class="action-btn" style="width: auto; padding: 8px 20px; font-size: 13px; background: var(--accent) !important; color: white !important; border: none; text-decoration: none;">
+                    <i class="bi bi-plus-circle-fill"></i> Create News
+                </a>
+                {% endif %}
+            </div>
             
-<div class="action-buttons">
-
-  <!-- CONTACT -->
-  <a
-    href="{% if user.is_authenticated %}tel:{{ profile_user.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-    class="call"
-    {% if user.is_authenticated %}
-      onclick="profileLead(event, {{ profile_user.id }})"
-    {% endif %}
-  >
-     Contact
-  </a>
-
-  <!-- SHARE -->
-  <button
-    type="button"
-    class="share"
-    title="Share"
-    onclick="shareCompanyProfile({{ profile_user.id }})"
-  >
-    <i class="bi bi-share-fill"></i>
-  </button>
-
-  <!-- CHAT -->
-  <a
-    href="{% if user.is_authenticated %}
-            {% url 'prop:start_chat_with_user' profile_user.id %}
-          {% else %}
-            {% url 'prop:login' %}
-          {% endif %}"
-    class="chat"
-    title="Chat"
-  >
-    <i class="bi bi-chat-dots-fill"></i>
-  </a>
-
-</div>
-
-
-          </div>
-        </div>
-      </div>
-      <style>
-
-/* CONTACT BUTTON */
-.call {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 18px;
-  background: #4c3eb6;
-  color: #fff;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
-  transition: 0.3s ease;
-}
-
-button .call {
-  color: #fff;
-}
-
-
-
-/* SHARE BUTTON */
-.share {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #d6d6d6;
-  border: none;
-  color: #000;
-  font-size: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-/* .share:hover {
-  background: #1e40af;
-} */
-
-
-/* CHAT BUTTON */
-.chat {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #d6d6d6;
-  border: none;
-  color: #551a8b;
-  font-size: 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-/* .chat:hover {
-  background: #7e22ce;
-} */
-
-
-/* ALIGN ALL THREE IN ROW */
-button, .call {
-  margin-right: 10px;
-}
-
-</style>
-
-      </style>
-
-      <!-- Overview -->
-      <div class="container">
-        <div class="card-box">
-          <h6 class="text-muted mb-3">Company Overview</h6>
-          <div class="row text-center company-stats">
-            <div class="col">Established:<br><strong>{{ profile_user.experience }}</strong></div>
-            <div class="col">Projects<br><strong>{{ profile_user.total_projects }}</strong></div>
-            <div class="col">Ongoing<br><strong>{{ profile_user.ongoing_projects }}</strong></div>
-            <div class="col">Completed<br><strong>{{ profile_user.completed_projects }}</strong></div>
-          </div>
-          {{profile_user.description}}
-        </div>
-      </div>
-
-      <!-- Projects and Reels Buttons -->
-      <div class="button-container1">
-         {% if is_owner %}
-        <!-- Owner → show their own projects -->
-        <a href="{% url 'prop:projects_views_list' %}">View All Projects</a>
-        {% else %}
-        <!-- Visitor → send profile_user.id -->
-        <a href="{% url 'prop:projects_views_list_with_id' profile_user.id %}">
-          
-          View All Projects
-        </a>
-        {% endif %}
-        <a href="{% url 'prop:all_reels' %}">View Reels</a>
-      </div>
-
-      {% if is_owner %}
-      <div class="container">
-        <div class="row mt-3">
-          <div class="col">
-            <div class="card p-3 text-center">
-              <h5>Views</h5>
-              <h3>{{ profile_user.click }}</h3>
+            {% for post in news_posts %}
+            <div class="news-item" style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="width: 45px; height: 45px; border-radius: 50%; overflow: hidden; background: #eee;">
+                        {% if profile_user.profile_image_path %}
+                        <img src="{{ profile_user.profile_image_path.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        {% else %}
+                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #666;">
+                            {{ profile_user.username|slice:":1"|upper }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 style="font-size: 15px; font-weight: 700; margin-bottom: 2px;">{{ profile_user.username }}</h4>
+                        <p style="font-size: 12px; color: var(--text-muted);">{{ post.created_at|date:"d M Y" }}</p>
+                    </div>
+                </div>
+                <a href="{% url 'prop:news_detail' post.pk %}" style="text-decoration: none;"><h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px; color: var(--primary);">{{ post.heading }}</h4></a>
+                <p style="font-size: 14px; color: var(--text-main); line-height: 1.6; margin-bottom: 15px;">{{ post.news_content }}</p>
+                
+                {% if post.media_type == 'image' and post.image %}
+                <div style="border-radius: 15px; overflow: hidden; margin-bottom: 15px;">
+                    <img src="{{ post.image.url }}" style="width: 100%; max-height: 300px; object-fit: cover;">
+                </div>
+                {% elif post.media_type == 'video' and post.video %}
+                <div style="border-radius: 15px; overflow: hidden; margin-bottom: 15px;">
+                    <video controls style="width: 100%; max-height: 300px;">
+                        <source src="{{ post.video.url }}" type="video/mp4">
+                    </video>
+                </div>
+                {% endif %}
+                
+                {% if is_owner %}
+                <div style="display: flex; gap: 10px;">
+                    <a href="{% url 'prop:news_edit' post.pk %}" style="font-size: 13px; color: var(--accent); text-decoration: none;">Edit</a>
+                    <a href="{% url 'prop:news_delete' post.pk %}" style="font-size: 13px; color: #ef4444; text-decoration: none;" onclick="return confirm('Delete this post?')">Delete</a>
+                </div>
+                {% endif %}
             </div>
-          </div>
-  <div class="col">
-    <div class="card p-3 text-center" >
-        <h5><a style="text-decoration: none; color: #212529;" href="{% url 'prop:company_leads_page' profile_user.id %}"> Leads</h5>
-        <h3>{{ count }}</h3></a>
-    </div>
-</div>
- 
-
-
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="card-box">
-          <h6 class="text-muted mb-3">Subscription</h6>
-          <div class="row text-center">
-            <div class="col">
-              Amount<br /><strong>₹{{profile_user.plan_price|default:"None"}}</strong>
+            {% empty %}
+            <div style="text-align: center; padding: 40px 20px; background: white; border-radius: 20px;">
+                <i class="bi bi-newspaper" style="font-size: 40px; color: #e2e8f0; margin-bottom: 15px; display: block;"></i>
+                <p style="color: var(--text-muted);">No news posts yet.</p>
             </div>
-            <div class="col">
-              Duration<br /><strong>{{ profile_user.selected_duration }} Months</strong>
-            </div>
-            <div class="col">
-              Expires<br /><strong>{{ profile_user.company_subscription_end_date}}</strong>
-              {% if is_expired %}
-    <a href="{% url 'prop:renew_plan' %}">
-        <button type="button"
-                style="background-color: lightgray;
-                       padding:8px 15px;
-                       border:none;
-                       border-radius:6px;">
-            Renew
-        </button>
-    </a>
-{% endif %}
-            </div>
-          </div>
+            {% endfor %}
         </div>
-      </div>
-      {% endif %}
-
- 
-
-      <!-- ================= MODAL: EDIT PROFILE ================= -->
-      {% if is_owner %}
-      <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <form method="POST" enctype="multipart/form-data">
-              {% csrf_token %}
-              <div class="modal-header">
-                <h5>Edit Profile</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
-              </div>
-<div class="modal-body">
-
-  <label>Wallpaper</label>
-  <input type="file" name="company_wallpaper_path" class="form-control mb-3" />
-
-  <label>Company Logo</label>
-  <input type="file" name="company_logo_path" class="form-control mb-3" />
-
-  <label>Email</label>
-  <input type="email" name="email" value="{{ profile_user.email }}" class="form-control mb-3" />
-
-  <label>Company Name</label>
-  <input type="text" name="company_name" value="{{ profile_user.company_name }}" class="form-control mb-3" />
-
-  <label>Experience (Years)</label>
-  <input type="number" name="experience" value="{{ profile_user.experience }}" class="form-control mb-3" />
-
-  <label>Total Projects</label>
-  <input type="number" name="total_projects" value="{{ profile_user.total_projects }}" class="form-control mb-3" />
-
-  <label>Ongoing Projects</label>
-  <input type="number" name="ongoing_projects" value="{{ profile_user.ongoing_projects }}" class="form-control mb-3" />
-
-  <label>Completed Projects</label>
-  <input type="number" name="completed_projects" value="{{ profile_user.completed_projects }}" class="form-control mb-3" />
-
-  <label>Address</label>
-  <input type="text" name="address" value="{{ profile_user.address }}" class="form-control mb-3" />
-
-  <label>Contact Number</label>
-  <input type="number" name="phone" value="{{ profile_user.phone }}" class="form-control mb-3" />
-  <label>Description</label>
-  <input type="text" name="description" value="{{ profile_user.description }}" class="form-control mb-3" />
-
-</div>              <div class="modal-footer">
-                <button type="button" class="btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="submit-btn">Save</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-      <style>
-        .modal-footer  button
-        {
-          background-color: #2563eb;
-          color:white;
-          padding: 10px 10px;
-          border: 1px solid black;
-          font-size: 15px;
-          font-weight: 100;
-       margin-bottom: 70px;
-        }
-      </style>
-
-     
-      
-{% if is_owner %}
-
-    {% if is_expired %}
-        <div style="
-            background:#ffe5e5;
-            color:#b30000;
-            padding:15px;
-            border-radius:10px;
-            text-align:center;
-            font-weight:600;
-            margin-bottom:20px;">
-            
-            ⚠️ Your subscription plan has expired.
-            <br>
-            Please renew to continue posting projects.
-        </div>
-
-    {% elif show_expiry_warning %}
-        <div style="
-            background:#fff3cd;
-            color:#856404;
-            padding:15px;
-            border-radius:10px;
-            text-align:center;
-            font-weight:600;
-            margin-bottom:20px;">
-            
-            ⏳ Your plan will expire in {{ days_left }} day(s).
-            Please renew soon.
-        </div>
-
-    {% endif %}
-
-{% endif %}
-      {% include 'footer.html' %}
-      <script src="{% static 'js/Leads.js' %}"></script>
-
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </div>
 
-
-
-    
-<script>
-function shareCompanyProfile(id){
-    if (navigator.share) {
-          navigator.share({
-            title: "User Profile",
-            text: "Check out this profile",
-            url: window.location.href+`company/profile/${id}`,
-          });
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          alert("Profile link copied!");
+    <script>
+        function shareProfile() {
+            if (navigator.share) {
+                navigator.share({
+                    title: '{{ profile_user.company_name }} | Profile',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied!');
+            }
         }
 
-}
-      function shareProfile(id) {
-        
-        if (navigator.share) {
-          navigator.share({
-            title: "User Profile",
-            text: "Check out this profile",
-            url: window.location.href+`user/${id}`,
-          });
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          alert("Profile link copied!");
+        function referOthers() {
+            const code = '{{ profile_user.user_referral_code }}';
+            const msg = `Partner with {{ profile_user.company_name }}! Use referral code: ${code}`;
+            if (navigator.share) {
+                navigator.share({ title: 'Refer Company', text: msg, url: window.location.origin });
+            } else {
+                navigator.clipboard.writeText(msg);
+                alert('Message copied!');
+            }
         }
-      }
-      </script>
- 
-  </body>
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            const el = document.getElementById(tab + '-content');
+            if (el) el.style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Views Chart
+            new Chart(document.getElementById('viewsChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Total Profile Views'],
+                    datasets: [{
+                        label: 'Visits',
+                        data: [{{ profile_user.click|default:"0" }}],
+                        backgroundColor: '#4f46e5',
+                        borderRadius: 12,
+                        barThickness: 40
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        y: { display: false, beginAtZero: true }, 
+                        x: { grid: { display: false }, border: { display: false } } 
+                    } 
+                }
+            });
+
+            // Leads Chart
+            new Chart(document.getElementById('leadsChart'), {
+                type: 'bar',
+                data: {
+                    labels: {{ leads_labels|safe }},
+                    datasets: [{
+                        label: 'Leads',
+                        data: {{ leads_counts|safe }},
+                        backgroundColor: '#10b981',
+                        borderRadius: 12,
+                        barThickness: 20
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        y: { display: false, beginAtZero: true }, 
+                        x: { grid: { display: false }, border: { display: false } } 
+                    } 
+                }
+            });
+
+            // Activity Chart
+            new Chart(document.getElementById('activityPieChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: {{ activity_labels|safe }},
+                    datasets: [{
+                        data: {{ activity_counts|safe }},
+                        backgroundColor: ['#4f46e5', '#10b981', '#f59e0b'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    cutout: '70%' 
+                }
+            });
+
+            // Referrals Chart
+            new Chart(document.getElementById('referralLineChart'), {
+                type: 'line',
+                data: {
+                    labels: {{ referrals_labels|safe }},
+                    datasets: [{
+                        data: {{ referrals_counts|safe }},
+                        borderColor: '#4f46e5',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#4f46e5',
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(79, 70, 229, 0.05)'
+                    }]
+                },
+                options: { 
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        x: { display: true, grid: { display: false }, ticks: { font: { size: 10 }, color: '#94a3b8' } }, 
+                        y: { display: false, beginAtZero: true, suggestedMax: 5 } 
+                    } 
+                }
+            });
+        });
+    </script>
+</body>
+
 </html>

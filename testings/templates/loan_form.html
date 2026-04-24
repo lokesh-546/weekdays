@@ -4,424 +4,163 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loan Application Form</title>
-<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
 
-<link rel="stylesheet" href="{% static '/css/loanform.css' %}" />
+<title>Loan Service</title>
 
-<style>
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f1f3f6;
-    margin: 0;
-    padding: 0;
-}
-.container {
-    background-color: #ffffff;
-    margin: 40px auto;
-    padding: 40px 50px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-top: 120px;
-}
-h2 {
-    text-align: center;
-    font-weight: 600;
-    color: rgb(4, 4, 69);
-    margin-bottom: 25px;
-}
-label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 6px;
-}
-input, select {
-    width: 100%;
-    padding: 10px 12px;
-    font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-bottom: 15px;
-}
-.button-group {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-top: 25px;
-}
-button {
-    flex: 1;
-    max-width: 220px;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    color: #fff;
-    font-size: 16px;
-    cursor: pointer;
-}
-.btn-apply { background: #28a745; }
-.btn-emi { background: #007bff; }
+<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}">
+<link rel="stylesheet" href="{% static 'css/loan_form.css' %}">
 
-/* Popup */
-.emi-popup {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-.emi-content {
-    width: 90%;
-    max-width: 420px;
-    background: #fff;
-    border-radius: 10px;
-    padding: 22px;
-    position: relative;
-}
-.close-x {
-    position: absolute;
-    right: 14px;
-    top: 12px;
-    font-size: 22px;
-    cursor: pointer;
-}
-.emi-results {
-    margin-top: 12px;
-    padding: 12px;
-    background: #f7fbff;
-    border-radius: 8px;
-}
 
-/* ================================
-   📱 MOBILE RESPONSIVE BREAKPOINTS
-   ================================ */
-
-/* For screens below 600px */
-@media (max-width: 600px) {
-
-    .container {
-        width: 94%;
-        padding: 25px 20px;
-        margin-top: 100px;
-    }
-
-    h2 {
-        font-size: 20px;
-        margin-bottom: 20px;
-    }
-
-    label {
-        font-size: 14px;
-    }
-
-    input, select {
-        font-size: 14px;
-        padding: 9px 10px;
-    }
-
-    .button-group {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    button {
-        width: 100%;
-        max-width: 100%;
-        font-size: 15px;
-        padding: 12px;
-    }
-    
-    
-       .emi-popup {
-        width: 350px;
-        padding: 20px;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        margin: 30px auto;
-        font-family: Arial;
-    }
-    .emi-popup input {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .btn-emi {
-        background: #007bff;
-        color: white;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    .emi-results p {
-        background: #f5f5f5;
-        padding: 10px;
-        border-radius: 5px;
-    }
-/* ============================================
-   MOBILE FRIENDLY EMI POPUP (MAX 480px)
-============================================ */
-@media (max-width: 480px) {
-
-    /* EMI popup mobile friendly */
-    .emi-content {
-        width: 95%;
-        padding: 18px;
-        max-width: 360px;
-    }
-
-    .emi-results {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    .close-x {
-        font-size: 20px;
-        top: 10px;
-        right: 12px;
-    }
-}
-
-/* ============================================
-   VERY SMALL SCREENS (MAX 380px)
-============================================ */
-@media (max-width: 380px) {
-
-    h2 {
-        font-size: 18px;
-    }
-
-    input,
-    select {
-        font-size: 13px;
-        padding: 8px;
-    }
-
-    .emi-content {
-        max-width: 330px;
-        padding: 16px;
-    }
-
-    .menu-btn {
-        color: black;
-        margin: 100px;
-    }
-}
-
-/* ============================================
-   NAV-LINK ALIGNMENT
-============================================ */
-.nav-links button {
-    margin: auto;
-}
-
-.nav-links {
-    align-items: center;
-}
-
-</style>
 </head>
 
 <body>
 
 {% include 'NavBar.html' %}
 
-<style>
-    .menu-btn{
-        color: black;
-    }
-</style>
+<div class="loan-page">
 
-<div class="container">
-    <h2>Loan Application Form</h2>
+    <!-- ================= TOP ================= -->
+    <div class="top-section">
 
-     <form id="loanForm" method="POST">
-        {% csrf_token %}
-
-        <label>Full Name</label>
-        <input type="text" name="full_name" required>
-
-        <label>Email</label>
-        <input type="email" name="email" required>
-
-        <label>Phone Number</label>
-        <input type="text" name="phone" required>
-
-        <label>Date of Birth</label>
-        <input type="date" name="dob" required>
-
-        <label>Street Address</label>
-        <input type="text" name="street_address" required>
-
-        <label>Unit (optional)</label>
-        <input type="text" name="unit">
-
-        <label>City</label>
-        <input type="text" name="city" required>
-
-        <label>State</label>
-        <input type="text" name="state" required>
-
-        <label>Zip Code</label>
-        <input type="text" name="zip_code" required>
-
-        <label>Loan Amount</label>
-        <input type="number" id="formLoanAmount" name="loan_amount" required>
-
-        <label>Loan Purpose</label>
-        <select name="loan_purpose" required>
-            <option value="">Select Loan Purpose</option>
-            <option>Home Loan</option>
-            <option>Car Loan</option>
-            <option>Education Loan</option>
-            <option>Personal Loan</option>
-            <option>Business Loan</option>
-        </select>
-
-        <label>Date of Application</label>
-        <input type="date" name="application_date" required>
-
-        <label>Employment Status</label>
-        <div class="radio-group">
-            <label><input type="radio" name="employment_status" value="Employed" required> Employed</label>
-            <label><input type="radio" name="employment_status" value="Self-Employed"> Self-Employed</label>
-            <label><input type="radio" name="employment_status" value="Unemployed"> Unemployed</label>
-            <label><input type="radio" name="employment_status" value="Retired"> Retired</label>
+        <!-- LEFT -->
+        <div class="loan-info">
+            <h3>What type of loan we help?</h3>
+            
+                <div class="loans">
+                <button>Purchase Loan</button>
+                <button>🏠Mortgage Loans</button>
+                <button>🏗 Construction Loans</button>
+                </div>
+            
+                <div class="contact">
+            <button>
+    <i class="bi bi-telephone-fill"></i> Contact
+</button>  <span>for more details</span> 
+    
+                </div>
         </div>
 
-        <label>Are you represented by a Realtor?</label>
-        <div class="radio-group">
-            <label><input type="radio" name="realtor" value="Yes" required> Yes</label>
-            <label><input type="radio" name="realtor" value="No"> No</label>
-        </div>
+        <!-- RIGHT -->
+        <div class="right-side"> 
+            <div class="imag">
+                <img src="YOUR_IMAGE_URL_HERE" alt="Loan Icon" class="loan-icon">
+            </div>
 
-        <label>Credit Score Range</label>
-        <select name="credit_score" required>
-            <option value="">Select Credit Score Range</option>
-            <option>300 - 579 (Poor)</option>
-            <option>580 - 669 (Fair)</option>
-            <option>670 - 739 (Good)</option>
-            <option>740 - 799 (Very Good)</option>
-            <option>800 - 850 (Excellent)</option>
-        </select>
+             <div class="eligibility">
+                <h3>Eligibility</h3>
+                <p>✔ Age above 21</p>
+                <p>✔ Stable income</p>
+                <p>✔ Good credit score</p>
+            </div>
+            </div>
 
-        <div class="checkbox-group">
-            <input type="checkbox" name="agree" required>
-            <label>I agree to the terms and conditions and authorize a credit check.</label>
-        </div>
+            <!-- EMI -->
+            <div class="emi-box">
+                <h3>EMI Calculator</h3>
 
+                <label>Loan Amount: ₹<span id="amtVal">50,000</span></label>
+                <input type="range" id="amount" min="10,000" max="1000000" value="50,000">
 
-        <div class="button-group">
-            <button type="submit" class="btn-apply">Apply Now</button>
-            <button type="button" class="btn-emi" onclick="openEMIPopupFromForm()">EMI Calculator</button>
-        </div>
-    </form>
-</div>
+                <label>Interest (% yearly): <span id="rateVal">10</span></label>
+                <input type="range" id="rate" min="1" max="100" value="10">
 
+                <label>Tenure (Months): <span id="timeVal">12</span></label>
+                <input type="range" id="time" min="6" max="60" value="12">
 
-<!-- EMI POPUP -->
-<div class="emi-popup" id="emiPopup" style="display:none;">
-    <div class="emi-content">
+                <!-- <button onclick="calculateEMI()">Calculate EMI</button> -->
 
-        <span class="close-x" onclick="closeEMIPopup()">&times;</span>
+                <div class="emi-result">
+                    <p id="emi"></p>
+                    <p id="total"></p>
+                    <p id="interest"></p>
+                </div>
+            </div>
 
-        <h3 style="text-align:center;">EMI Calculator</h3>
-
-        <label>Loan Amount</label>
-        <input type="number" id="loanAmount" placeholder="Enter Loan Amount">
-
-        <label>Rate of Interest (%) per month</label>
-        <input type="number" id="loanRate" placeholder="Example: 2">
-
-        <label>Tenure (Months)</label>
-        <input type="number" id="loanMonths" placeholder="Enter Months">
-
-        <button class="btn-emi" id="calcEmiBtn">Calculate EMI</button>
-
-        <div id="emiResults" class="emi-results" style="display:none;margin-top:15px;">
-            <p id="totalInterest"></p>
-            <p id="totalPayment"></p>
-            <p id="monthlyEmi"></p>
-        </div>
+        
     </div>
+
+    <!-- ================= FORM ================= -->
+    <div class="form-section">
+
+        <h3>Loan Application</h3>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="full_name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+
+            <input type="text" name="phone" placeholder="Phone Number" required>
+            <input type="date" name="dob" required>
+
+            <input type="text" name="address" placeholder="Address" required>
+            <input type="text" name="city" placeholder="City" required>
+
+            <input type="number" name="loan_amount" placeholder="Loan Amount" required>
+
+            <select name="loan_type" required>
+                <option value="">Select Loan Type</option>
+                <option>Construction Loans</option>
+                <option>Mortgage Loans</option>
+                <option>Purchase Loan</option>
+            </select>
+
+            <button type="submit">Submit Application</button>
+        </form>
+
+    </div>
+
 </div>
+ 
+<script defer>
+document.addEventListener("DOMContentLoaded", function () {
 
+    function calculateEMI(P, annualRate, months) {
+        let r = annualRate / 12 / 100;
+        let emi = (P * r * Math.pow(1 + r, months)) /
+                  (Math.pow(1 + r, months) - 1);
 
+        let total = emi * months;
+        let interest = total - P;
 
-{% include 'footer.html' %}
-<script>
-
-function openEMIPopupFromForm() {
-    document.getElementById("loanAmount").value =
-        document.getElementById("formLoanAmount").value;
-
-    document.getElementById("loanRate").value = "";
-    document.getElementById("loanMonths").value = "";
-
-    openEMIPopup();
-}
-
-function openEMIPopup() {
-    document.getElementById("emiPopup").style.display = "flex";
-}
-
-function closeEMIPopup() {
-    document.getElementById("emiPopup").style.display = "none";
-}
-
-// Dynamic interest formula
-function calculateFixedInterest(P, rate, months) {
-
-    let interest = (P * rate * months) / 100;  
-    let total = P + interest;
-    let emi = total / months;
-
-    return {
-        emi: emi,
-        totalPayment: total,
-        totalInterest: interest
-    };
-}
-
-document.getElementById('calcEmiBtn').addEventListener('click', function () {
-
-    const P = parseFloat(document.getElementById('loanAmount').value);
-    const R = parseFloat(document.getElementById('loanRate').value);
-    const M = parseInt(document.getElementById('loanMonths').value);
-
-    if (!P || !R || !M) {
-        alert("Please enter valid Loan Amount, Rate, and Tenure.");
-        return;
+        return { emi, total, interest };
     }
 
-    const result = calculateFixedInterest(P, R, M);
+    const amount = document.getElementById("amount");
+    const rate = document.getElementById("rate");
+    const time = document.getElementById("time");
 
-    function format(n) {
-        return n.toLocaleString("en-IN", { minimumFractionDigits: 2 });
+    const amtVal = document.getElementById("amtVal");
+    const rateVal = document.getElementById("rateVal");
+    const timeVal = document.getElementById("timeVal");
+
+    const emiText = document.getElementById("emi");
+    const totalText = document.getElementById("total");
+    const interestText = document.getElementById("interest");
+
+    function update() {
+        let P = parseFloat(amount.value) || 0;
+        let R = parseFloat(rate.value) || 0;
+        let M = parseInt(time.value) || 1;
+
+        amtVal.innerText = P.toLocaleString("en-IN");
+        rateVal.innerText = R;
+        timeVal.innerText = M;
+
+        let result = calculateEMI(P, R, M);
+
+        emiText.innerText = "EMI: ₹ " + result.emi.toFixed(2);
+        totalText.innerText = "Total: ₹ " + result.total.toFixed(2);
+        interestText.innerText = "Interest: ₹ " + result.interest.toFixed(2);
     }
 
-    document.getElementById('totalInterest').innerHTML =
-        "Interest Amount: ₹ " + format(result.totalInterest);
+    amount.addEventListener("input", update);
+    rate.addEventListener("input", update);
+    time.addEventListener("input", update);
 
-    document.getElementById('totalPayment').innerHTML =
-        "Total Amount: ₹ " + format(result.totalPayment);
-
-    document.getElementById('monthlyEmi').innerHTML =
-        "Monthly EMI: ₹ " + format(result.emi);
-
-    document.getElementById('emiResults').style.display = "block";
+    update();
 });
-
 </script>
-
+<script src="{% static 'js/loan_form.js' %}"></script>
 </body>
 </html>

@@ -1,364 +1,129 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    
-<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static '/css/franchise.css' %}" />
-    <title>Franchise Locations</title>
-    <style>
-      /* ===== Base Style ===== */
-      body {
-        margin: 0;
-        font-family: "Poppins", "Inter", sans-serif;
-        background: #f1f4f8;
-        color: #222;
-      }
 
-      /* ===== Franchise Section ===== */
-      .fran {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 60px 20px;
-        background: #e9ecef;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Franchise Page</title>
 
-      .fran-wrapper {
-        display: flex;
-        justify-content: space-between;
-        max-width: 1200px;
-        width: 100%;
-        gap: 40px;
-      }
+  <link rel="stylesheet" href="{% static 'css/franchise.css' %}">
+</head>
 
-      /* ===== Left Map ===== */
-      .fran-map {
-        flex: 1;
-      }
+<body>
 
-      .fran-map iframe {
-        width: 100%;
-        height: 100%;
-        min-height: 350px;
-        border: 0;
-        border-radius: 10px;
-      }
+  {% include 'NavBar.html' %}
 
-      /* ===== Right Content ===== */
-      .fran-content {
-        flex: 1;
-        text-align: center;
-      }
+  <section class="fran">
+    <div class="fran-wrapper">
 
-      .fran-content h3 {
-        font-size: 22px;
-        font-weight: 600;
-        color: #444;
-        margin-bottom: 5px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
+      <!-- LEFT -->
+      <div class="fran-left">
 
-      .fran-content h2 {
-        font-size: 26px;
-        margin-bottom: 20px;
-        color: #111;
-        font-weight: 700;
-      }
-
-      .city-list {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 30px;
-        margin-top: 30px;
-      }
-
-      .city {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .city img {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        object-fit: cover;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease;
-      }
-
-      .city img:hover {
-        transform: scale(1.05);
-      }
-
-      .city span {
-        margin-top: 10px;
-        font-size: 16px;
-        color: #222;
-        font-weight: 500;
-      }
-
-      /* ===== Franchise Apply Section ===== */
-      .fran-apply {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 80px 20px;
-        background: #e9ecef;
-      }
-
-      .fran-apply-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 60px;
-        max-width: 1200px;
-        width: 100%;
-      }
-
-      .fran-apply-img {
-        flex: 1;
-        text-align: center;
-      }
-
-      .fran-apply-img img {
-        width: 100%;
-        max-width: 500px;
-        border-radius: 12px;
-      }
-
-      .fran-apply-form {
-        flex: 1;
-        background: #ffffff;
-        border-radius: 14px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
-        padding: 40px 35px;
-        max-width: 520px;
-      }
-
-      .fran-apply-form h2 {
-        font-size: 22px;
-        margin-bottom: 25px;
-        color: #111;
-        font-weight: 600;
-        text-align: center;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 18px;
-      }
-
-      .form-group label {
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 6px;
-        color: #333;
-      }
-
-      .form-group label span {
-        color: red;
-      }
-
-      .fran-apply-form input,
-      .fran-apply-form textarea {
-        width: 100%;
-        padding: 12px 14px;
-        border: 1px solid #d9d9d9;
-        border-radius: 8px;
-        background: #fafafa;
-        font-size: 14px;
-        resize: none;
-        font-family: "Poppins", sans-serif;
-      }
-
-      .fran-apply-form input:focus,
-      .fran-apply-form textarea:focus {
-        border-color: #1e5af9;
-        background: #fff;
-        box-shadow: 0 0 0 3px rgba(30, 90, 249, 0.15);
-      }
-
-      .fran-apply-form button {
-        width: 100%;
-        background: #1e5af9;
-        border: none;
-        color: #fff;
-        padding: 12px;
-        border-radius: 8px;
-        font-size: 15px;
-        cursor: pointer;
-        font-weight: 500;
-      }
-
-      .fran-apply-form button:hover {
-        background: #1547c5;
-      }
-
-      .fran-apply-form .errorlist {
-        color: red;
-        margin: 5px 0;
-        font-size: 13px;
-      }
-
-      /* ===== RESPONSIVE DESIGN ===== */
-      @media (max-width: 900px) {
-        .fran-wrapper {
-          flex-direction: column;
-          text-align: center;
-        }
-        .fran-map iframe {
-          height: 280px;
-        }
-        .city img {
-          width: 90px;
-          height: 90px;
-        }
-        .fran-apply-wrapper {
-          flex-direction: column;
-          gap: 40px;
-        }
-        .fran-apply-img img {
-          max-width: 350px;
-        }
-        .fran-apply-form {
-          width: 100%;
-          padding: 30px 20px;
-        }
-      }
-      @media (max-width: 600px) {
-        .city-list {
-          gap: 15px;
-        }
-        .city img {
-          width: 80px;
-          height: 80px;
-        }
-        .fran-content h2 {
-          font-size: 22px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    {% include 'NavBar.html' %}
-
-    <br><br><br>
-
-    <!-- Franchise Locations -->
-    <section class="fran">
-      <div class="fran-wrapper">
-        <div class="fran-map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30773484.55170563!2d61.0245165611659!3d19.69009515037612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30635ff06b92b791%3A0xd78c4fa1854213a6!2sIndia!5e0!3m2!1sen!2sin!4v1762923398193!5m2!1sen!2sin"
-            width="800"
-            height="600"
-            style="border:0"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
-        </div>
-
-        <div class="fran-content">
-          <h3>Available Franchises</h3>
-          <h2>Explore Our Network Of Franchises Across The Country</h2>
+        <div class="box">
+          <h3>Where we are running franchises</h3>
           <div class="city-list">
             <div class="city">
-              <img src="{% static 'images/franchise/hyd.webp' %}" alt="Hyderabad"/>
+              <img src="{% static 'images/franchise/hyd.webp' %}">
               <span>Hyderabad</span>
             </div>
             <div class="city">
-              <img src="{% static 'images/franchise/bangalore.jpeg' %}" alt="Bangalore"/>
+              <img src="{% static 'images/franchise/bangalore.jpeg' %}">
               <span>Bangalore</span>
             </div>
             <div class="city">
-              <img src="{% static 'images/franchise/mumbai.jpeg' %}" alt="Mumbai"/>
+              <img src="{% static 'images/franchise/mumbai.jpeg' %}">
               <span>Mumbai</span>
             </div>
             <div class="city">
-              <img src="{% static 'images/franchise/chennai.jpg' %}" alt="Chennai"/>
+              <img src="{% static 'images/franchise/chennai.jpg' %}">
               <span>Chennai</span>
             </div>
             <div class="city">
-              <img src="{% static 'images/franchise/delhi.jpeg' %}" alt="Delhi"/>
+              <img src="{% static 'images/franchise/delhi.jpeg' %}">
               <span>Delhi</span>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    
-{% include 'franchise_list.html' with data=data %}
-    <!-- Franchise Application Form -->
-    <section class="fran-apply">
-      <div class="fran-apply-wrapper">
-        <div class="fran-apply-img">
-          <img src="{% static 'images/img/banner.jpg' %}" alt="Franchise Partnership"/>
+
+        <div class="box how-box">
+          <h3>How it works?</h3>
+          <p>
+            Apply for a franchise using the form. Our team will review your request,
+            contact you, and guide you through setup and launching your franchise.
+          </p>
         </div>
 
-        <div class="fran-apply-form">
-          <h2>Franchise Application Form</h2>
-          <form method="POST" action="{% url 'prop:franchise' %}">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
+        <div class="box contact-box">
 
-            <div class="form-group">
-              {{ form.full_name.label_tag }} <span>*</span>
-              {{ form.full_name }}
-              {{ form.full_name.errors }}
-            </div>
 
-            <div class="form-group">
-              {{ form.email.label_tag }} <span>*</span>
-              {{ form.email }}
-              {{ form.email.errors }}
-            </div>
 
-            <div class="form-group">
-              {{ form.contact.label_tag }} <span>*</span>
-              {{ form.contact }}
-              {{ form.contact.errors }}
-            </div>
+          <a href="/contact/" class="contact-btn">
+            <i class="fa fa-phone"></i> Contact
+          </a>
+          <span class="contact-text">
+            For more information
+          </span>
 
-            <div class="form-group">
-              {{ form.location.label_tag }} <span>*</span>
-              {{ form.location }}
-              {{ form.location.errors }}
-            </div>
-
-            <div class="form-group">
-              {{ form.experience.label_tag }}
-              {{ form.experience }}
-              {{ form.experience.errors }}
-            </div>
-
-            <div class="form-group">
-              {{ form.reason.label_tag }}
-              {{ form.reason }}
-              {{ form.reason.errors }}
-            </div>
-
-            <button type="submit">Submit Application</button>
-          </form>
-
-          {% if success %}
-            <p style="color: green; text-align: center; margin-top: 10px">
-              Form submitted successfully!
-            </p>
-          {% endif %}
         </div>
+
+        <div class="box bottom-image">
+          <img src="{% static 'images/img/banner.jpg' %}">
+        </div>
+
       </div>
-    </section>
 
+      <!-- FORM -->
+      <div class="fran-form">
+        <h2>Franchise Application Form</h2>
 
-       {% include 'footer.html' %}
-    
-  </body>
+        <form method="POST" action="{% url 'prop:franchise' %}">
+          {% csrf_token %}
+
+          <div class="form-group">
+            {{ form.full_name.label_tag }}
+            {{ form.full_name }}
+          </div>
+
+          <div class="form-group">
+            {{ form.email.label_tag }}
+            {{ form.email }}
+          </div>
+
+          <div class="form-group">
+            {{ form.contact.label_tag }}
+            {{ form.contact }}
+          </div>
+
+          <div class="form-group">
+            {{ form.location.label_tag }}
+            {{ form.location }}
+          </div>
+
+          <div class="form-group">
+            {{ form.experience.label_tag }}
+            {{ form.experience }}
+          </div>
+
+          <div class="form-group">
+            {{ form.reason.label_tag }}
+            {{ form.reason }}
+          </div>
+
+          <button type="submit">Submit</button>
+        </form>
+
+        {% if success %}
+        <p class="success-msg">Form submitted successfully!</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </section>
+
+  {% include 'footer.html' %}
+
+</body>
+
 </html>

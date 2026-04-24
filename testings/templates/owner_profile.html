@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.username }} | Profile</title>
+
+    <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{% static 'css/owner_profile.css' %}">
+</head>
+
+<body>
+
+    {% include 'NavBar.html' %}
+
+    <div class="profile-wrapper">
+
+        <!-- HEADER -->
+        <div class="profile-header">
+            <div class="avatar-container">
+                {% if data.profile_image_path %}
+                <img src="{{ data.profile_image_path.url }}" class="profile-img" alt="Profile">
+                {% else %}
+                <div class="avatar-placeholder">
+                    {{ data.username|first|upper }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="user-info">
+                <h1>{{ data.username }}</h1>
+                <div class="referral-badge">
+                    <i class="bi bi-qr-code"></i>
+                    Referral Code: <b>{{ data.user_referral_code|default:"N/A" }}</b>
+                </div>
+            </div>
+
+            <!-- HEADER ACTIONS -->
+            <div class="header-actions">
+                <a href="{% url 'prop:edit_profile' %}" class="icon-btn" title="Edit Profile">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a href="#" class="icon-btn" title="Settings">
+                    <i class="bi bi-gear-fill"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- STATS GRID -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-value">{{ upload_count }}</span>
+                <span class="stat-label">Properties</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ sold_count }}</span>
+                <span class="stat-label">Sold Out</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">{{ pending_count }}</span>
+                <span class="stat-label">Pending</span>
+            </div>
+        </div>
+
+        <!-- ACTION CHIPS -->
+        <div class="action-chips">
+            <a href="{% url 'prop:user_uploades' %}" class="chip">My Property</a>
+            <a href="#" class="chip">Sales</a>
+            <a href="#" class="chip">Rentals</a>
+            <a href="{% url 'prop:referral' %}" class="chip">Referrals</a>
+            {% if data.role == "PROFESSIONAL" %}
+            <a href="{% url 'prop:all_reels' %}" class="chip">Reels</a>
+            {% endif %}
+        </div>
+
+        <!-- BIO / ABOUT -->
+        <div class="content-card">
+            <h3 class="section-title"><i class="bi bi-person-lines-fill"></i> About Me</h3>
+            <p class="bio-text">
+                {{ data.description|default:"No description provided yet." }}
+            </p>
+
+            {% if data.role != "OWNER" %}
+            <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div>
+                    <span class="stat-label">Experience</span>
+                    <p style="font-weight: 600;">{{ data.experience|default:"0" }} Years</p>
+                </div>
+                <div>
+                    <span class="stat-label">Deals Completed</span>
+                    <p style="font-weight: 600;">{{ data.deals|default:"0" }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- SUBSCRIPTION STATUS -->
+        {% if expiry_message %}
+        <div
+            class="sub-status {% if is_expired %}status-expired{% elif show_expiry_warning %}status-warning{% else %}status-active{% endif %}">
+            <i class="bi {% if is_expired %}bi-exclamation-octagon{% else %}bi-check-circle{% endif %}"></i>
+            {{ expiry_message }}
+        </div>
+        {% endif %}
+
+        <!-- PROPERTIES SECTION -->
+        <div class="properties-section">
+            <h3 class="section-title"><i class="bi bi-houses"></i> My Properties</h3>
+            <div class="property-grid">
+                {% for prop in properties %}
+                <div class="property-card {% if prop.display_status == 'Not Verified' %}card-disabled{% endif %}">
+                    <div class="card-image-wrapper">
+                        {% if prop.image %}
+                        <img src="{{ prop.image.url }}" class="card-image" alt="Property">
+                        {% else %}
+                        <img src="{% static 'images/logo.jpg' %}" class="card-image" alt="Property">
+                        {% endif %}
+
+                        {% if prop.display_status == "Not Verified" %}
+                        <div class="image-status-overlay">
+                            <div class="status-pill-large">Not Verified</div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h4 class="property-title">{{ prop.projectName|default:prop.selectProperty }}</h4>
+                            <span
+                                class="status-badge {% if prop.display_status == 'Verified' %}badge-verified{% elif prop.display_status == 'Pending' %}badge-pending{% else %}badge-not-verified{% endif %}">
+                                {{ prop.display_status }}
+                            </span>
+                        </div>
+                        <p class="property-location">{{ prop.location|default:"Location not specified" }}</p>
+
+                        <div class="card-actions">
+                            {% if prop.display_status == "Pending" %}
+                            <a href="{% url 'prop:check_property_details' prop.id %}" class="card-btn btn-check">Check
+                                Detail & Confirm</a>
+                            {% else %}
+                            <a href="#" class="card-btn btn-edit">Edit</a>
+                            <a href="#" class="card-btn btn-delete">Delete</a>
+                            <a href="#" class="card-btn btn-sold">Sold Out</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted text-center py-4">No properties listed yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>

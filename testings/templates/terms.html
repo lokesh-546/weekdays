@@ -2,230 +2,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Terms & Conditions</title>
-<link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
-    <link rel="stylesheet" href="terms.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | GoNestro</title>
+    <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/terms.css' %}">
 </head>
-<style>
-    /* Full Page */
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f2f2;
-}
-
-/* Navbar */
-.navbar {
-    width: 100%;
-    padding: 15px 20px;
-    background: #4b7bec;
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.logo {
-    margin: 0;
-}
-
-/* Card Container */
-.terms-container {
-    max-width: 850px;
-    background: #fff;
-    margin: 40px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    margin-top: 150px;
-}
-
-/* Title */
-.terms-container h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* Last Updated */
-.updated-date {
-    font-size: 14px;
-    color: #777;
-    margin-bottom: 20px;
-}
-
-/* Sections */
-.terms-container section {
-    margin-bottom: 25px;
-}
-
-.terms-container h2 {
-    font-size: 20px;
-    color: #4b7bec;
-    margin-bottom: 8px;
-}
-
-.terms-container p {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #444;
-}
-
-/* Links */
-.terms-container a {
-    color: #4b7bec;
-    text-decoration: none;
-}
-
-.terms-container a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive for Mobile */
-@media (max-width: 600px) {
-    .terms-container {
-        margin: 20px 10px;
-        padding: 20px;
-         margin-top: 100px;
-         margin-bottom: 100px;
-         border: 1px solid black;
-         
-    }
-
-    .terms-container h1 {
-        font-size: 24px;
-    }
-
-    .terms-container h2 {
-        font-size: 18px;
-    }
-
-    .terms-container p {
-        font-size: 15px;
-    }
-}
-
-    
-</style>
-
 <body>
-    <div class="terms-page">
 
-        <!-- Replace NavBar with your own HTML Navbar -->
-        <!-- <nav class="navbar">
-            <h2 class="logo">Your Logo</h2>
-        </nav> -->
-            {% include 'NavBar.html' %}
+    {% include 'NavBar.html' %}
 
+    <div class="terms-header">
+        <div class="container">
+            <h1>Terms & Conditions</h1>
+            <p>Effective Date: April 23, 2026</p>
+        </div>
+    </div>
 
-        <div class="terms-container">
-            <h1>Terms and Conditions</h1>
-            <!-- <p class="updated-date">Last Updated: October 30, 2025</p> -->
+    <div class="container">
+        <div class="content-card">
+            <p>Welcome to <strong>GoNestro</strong>. These Terms & Conditions (“Terms”) govern your access to and use of the GoNestro platform, including our website, mobile application, and services.</p>
+            <p>By accessing or using GoNestro, you agree to be bound by these Terms. If you do not agree, please do not use our platform.</p>
 
             <section>
-                <h2>1. Introduction</h2>
-                <p>
-                    Welcome to our platform. By accessing or using our website, mobile
-                    app, or any services we provide, you agree to be bound by these
-                    Terms and Conditions. Please read them carefully before using our
-                    services.
-                </p>
+                <h2>1. About GoNestro</h2>
+                <p>GoNestro is a real estate platform that connects buyers, sellers, property owners, agents, builders, and construction professionals. We provide property listings, connections, and support services to simplify real estate transactions.</p>
+                <p>GoNestro acts as an intermediary platform and does not directly own, sell, or purchase properties.</p>
             </section>
 
             <section>
                 <h2>2. Eligibility</h2>
-                <p>
-                    To use our services, you must be at least 18 years old or have the
-                    consent of a legal guardian. You are responsible for ensuring that
-                    your use of the platform complies with all applicable laws and
-                    regulations.
-                </p>
+                <ul>
+                    <li>You must be at least 18 years old to use GoNestro</li>
+                    <li>You must provide accurate and complete information during registration</li>
+                    <li>You are responsible for maintaining the confidentiality of your account</li>
+                </ul>
             </section>
 
             <section>
-                <h2>3. Account Responsibilities</h2>
-                <p>
-                    You are responsible for maintaining the confidentiality of your
-                    account credentials. Any activity under your account is considered
-                    your responsibility. Notify us immediately of any unauthorized use
-                    or security breach.
-                </p>
+                <h2>3. User Accounts</h2>
+                <p>When you create an account on GoNestro:</p>
+                <ul>
+                    <li>You agree to provide true and updated information</li>
+                    <li>You are responsible for all activities under your account</li>
+                    <li>GoNestro reserves the right to suspend or terminate accounts that violate these Terms</li>
+                </ul>
             </section>
 
             <section>
-                <h2>4. Use of Services</h2>
-                <p>
-                    You agree not to misuse our services or engage in any activity that
-                    disrupts or damages the integrity of our systems. Unauthorized
-                    access, data scraping, or reverse engineering is strictly prohibited.
-                </p>
+                <h2>4. Use of Platform</h2>
+                <p>You agree to use GoNestro only for lawful purposes. You must not:</p>
+                <ul>
+                    <li>Post false, misleading, or fraudulent property listings</li>
+                    <li>Upload illegal, offensive, or harmful content</li>
+                    <li>Impersonate any person or entity</li>
+                    <li>Attempt to disrupt or misuse the platform</li>
+                    <li>Use the platform for unauthorized advertising or spam</li>
+                </ul>
             </section>
 
             <section>
-                <h2>5. Payments and Subscriptions</h2>
-                <p>
-                    All purchases and subscriptions made through the platform are
-                    non-refundable unless otherwise stated. Prices and package details
-                    may change without prior notice.
-                </p>
+                <h2>5. Property Listings & Content</h2>
+                <ul>
+                    <li>Users are responsible for the accuracy of property details they post</li>
+                    <li>GoNestro does not guarantee the authenticity of listings, but promotes verification</li>
+                    <li>We reserve the right to remove or modify listings that violate our policies</li>
+                </ul>
             </section>
 
             <section>
-                <h2>6. Referral and Earnings</h2>
-                <p>
-                    Referral earnings are calculated based on valid and verified
-                    referrals as per our policy. The total earnings are determined as
-                    5% of the total value of the referred packages. Any misuse or
-                    fraudulent activity may result in forfeiture of earnings.
-                </p>
+                <h2>6. Role of GoNestro</h2>
+                <ul>
+                    <li>GoNestro is a facilitator connecting users</li>
+                    <li>We do not guarantee successful transactions between parties</li>
+                    <li>We are not responsible for disputes between buyers, sellers, agents, or builders</li>
+                    <li>Users are advised to verify all property details and documents independently</li>
+                </ul>
             </section>
 
             <section>
-                <h2>7. Intellectual Property</h2>
-                <p>
-                    All content, branding, and materials on this platform are the
-                    property of the company or its licensors. You may not reproduce,
-                    distribute, or modify any content without explicit permission.
-                </p>
+                <h2>7. Payments & Services</h2>
+                <ul>
+                    <li>Some services on GoNestro may be paid (e.g., promotions, premium listings)</li>
+                    <li>All payments must be made through approved methods</li>
+                    <li>Fees, if applicable, are non-refundable unless stated otherwise</li>
+                </ul>
             </section>
 
             <section>
-                <h2>8. Termination</h2>
-                <p>
-                    We reserve the right to suspend or terminate your access if you
-                    violate any of these Terms. Termination does not exempt you from
-                    any outstanding obligations or liabilities.
-                </p>
+                <h2>8. Third-Party Services</h2>
+                <p>GoNestro may connect users with third-party service providers such as legal advisors, document verification services, packers and movers, and construction professionals.</p>
+                <p>We are not responsible for the quality, performance, or outcomes of third-party services.</p>
             </section>
 
             <section>
-                <h2>9. Limitation of Liability</h2>
-                <p>
-                    We are not liable for any indirect, incidental, or consequential
-                    damages resulting from the use or inability to use our services,
-                    including but not limited to loss of data or profits.
-                </p>
+                <h2>9. Intellectual Property</h2>
+                <p>All content on GoNestro (logo, design, text, technology) is owned by GoNestro. You may not copy, reproduce, or use our content without permission.</p>
             </section>
 
             <section>
-                <h2>10. Changes to Terms</h2>
-                <p>
-                    We may update these Terms and Conditions from time to time. The
-                    revised version will be effective upon posting. Continued use of our
-                    platform constitutes your acceptance of the changes.
-                </p>
+                <h2>10. Limitation of Liability</h2>
+                <p>GoNestro is not liable for any loss or damage resulting from property transactions, incorrect listings, disputes between parties, or technical issues. Use the platform at your own risk.</p>
             </section>
 
             <section>
-                <h2>11. Contact Us</h2>
-                <p>
-                    If you have any questions about these Terms and Conditions, please
-                    contact our support team at
-                    <a href="mailto:weekdaysproperties@gmail.com">weekdaysproperties@gmail.com</a>.
-                </p>
+                <h2>11. Termination</h2>
+                <p>We reserve the right to suspend or terminate accounts, remove inappropriate content, or restrict access to the platform without prior notice for violations of these Terms.</p>
             </section>
+
+            <section>
+                <h2>12. Privacy</h2>
+                <p>Your use of GoNestro is also governed by our Privacy Policy. We encourage you to review it to understand how your data is handled.</p>
+            </section>
+
+            <section>
+                <h2>13. Changes to Terms</h2>
+                <p>GoNestro may update these Terms at any time. Continued use of the platform after changes means you accept the updated Terms.</p>
+            </section>
+
+            <section>
+                <h2>14. Governing Law</h2>
+                <p>These Terms are governed by the laws of India. Any disputes will be subject to the jurisdiction of relevant courts.</p>
+            </section>
+
+            <section>
+                <h2>15. Contact Us</h2>
+                <p>If you have any questions about these Terms, contact us:</p>
+                <div class="contact-box">
+                    <p><i class="bi bi-envelope"></i> Email: support@gonestro.com</p>
+                    <p><i class="bi bi-telephone"></i> Phone: +91-XXXXXXXXXX</p>
+                </div>
+            </section>
+
+            <div style="margin-top: 50px; text-align: center; border-top: 1px solid #f1f5f9; padding-top: 30px;">
+                <h3 style="margin-bottom: 10px;">GoNestro Commitment</h3>
+                <p>We aim to create a transparent, secure, and reliable real estate platform for all users.</p>
+                <p><strong>GoNestro – Find. Connect. Move.</strong></p>
+            </div>
         </div>
     </div>
+
+    {% include 'footer.html' %}
+
 </body>
 </html>

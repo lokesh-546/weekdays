@@ -81,3 +81,14 @@ class ChatMessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'chat', 'sender', 'message', 'is_read', 'created_at')
     list_filter = ('is_read', 'created_at')
     search_fields = ('sender__username', 'message')
+
+from .models import PostFeed, ImagePost
+
+@admin.register(PostFeed)
+class PostFeedAdmin(admin.ModelAdmin):
+    list_display = ('media_type', 'created_at')
+
+
+@admin.register(ImagePost)
+class ImagePostAdmin(admin.ModelAdmin):
+    list_display = ('heading', 'created_at')

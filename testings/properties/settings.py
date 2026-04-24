@@ -97,7 +97,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     
-    'prop',   # your app
+    'prop',   # your app 
 ]
 
 
@@ -176,13 +176,8 @@ WSGI_APPLICATION = 'properties.wsgi.application'
 # ------------------------------
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'weekdays',
-        'USER': 'weekdaysproperties',
-        'PASSWORD': 'Ravindra@123',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS': {'charset': 'utf8mb4'},
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

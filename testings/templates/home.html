@@ -4,3219 +4,1064 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-
-
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+ 
 <link rel="shortcut icon" href="{% static 'images/weekfav.jpeg' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'css/home.css' %}" />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/stories.css' %}">
 </head>
-<title>Weekdays Properties is the Best Place</title> 
-<style>
-  .expert-bio {
-  font-size: 12px;
-  color: #000000;
-  margin: 8px 0px;
-  line-height: 1.4;
-  max-height: 40px;
-  overflow: hidden;
-}
-.divider-red {
-  border: none;
-  height: 2px;
-  background-color: #e6e6e6;
-  margin: 6px 0;
-}
-    p.location {
-        white-space: nowrap;
-        overflow: hidden;
-        margin-left: 20px !important ;
-        text-overflow: ellipsis;
-    }
-@media (max-width: 768px) {
-    p.location {
-        white-space: nowrap;
-        overflow: hidden;
-        margin-left: 20px !important;
-        text-overflow: ellipsis;
-    }
-}
-
-.contact-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 12px;
-}
-
-.contact-btn-main {
-  flex: 1;
-  height: 40px;
-  background: #4c3eb6;
-  color: white;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-.icon-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #d6d6d6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-}
-
-/* SHARE DROPDOWN */
-.icon-btn-wrapper {
-    position: relative;
-}
-
-
-
-/* SHARE WRAPPER */
-.icon-btn-wrapper {
-    position: relative;
-}
-
-
-
-/* SHARE ITEMS */
-.share-item {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.share-item:hover {
-    background: #f2f2f2;
-}
-
-
-/* SHARE WRAPPER */
-.share-wrapper {
-    position: relative;
-}
-
-/* SHARE BOX (CLICK ONLY) */
-.share-box {
-    display: none;
-    margin-left: 10px;
-    flex-direction: column;
-    position: absolute;
-    bottom: 55px;
-    left:40px;  
-
-    width: 260px;              /* ✅ mobile friendly */
-    max-width: 90vw;           /* ✅ never overflow screen */
-
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    z-index: 9999;
-}
-@media (max-width: 768px) {
-    .share-box {
-        right: 50%;
-        transform: translateX(50%);
-        bottom: 60px;
-    }
-}
-
-
-/* SHARE ITEMS */
-.share-item {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.share-item:hover {
-    background: #f2f2f2;
-}
- 
-  /* HORIZONTAL SCROLL CONTAINER */
-.card-grid {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;     /* Scrolls horizontally */
-    scroll-snap-type: x mandatory;
-    padding-bottom: 5px;
-}
-section{
-    padding:5px;
-}
-
-
-.card-grid::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-}
-
-/* CARD */
-.expert-card {
-    min-width: 250px;      /* card width */
-    max-width: 250px;
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-    text-align: center;
-    
-}
-
-/* PROFILE IMAGE */
-.profile-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 0 auto 15px auto;
-    border: 3px solid #eee;
-}
-
-/* TEXT */
-.expert-card h3 {
-    margin-bottom: 8px;
-    font-size: 20px;
-    color: black;
-}
-
-.expert-card p {
-    margin: 5px 0;
-    text-align: left;
-    font-size: 12px;
-}
-
-/* CONTACT BUTTON */
-.call-btn {
-    display: block;
-    width: 90%;
-    padding: 8px;
-    background:rgb(84, 84, 151);
-    color: white;
-    border-radius: 12px;
-    margin-top: 18px;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.call-btn:hover {
-    background: rgb(165, 55, 55);
-}
-
-/* Titles */
-section h2, section p {
-    text-align: center;
-}
-  .see-all-btn {
-        display: inline-block;
-        padding: 10px 25px;
-        background:rgb(84, 84, 151) ;
-        color: #fff;
-        border-radius: 25px;
-        text-decoration: none;
-        font-size: 15px;
-        transition: 0.3s;
-        margin-top: 100px;
-      }
-
-      .see-all-btn:hover {
-        background: rgb(165, 55, 55);
-      }
-
-       .card-details {
-            text-align: left;
-            display:grid;
-            grid-template-columns:repeat(2,1fr);
-            margin-left:20px;
-            
-           
-        }
-         .card-details p{
-             font-weight:100;
-          color: black;
-          font-size: 12px;
-          line-height:15px;
-         }
-
-
-
-         @media (max-width: 768px) {
-  .cards-container {
-    grid-template-columns: repeat(1, 1fr); /* 1 card per row */
-    padding: 20px;
-    gap: 20px;
-  }
-  .see-all-btn{
-    width: 100px;
-  }
-
-  .card-item img {
-    height: 180px; /* smaller image on mobile */
-  }
-
-  .card-item h1 {
-    font-size: 18px;
-  }
-
-  .card-item p {
-    font-size: 13px;
-    padding: 0 15px 15px;
-  }
-}
-
-
-@media (max-width: 768px) {
-  footer.footer {
-    display: none !important;
-  }
-  .cat-buttons{
-    display: none;
-  }
-  
-}
-/* MOBILE HEADINGS FIX */
-@media (max-width: 768px) {
-
-  h1 {
-    font-size: 22px !important;
-    line-height: 28px !important;
-    text-align: center !important;
-  }
-
-  h2 {
-    font-size: 20px !important;
-    line-height: 26px !important;
-    text-align: center !important;
-    margin-bottom:7px;
-  }
-
-  h3 {
-    font-size: 18px !important;
-    line-height: 24px !important;
-    text-align: center !important;
-  }
-
-  p {
-    font-size: 13px !important;
-    
-  }
-  .construction-section h2{
-      margin-bottom:5px;
-  }
-.expert-card p {
-    line-height:13px;
-}
-  
-}
-.slideshow {
-    width: 100%;
-    height: 600px;    
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-}
-
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    margin-top: -500px;  
-    padding-bottom: 50px;
-}
-
- .container1 {
-  max-width: 1200px;
-  margin:5% auto auto auto;
-  padding: 0 16px;
-}
-
-@media (max-width: 768px) {
- 
-  .container1 {
-      margin:30% auto auto auto;
-  }
-}
-.card-grid {
-  display: flex;
-  flex-wrap: nowrap;          /* 🔥 prevent wrapping */
-  gap: 20px;
-
-  overflow-x: auto;           /* 🔥 enable horizontal scroll */
-  overflow-y: hidden;
-
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-
-  padding: 20px 10px;
-}
-
-
-    </style> 
-  </head>
-  <body>
-    <!-- HEADER -->
-    <div class="header">
-      {%comment%}
-      <!-- <div class="logo">
-        <img src="{% static 'images/logo.jpg' %}" alt="Logo" />
-      </div>
-      <div class="right-links">
-        <a href="{% url 'login' %}">➕ Add Property</a>
-        <a href="{% url 'login' %}">🚪 Login</a>
-      </div> -->
-      {%endcomment%}
-      {% include 'NavBar.html' %}
-    </div>
-
-<!-- BACKGROUND SLIDESHOW -->
-<div class="slideshow">
-    {% for slide in desktop_slides %}
-        <img src="{{ slide.image.url }}">
-    {% endfor %}
-</div>
- 
-<!-- ================= MOBILE ONLY HERO ================= -->
-<section class="mobile-hero-wrapper">
-
-    <!-- SLIDE IMAGES -->
-    <div class="mobile-slide-container">
-
-        {% for slide in mobile_slides %}
-            <img src="{{ slide.image.url }}" class="mobile-slide-img">
-        {% endfor %}
-
-    </div>
-
-    <!-- SEARCH BAR OVER SLIDES -->
-<div class="mobile-search-wrapper">
-  <form method="POST" action="{% url 'prop:search' %}" class="mobile-search-form">
-    {% csrf_token %}
-    <select name="search-cat">
-      <option value="Flat">Flats</option>
-      <option value="Villa">Villas</option>
-      <option value="Plot">Plots</option>
-      <option value="Commerciallands">Commercial</option>
-      <option value="Lands">Lands</option>
-      <option value="Disputelands">Disputed Lands</option>
-      <option value="House">Houses</option>
-      <option value="Farm">Farm Lands</option>
-      <option value="Developmentlands">Development Lands</option>
-    </select>
-
-    <input
-      id="citySearch"
-      type="text"
-      name="search-input"
-      placeholder="Enter Location"
-    />
-
-    <button class="search-btnss">Search</button>
-  </form>
-</div>
-
-    <div class="category-content-wrapper">
-
-
-        <div class="category-grid">
-
-          <a href="{% url 'prop:property_list' 'Flat' %}?category=Flats" class="category-item">
-            <img src="{% static 'images/img/fa.jpeg' %}">
-            <span>Flats</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Plot' %}" class="category-item">
-            <img src="{% static 'images/img/lands.webp' %}">
-            <span>Plots</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Lands' %}" class="category-item">
-            <img src="{% static 'images/img/plots.jpeg' %}">
-            <span>Lands</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Disputelands' %}" class="category-item">
-            <img src="{% static 'images/img/dlands.jpg' %}">
-            <span>Disputed</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Developmentlands' %}" class="category-item">
-            <img src="{% static 'images/img/developlands.jpeg' %}">
-            <span>Development</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'House' %}" class="category-item">
-            <img src="{% static 'images/img/ih.png' %}">
-            <span>Houses</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Farm' %}" class="category-item">
-            <img src="{% static 'images/img/fl.webp' %}">
-            <span>Farm Lands</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Villa' %}" class="category-item">
-            <img src="{% static 'images/img/villa.jpeg' %}">
-            <span>Villas</span>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Commerciallands' %}" class="category-item">
-            <img src="{% static 'images/img/commercials.jpg' %}">
-            <span>Commercial</span>
-          </a>
-
+{% include 'NavBar.html' %}
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Stories -->
+        <h2 class="section-title">Updates</h2>
+        <div class="stories-container">
+            <div class="stories" id="stories-track">
+                <!-- Your Story (Add/View) -->
+                <div class="stories__item">
+                    <div class="stories__img-wrap {% if user_stories %}active-story{% else %}your-story{% endif %}" 
+                         {% if user_stories %}onclick="openYourStory()"{% endif %}>
+                        
+                        {% if user.is_authenticated %}
+                            {% if user.role == "COMPANY" and user.company_logo_path %}
+                                <img src="{{ user.company_logo_path.url }}" alt="Your Story" onerror="this.src='{% static 'default.jpg' %}'">
+                            {% elif user.profile_image_path %}
+                                <img src="{{ user.profile_image_path.url }}" alt="Your Story" onerror="this.src='{% static 'default.jpg' %}'">
+                            {% else %}
+                                <img src="{% static 'default.jpg' %}" alt="Your Story">
+                            {% endif %}
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}" alt="Your Story">
+                        {% endif %}
+                        
+                        <a href="{% url 'prop:news_create' %}" class="add-story-plus" title="Add New Story">+</a>
+                    </div>
+                    <div class="stories__name">Your story</div>
+                </div>
+
+                {% for story_group in stories_list %}
+                <div class="stories__item" onclick="openStoryViewer({{ forloop.counter0 }})">
+                    <div class="stories__img-wrap active-story">
+                        {% if story_group.user.company_logo_path %}
+                            <img src="{{ story_group.user.company_logo_path }}" alt="{{ story_group.user.company_name|default:story_group.user.username }}" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% elif story_group.user.profile_image_path %}
+                            <img src="{{ story_group.user.profile_image_path }}" alt="{{ story_group.user.username }}" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}" alt="Profile">
+                        {% endif %}
+                    </div>
+                    <div class="stories__name">{{ story_group.user.company_name|default:story_group.user.username }}</div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
+        <!-- Story Viewer Modal -->
+        <div id="story-viewer" class="story-viewer">
+            <div class="story-viewer__content">
+                <div class="story-viewer__header">
+                    <div class="story-viewer__progress-container" id="story-progress-container">
+                        <!-- Progress bars will be injected here -->
+                    </div>
+                    <div class="story-viewer__user-info">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img id="story-user-img" src="" alt="">
+                            <span id="story-user-name"></span>
+                            <span id="story-time" class="story-time"></span>
+                        </div>
+                        
+                        <div style="margin-left: auto; display: flex; align-items: center; gap: 15px;">
+                            
+                            <div class="story-menu-container" id="story-owner-menu" style="display: none;">
+                                <button class="story-dots-btn" onclick="toggleStoryMenu(event)"><i class="bi bi-three-dots"></i></button>
+                                <div id="story-menu-dropdown" class="story-menu-dropdown">
+                                    <a id="story-edit-link" href="#"><i class="bi bi-pencil"></i> Edit</a>
+                                    <button onclick="deleteCurrentStory(event)"><i class="bi bi-trash"></i> Delete</button>
+                                </div>
+                            </div>
+                            <button class="story-viewer__close" onclick="closeStoryViewer()" style="position: static; font-size: 35px; padding-left: 10px;">&times;</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="story-viewer__media-container" onclick="nextStory(event)">
+                    <div class="story-content">
+                        <img id="story-img" src="" class="story-media" style="display:none;">
+                        <video id="story-video" class="story-media" style="display:none;" autoplay muted playsinline></video>
+                    </div>
+                    
+                    <div class="story-viewer__caption">
+                        <p id="story-text"></p>
+                    </div>
+                </div>
+
+                <div class="story-viewer__nav">
+                    <button class="nav-prev" onclick="prevStory(event)">&#10094;</button>
+                    <button class="nav-next" onclick="nextStory(event)">&#10095;</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentGroupIndex = 0;
+            let currentStoryIndex = 0;
+            const storiesData = {% if stories_json %}{{ stories_json|safe }}{% else %}[]{% endif %};
+            const userStories = {% if user_stories_json %}{{ user_stories_json|safe }}{% else %}null{% endif %};
+            const currentUserId = {{ current_user_id|default:"null" }};
+            let activeStoryList = storiesData;
+            let storyTimer = null;
+            const IMAGE_DURATION = 10000; // 10 seconds for images
+
+
+            function openStoryViewer(groupIndex) {
+                activeStoryList = storiesData;
+                currentGroupIndex = groupIndex;
+                currentStoryIndex = 0;
+                document.getElementById('story-viewer').style.display = 'flex';
+                showStory();
+            }
+
+            function openYourStory() {
+                if (!userStories) return;
+                activeStoryList = [userStories];
+                currentGroupIndex = 0;
+                currentStoryIndex = 0;
+                document.getElementById('story-viewer').style.display = 'flex';
+                showStory();
+            }
+
+            function closeStoryViewer() {
+                document.getElementById('story-viewer').style.display = 'none';
+                document.getElementById('story-video').pause();
+                clearTimeout(storyTimer);
+            }
+
+            function showStory() {
+                const group = activeStoryList[currentGroupIndex];
+                const story = group.posts[currentStoryIndex];
+                const user = group.user;
+
+                // Update UI
+                document.getElementById('story-user-name').innerText = user.company_name || user.username;
+                document.getElementById('story-user-img').src = user.company_logo_path || user.profile_image_path || '{% static 'default.jpg' %}';
+                document.getElementById('story-time').innerText = story.created_at;
+                document.getElementById('story-text').innerText = story.content;
+
+                clearTimeout(storyTimer);
+                const imgEl = document.getElementById('story-img');
+                const videoEl = document.getElementById('story-video');
+
+                if (story.media_type === 'video') {
+                    imgEl.style.display = 'none';
+                    videoEl.style.display = 'block';
+                    videoEl.src = story.video_url;
+                    videoEl.onended = () => nextStory();
+                    videoEl.play();
+                    
+                    // Progress duration based on video duration (fallback to 30s)
+                    videoEl.onloadedmetadata = () => {
+                        updateProgressBars(videoEl.duration * 1000);
+                    };
+                } else {
+                    imgEl.style.display = 'block';
+                    videoEl.style.display = 'none';
+                    imgEl.src = story.image_url;
+                    imgEl.onerror = function() { this.src = '{% static 'default.jpg' %}'; };
+                    updateProgressBars(IMAGE_DURATION);
+                    storyTimer = setTimeout(nextStory, IMAGE_DURATION);
+                }
+
+                // Show/Hide Owner Menu
+                const ownerMenu = document.getElementById('story-owner-menu');
+                const editLink = document.getElementById('story-edit-link');
+                if (currentUserId && story.user_id === currentUserId) {
+                    ownerMenu.style.display = 'block';
+                    editLink.href = `/news/edit/${story.id}/`;
+                } else {
+                    ownerMenu.style.display = 'none';
+                }
+                document.getElementById('story-menu-dropdown').classList.remove('active');
+            }
+
+            function toggleStoryMenu(event) {
+                event.stopPropagation();
+                document.getElementById('story-menu-dropdown').classList.toggle('active');
+            }
+
+            function deleteCurrentStory(event) {
+                event.stopPropagation();
+                if (!confirm("Delete this story?")) return;
+                const story = activeStoryList[currentGroupIndex].posts[currentStoryIndex];
+                fetch(`/news/delete/${story.id}/`, {
+                    method: 'POST',
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' }
+                }).then(res => { if(res.ok) location.reload(); });
+            }
+
+            function updateProgressBars(duration) {
+                const group = activeStoryList[currentGroupIndex];
+                const progressContainer = document.getElementById('story-progress-container');
+                progressContainer.innerHTML = '';
+                group.posts.forEach((_, idx) => {
+                    const bar = document.createElement('div');
+                    bar.className = 'progress-bar';
+                    const fill = document.createElement('div');
+                    fill.className = 'progress-fill';
+                    if (idx < currentStoryIndex) fill.style.width = '100%';
+                    if (idx === currentStoryIndex) {
+                        setTimeout(() => fill.style.width = '100%', 50);
+                        fill.style.transitionDuration = duration + 'ms';
+                    }
+                    bar.appendChild(fill);
+                    progressContainer.appendChild(bar);
+                });
+            }
+
+            function nextStory(event) {
+                if (event) {
+                    const clickX = event.clientX || event.touches[0].clientX;
+                    const screenWidth = window.innerWidth;
+                    if (clickX < screenWidth / 3) {
+                        prevStory();
+                        return;
+                    }
+                }
+
+                currentStoryIndex++;
+                if (currentStoryIndex >= activeStoryList[currentGroupIndex].posts.length) {
+                    currentStoryIndex = 0;
+                    currentGroupIndex++;
+                    if (currentGroupIndex >= activeStoryList.length) {
+                        closeStoryViewer();
+                        return;
+                    }
+                }
+                showStory();
+            }
+
+            function prevStory() {
+                currentStoryIndex--;
+                if (currentStoryIndex < 0) {
+                    currentGroupIndex--;
+                    if (currentGroupIndex < 0) {
+                        currentGroupIndex = 0;
+                        currentStoryIndex = 0;
+                    } else {
+                        currentStoryIndex = activeStoryList[currentGroupIndex].posts.length - 1;
+                    }
+                }
+                showStory();
+            }
+
+            // Close on escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeStoryViewer();
+            });
+        </script>
+
+
+        <!-- Enter Feed -->
+        <div class="feed-input">
+            <div class="feed-input__header">
+                <i class="bi bi-pencil-square"></i> Enter Feed. Post your ideas & your thoughts related to Real Estate.
+            </div>
+            <div class="feed-input__actions">
+                <a href="{% url 'prop:add_property' %}" style="text-decoration:none;"><button><i class="bi bi-house-add"></i> List property</button></a>
+                 <a href="{% url 'prop:news_create' %}" style="text-decoration:none;"><button><i class="bi bi-building-add"></i> Add Post</button></a>
+                <a href="#" style="text-decoration:none;"><button><i class="bi bi-image"></i> Add Bytes</button></a>
+            </div>
+        </div>
+ 
+<!-- HEADER -->
+<div class="section-header">
+
+    <div class="section-titles">
+        <span>Premium Projects</span>
     </div>
 
-</section>
+    <a href="#" class="see-all-btn">See All</a>
 
-
-<!-- ================= CATEGORY SECTION ================= -->
-
-<style>
-/* HIDE ON DESKTOP */
-.mobile-search-wrapper {
-  display: none;
-}
-
-/* MOBILE STYLING */
-@media (max-width:768px) {
-
-.mobile-search-wrapper {
-  display: block;
-  position: absolute;
-  top: 50px;
-  left: 52%;
-  transform: translateX(-50%);
-  width:92%;
-  max-width:420px;
-
-  z-index: 2;   /* change from 10 to 2 */
- 
-  border-radius: 20px;
-  
-}
-.citySearch{
-  border: none;
-}
-  .mobile-search-form {
-    display: flex;
-    align-items: center;
- 
-  }
-
-  /* LEFT: SELECT */
-  .mobile-search-form select {
-    flex: 0 0 25%;
-    min-width: 70px;
-    padding: 9px; 
-    border: 1px solid black;
-    border-right: none;
-    outline: none;
-    background: white;
-    color: darkslategrey;
-    font-size: 14px;
-  }
- 
-  /* CENTER: INPUT */
-  .mobile-search-form input {
-    flex: 1;
-    padding: 10px;
-  border: 1px solid black;
-  outline: none;
-  border-left:none;
-  border-right:none ;
-    font-size: 14px;
-  }
-
-  /* RIGHT: BUTTON */
-  .mobile-search-form .search-btnss {
-    flex: 0 0 auto;
-    padding: 10px 16px; 
-    border: 1px solid black;
-    border-left: none;
-    background: #ff4500;
-    color: white;
-    font-size: 14px;
-    cursor: pointer;
-    margin: 0%;
-    width:inherit;
-  }
-
-  .mobile-search-form .search-btnss:hover {
-    background: #e63b00;
-  }
-
-}
-
-/* FIXED SMALL MOBILE LAYOUT */
-@media (max-width:480px) {
-
-  .mobile-search-form {
-    flex-direction: row;
-    
-  }
-
-  .mobile-search-form select{
-    flex:0 0 30%;
-  }
-
-  .mobile-search-form input{
-    flex:1;
-    max-width: 45%;
-  }
- 
-.mobile-search-form .search-btnss {
-flex:0 0 70px;
-padding:11px;
-font-size:13px;
-}
-
-}
-
-
-/* HIDE MOBILE SECTION IN DESKTOP */
-
-.mobile-hero-wrapper,
-.mobile-category-section{
-display:none;
-}
-
-
-@media (max-width:768px){
-
-.mobile-hero-wrapper,
-.mobile-category-section{
-display:block;
-}
-
-
-/* HERO SLIDER */
-
-.mobile-hero-wrapper{
-position:relative;
-width:100%;
-height:600px;
-overflow:hidden;
-}
-
-
-.mobile-slide-container{
-position:absolute;
-width:100%;
-height:100%;
-}
-
-
-.mobile-slide-img{
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-opacity:0;
-animation:heroFade 18s infinite;
-margin-left: -5px;
-    
-}
-
-
-.mobile-slide-img:nth-child(1){animation-delay:0s;}
-.mobile-slide-img:nth-child(2){animation-delay:6s;}
-.mobile-slide-img:nth-child(3){animation-delay:12s;}
-
-
-/* SEARCH BAR */
-
-.mobile-search-overlay{
-position:absolute;
-top:100px;
-left:50%;
-transform:translateX(-50%);
-width:90%;
-z-index:5;
-}
-
-
-/* SLIDE ANIMATION */
-
-@keyframes heroFade{
-
-0%{opacity:0;}
-10%{opacity:1;}
-30%{opacity:1;}
-40%{opacity:0;}
-100%{opacity:0;}
-
-}
-
-
-/* CATEGORY SECTION */
-
-.mobile-category-section{
-position:relative;
-padding:70px 15px;
-text-align:center;
-overflow:hidden;
-}
-
-
-/* BACKGROUND */
-
-.category-bg-media{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:unset;
-z-index:1;
-}
-
-
-.category-overlay-dark{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-z-index:2;
-}
-
-.category-content-wrapper{
-    position: relative;
-    z-index: 3;
-    color: white;
-    margin-top: 125px; /* push categories below search bar */
-}
-
-
-.category-title{
-font-size:22px;
-font-weight:600;
-color: #ffffff;
-}
-
-
-.category-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:15px;
-margin-top:25px;
-}
-
-
-/* CATEGORY ITEM */
-
-.category-item{
-text-decoration:none;
-color:white;
-text-align:center;
-}
-
-
-.category-item img{
-width:65px;
-height:65px;
-border-radius:50%;
-object-fit:cover;
-border:2px solid white;
-}
-
-
-.category-item {
-  text-align: center; /* center the image and text */
-  margin: 10px 5px; /* spacing between items */
-  display: inline-block; /* keep them side by side */
-  vertical-align: top;
-}
-
-.category-item img {
-  width: 80px;  /* or whatever circle size you want */
-  height: 80px;
-  border-radius: 50%;  /* circle */
-  display: block;
-  margin: 0 auto;
-}
-
-.category-item span {
-  display: inline-block;   /* shrink to text width */
-  margin-top: 6px;
-  font-size: 12px;
-  background: rgba(0, 0, 0, 0.6);
-  color: #fff;
-  padding: 3px 8px;
-  border-radius: 4px;
-  white-space: nowrap;  /* prevent line breaks */
-}
-
-.slideshow {
-display: none;
-    
-}
-
-.hero-content{
-display: none
-}
-.container1{
-    display:none;
-}
-    .mobile-grid { 
-        display: none;
-    }
-}
- 
-</style>
-    <!-- HERO SECTION -->
-   
-    <div class="hero-content">
-      <h2 style="font-size: 18px; color: #fff;">Explore, Buy, Rent - All In One Place!</h2>
-  <div class="cat-buttons">
-  <button type="button" data-value="Plot">Plot</button>
-  <button type="button" data-value="House">House</button>
-  <button type="button" data-value="Flat">Flat</button>
-  <button type="button" data-value="Villa">Villa</button>
-  <button type="button" data-value="Farm">Farm Lands</button>
-  <button type="button" data-value="Lands">Lands</button>
-  <button type="button" data-value="Developmentlands">Development Lands</button>
-  <button type="button" data-value="Disputelands">Disputed Lands</button>
-  <button type="button" data-value="Commerciallands">Commercial Lands</button>
 </div>
 
-<div class="search-box">
- {% include 'search_form.html' %}
+<!-- SCROLL CONTAINER -->
+<div class="premium-scroll">
+
+    {% for p in premium_projects %}
+
+    <div class="premium-card">
+
+        <!-- IMAGE -->
+        <div class="card-image">
+            {% if p.image %}
+                <img src="{{ p.image.url }}">
+            {% else %}
+                <img src="{% static 'default.jpg' %}">
+            {% endif %}
+
+            <!-- TOP OVERLAY -->
+            <div class="top-overlay">
+                <a href="{% url 'prop:company_profile_with_id' p.user.id %}" style="text-decoration:none; display:flex; align-items:center; gap:6px;">
+
+                    <div class="profile-circle">
+                        {% if p.user.company_logo_path %}
+                            <img src="{{ p.user.company_logo_path.url }}">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}">
+                        {% endif %}
+                    </div>
+
+                    <div class="user-name">
+                        {{ p.user.username|default:"Company" }}
+                    </div>
+
+                </a>
+            </div>
+
+            <!-- BOTTOM OVERLAY -->
+            <div class="img-overlay">
+                <div class="overlay-left">
+                    <h4>{{ p.type_of_project }}</h4>
+                    <p>{{ p.project_address|truncatechars:20 }}</p>
+                </div>
+
+                <div class="overlay-right">
+                    ₹ 
+                    {% if p.pricing >= 10000000 %}
+                        {{ p.pricing|floatformat:0|slice:":-7" }} Cr
+                    {% elif p.pricing >= 100000 %}
+                        {{ p.pricing|floatformat:0|slice:":-5" }} Lac
+                    {% else %}
+                        {{ p.pricing }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <a href="{% url 'prop:project_detail' p.id %}" class="view-btn">
+            View Details
+        </a>
+
+    </div>
+
+    {% endfor %}
+
 </div>
 
-<hr />
-  <p>Are You A Property Owner?</p>
-  <a href="{% url 'prop:add_property' %}">
-    <button class="post-btn">➕ Post Property Ad</button></a
-  >
+<!-- News Feed Section -->
+<link rel="stylesheet" href="{% static 'css/feed.css' %}">
+{% load time_filters %}
 
+<div class="section-header">
+    <div class="section-titles">
+        <span>Market Updates & News</span>
+    </div>
+    <a href="{% url 'prop:feed_list' %}" class="see-all-btn">See All</a>
+</div>
 
+<div class="feed-scroll-container">
+    <button class="feed-nav-btn prev" onclick="scrollFeed(-1)">&#10094;</button>
+    <div class="feed-scroll" id="feed-track">
+        {% for post in feed_posts %}
+            <div class="feed-card {% if post.media_type == 'text' %}text-only{% endif %}">
+                <!-- Top: Time & Description -->
+                <div class="card-header">
+                    <span class="time-badge">{{ post.created_at|custom_time }}</span>
+                    <div class="description">
+                        {% if post.heading %}<strong>{{ post.heading }}</strong><br>{% endif %}
+                        {{ post.news_content|truncatewords:30 }}
+                    </div>
+                </div>
+
+                <!-- Middle: Media -->
+                {% if post.media_type != 'text' %}
+                <div class="card-media">
+                    {% if post.media_type == 'image' and post.image %}
+                        <img src="{{ post.image.url }}">
+                    {% elif post.media_type == 'video' and post.video %}
+                        <video src="{{ post.video.url }}" autoplay muted loop playsinline></video>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Bottom: User & Actions -->
+                <div class="card-footer">
+                    <div class="user-info">
+                        <a href="{% url 'prop:company_profile_with_id' post.user.id %}">
+                            {% if post.user.role == "COMPANY" and post.user.company_logo_path %}
+                                <img src="{{ post.user.company_logo_path.url }}" class="profile-img" onerror="this.src='{% static 'default.jpg' %}'">
+                            {% elif post.user.profile_image_path %}
+                                <img src="{{ post.user.profile_image_path.url }}" class="profile-img" onerror="this.src='{% static 'default.jpg' %}'">
+                            {% else %}
+                                <img src="{% static 'default.jpg' %}" class="profile-img">
+                            {% endif %}
+                        </a>
+                        
+                        <div class="user-details">
+                            <div class="user-name">{{ post.user.company_name|default:post.user.username }}</div>
+                            <div class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-btns">
+                        <a href="tel:{{ post.user.phone_number }}" class="action-btn call" title="Call"><i class="bi bi-telephone-fill"></i></a>
+                        <a href="{% url 'prop:start_chat_with_user' post.user.id %}" class="action-btn chat" title="Chat"><i class="bi bi-chat-fill"></i></a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="feed-nav-btn next" onclick="scrollFeed(1)">&#10095;</button>
+</div>
+ 
+<!-- Pro Projects Section (Sketch Design) -->
+<link rel="stylesheet" href="{% static 'css/pro_projects.css' %}">
+
+<div class="section-header">
+    <div class="section-titles">
+        <span>Featured Projects</span>
+    </div>
+    <a href="{% url 'prop:all_projects' %}?category=pro" class="see-all-btn">See All</a>
+</div>
+
+<div class="pro-projects-scroll-container">
+    <button class="feed-nav-btn prev" onclick="scrollPro(-1)" style="left: -10px;">&#10094;</button>
+    <div class="pro-projects-scroll" id="pro-track">
+        {% for p in pro_projects %}
+            <div class="pro-project-card">
+                <!-- 1. Header (Company Info) -->
+                <div class="card-header">
+                    <div class="company-info">
+                        <a href="{% url 'prop:company_profile_with_id' p.user.id %}">
+                            {% if p.user.company_logo_path %}
+                                <img src="{{ p.user.company_logo_path.url }}" class="logo" onerror="this.src='{% static 'default.jpg' %}'">
+                            {% else %}
+                                <img src="{% static 'default.jpg' %}" class="logo">
+                            {% endif %}
+                        </a>
+                        <div class="details">
+                            <div class="name">{{ p.user.company_name|default:p.user.username }}</div>
+                            <div class="badges">
+                                <i class="bi bi-patch-check-fill"></i> Verified
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{% url 'prop:start_chat_with_user' p.user.id %}" class="chat-btn"><i class="bi bi-chat-text-fill"></i></a>
+                </div>
+
+                <!-- 2. Media Area -->
+                <div class="card-media">
+                    <a href="{% url 'prop:project_detail' p.id %}">
+                        {% if p.image %}
+                            <img src="{{ p.image.url }}">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}">
+                        {% endif %}
+                    </a>
+                    <div class="price-overlay">₹ {{ p.pricing }}</div>
+                </div>
+
+                <!-- 3. Project Details Body -->
+                <div class="card-body">
+                    <div class="title-row">
+                        <h3>{{ p.project_name }}</h3>
+                        <span class="category">DTCP</span>
+                    </div>
+
+                    <div class="address">
+                        <i class="bi bi-geo-alt-fill"></i> {{ p.project_address|truncatechars:35 }}
+                    </div>
+
+                    <div class="pills-row">
+                        <span class="pill">{{ p.type_of_project }}</span>
+                        <span class="pill">{{ p.get_position_display }}</span>
+                    </div>
+
+                    <div class="nearby-section">
+                        <span class="nearby-title">Nearby Places:</span>
+                        <div class="nearby-pills">
+                            {% for place in p.nearby_locations %}
+                                <span class="nearby-pill">{{ place }}</span>
+                            {% empty %}
+                                <span class="nearby-pill">No Nearby Places</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <a href="{% url 'prop:project_detail' p.id %}" class="view-btn">View Details</a>
+                </div>
+
+                <!-- 4. Footer Actions -->
+                <div class="card-footer">
+                    <a href="tel:{{ p.user.phone_number }}" class="action"><i class="bi bi-telephone-fill"></i> Call</a>
+                    <div class="action" onclick="shareProject('{{ p.project_name|escapejs }}', '{{ p.project_address|escapejs }}', '{{ p.pricing }}', '{% url 'prop:project_detail' p.id %}')">
+                        <i class="bi bi-share-fill"></i> Share
+                    </div>
+                    <div class="action" {% if user.is_authenticated %}onclick="toggleProjectSave(event, {{ p.id }}, this)"{% else %}onclick="redirectToLogin()"{% endif %}>
+                        <i class="bi bi-bookmark-fill"></i> Save
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p style="padding: 20px; color: #888;">No featured projects found.</p>
+        {% endfor %}
+    </div>
+    <button class="feed-nav-btn next" onclick="scrollPro(1)" style="right: -10px;">&#10095;</button>
+</div>
+
+    
+<!-- Marketing Experts Premium Section (Sketch Design) -->
+<link rel="stylesheet" href="{% static 'css/marketing_experts.css' %}">
+
+<div class="section-header">
+    <div class="section-titles">
+        <span>Premium Agents</span>
+    </div>
+    <a href="{% url 'prop:all_users' %}?category=marketer_premium" class="see-all-btn">See All</a>
+</div>
+
+<div class="marketing-experts-scroll-container">
+    <button class="feed-nav-btn prev" onclick="scrollExperts(-1)" style="left: -10px;">&#10094;</button>
+    <div class="marketing-experts-scroll" id="experts-track">
+        {% for u in marketing_experts_premium %}
+            <div class="expert-card">
+                <!-- 1. Header Row (Clickable) -->
+                <a href="{% url 'prop:user_detail' u.id %}" style="text-decoration: none; color: inherit;">
+                    <div class="expert-header">
+                        {% if u.profile_image_path %}
+                            <img src="{{ u.profile_image_path.url }}" class="profile-pic" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}" class="profile-pic">
+                        {% endif %}
+                        <div class="expert-info">
+                            <div class="name">
+                                {{ u.company_name|default:u.username|truncatechars:20 }}
+                                <i class="bi bi-patch-check-fill"></i>
+                            </div>
+                            <div class="title">Marketing Expert</div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. Area Serves -->
+                <div class="area-serves">
+                    <span class="label">Area Serves:</span>
+                    <div class="pills">
+                        <span class="pill">{{ u.location|default:"Hyderabad" }}</span>
+                    </div>
+                </div>
+
+                <!-- 3. Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="icon"><i class="bi bi-briefcase"></i></div>
+                        <div class="details">
+                            <span class="val">{{ u.experience|default:"5" }}+ Years</span>
+                            <span class="lbl">Experience</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="icon"><i class="bi bi-graph-up-arrow"></i></div>
+                        <div class="details">
+                            <span class="val">{{ u.marketer_category|default:"Plots" }}</span>
+                            <span class="lbl">Expert In</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="icon"><i class="bi bi-people"></i></div>
+                        <div class="details">
+                            <span class="val">{{ u.leads|default:"0" }}</span>
+                            <span class="lbl">Customers</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="icon"><i class="bi bi-building"></i></div>
+                        <div class="details">
+                            <span class="val">{{ u.total_projects|default:"0" }}</span>
+                            <span class="lbl">Properties</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Description -->
+                <div class="expert-desc">
+                    {{ u.description|default:"Experienced real estate professional helping you find the perfect property." }}
+                </div>
+
+                <!-- 5. Actions Footer -->
+                <div class="expert-actions">
+                    <a href="tel:{{ u.phone }}" class="call-btn" {% if user.is_authenticated %}onclick="profileLead(event, {{ u.id }})"{% endif %}>
+                        <i class="bi bi-telephone-fill"></i> Call
+                    </a>
+                    <div class="icon-action" onclick="shareProfile({{ u.id }})" title="Share">
+                        <i class="bi bi-share-fill"></i>
+                    </div>
+                    <a href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' u.id %}{% else %}{% url 'prop:login' %}{% endif %}" class="icon-action" title="Message">
+                        <i class="bi bi-chat-dots-fill"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="feed-nav-btn next" onclick="scrollExperts(1)" style="right: -10px;">&#10095;</button>
 </div>
  
 
+
+{% load time_filters %}
+<!-- Recent Properties Feed (Instagram Style Design) -->
+<link rel="stylesheet" href="{% static 'css/property_feed.css' %}">
+
+<div class="section-header">
+    <div class="section-titles">
+        <span>Featured Properties</span>
+    </div>
+    <a href="{% url 'prop:recent_properties_list' %}" class="see-all-btn">See All</a>
+</div>
+
+<div class="property-feed-scroll-container">
+    <button class="feed-nav-btn prev" onclick="scrollRecent(-1)" style="left: -10px;">&#10094;</button>
+    <div class="property-feed-scroll" id="recent-track">
+        {% for p in all_properties %}
+            <div class="property-feed-card">
+                <!-- 1. User Header (Vertical Stack) -->
+                <div class="card-user-header">
+                    <a href="{% url 'prop:user_detail' p.user.id %}">
+                        {% if p.user.profile_image_path %}
+                            <img src="{{ p.user.profile_image_path.url }}" class="profile-pic" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}" class="profile-pic">
+                        {% endif %}
+                    </a>
+                    <div class="user-info">
+                        <div class="top-row">
+                            <a href="{% url 'prop:user_detail' p.user.id %}" style="text-decoration: none; color: inherit;" class="name">
+                                {{ p.user.company_name|default:p.user.username|truncatechars:20 }}
+                            </a>
+                            <i class="bi bi-patch-check-fill verified"></i>
+                        </div>
+                        <div class="stars">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <a href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' p.user.id %}{% else %}{% url 'prop:login' %}{% endif %}" class="message-btn">Message</a>
+                </div>
+
+                <!-- 2. Media -->
+                <div class="card-media">
+                    <a href="{% url 'prop:property_detail' p.id %}">
+                        {% if p.image %}
+                            <img src="{{ p.image.url }}" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}">
+                        {% endif %}
+                    </a>
+                </div>
+
+                <!-- 3. Details -->
+                <div class="card-details-body">
+                    <div class="title-row">
+                        <h3 class="p-name">{{ p.projectName|default:"Unnamed Property" }}</h3>
+                        <span class="approval">{{ p.approvalType|default:"HMDA" }}</span>
+                    </div>
+                    <div class="description">
+                        {{ p.extent|default:"" }} Sqyd {{ p.facing|default:"" }} {{ p.selectProperty|default:"" }} for {{ p.look|default:"Sale" }}
+                    </div>
+                    <div class="location">
+                        <i class="bi bi-geo-alt-fill"></i> @ {{ p.address|default:"Location"|truncatechars:35 }}
+                    </div>
+                    <div class="price-row">
+                        <span class="price-tag">
+                            ₹ 
+                            {% if p.price >= 10000000 %}
+                                {{ p.price|div:10000000|floatformat:1 }} Cr
+                            {% elif p.price >= 100000 %}
+                                {{ p.price|div:100000|floatformat:1 }} Lakh
+                            {% else %}
+                                {{ p.price }}
+                            {% endif %}
+                        </span>
+                    </div>
+                     
+                     
+                    <div class="nearby-places-feed">
+                        {% if p.nearby_places %}
+                                <span class="nearby-title">Nearby Places:</span>
+                            {% for place in p.nearby_places %}
+                                <span class="nearby-pill-feed">{{ place }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="nearby-pill-feed">No Nearby Places</span> 
+                        {% endif %}
+                    </div> 
+                </div>
+
+                <!-- 4. Footer Actions -->
+                <div class="card-actions-footer">
+                    <a href="tel:{{ p.user.phone }}" class="contact-btn-pill">
+                        <i class="bi bi-telephone-fill"></i> Contact
+                    </a>
+                    <div class="footer-icons-group">
+                        <div class="action-icon share" onclick="shareProject('{{ p.projectName|escapejs }}', '{{ p.address|escapejs }}', '{{ p.price }}', '{% url 'prop:property_detail' p.id %}')" title="Share">
+                            <i class="bi bi-share"></i>
+                        </div>
+                        <div class="action-icon save" {% if user.is_authenticated %}onclick="toggleProjectSave(event, {{ p.id }}, this)"{% else %}onclick="redirectToLogin()"{% endif %} title="Save">
+                            <i class="bi bi-bookmark"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p style="text-align: center; color: #888; padding: 40px;">No recent properties found.</p>
+        {% endfor %}
+    </div>
+    <button class="feed-nav-btn next" onclick="scrollRecent(1)" style="right: -10px;">&#10095;</button>
+</div>
+
+<script src="{% static 'js/Leads.js' %}"></script>
 <script>
-document.addEventListener("click", function (e) {
-  const btn = e.target.closest(".cat-buttons button");
-  if (!btn) return;
+    function scrollProp(direction) {
+        const track = document.getElementById('prop-track');
+        const scrollAmount = 400; 
+        track.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
 
-  const value = btn.dataset.value; // 🔥 NOT innerText
-  const select = document.querySelector("select[name='search-cat']");
+    function toggleProjectSave(event, id, btn) {
+        event.stopPropagation();
+        fetch(`/save-project/${id}/`)
+            .then(res => res.json())
+            .then(data => {
+                let icon = btn.querySelector("i");
+                if (data.status === "saved") {
+                    icon.classList.remove("bi-bookmark");
+                    icon.classList.add("bi-bookmark-fill");
+                } else {
+                    icon.classList.remove("bi-bookmark-fill");
+                    icon.classList.add("bi-bookmark");
+                }
+            });
+    }
 
-  select.value = value;
-});
+    function redirectToLogin() {
+        window.location.href = "{% url 'prop:login' %}";
+    }
+
+    function shareProject(title, address, price, url) {
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: `${title} at ${address} for ₹${price}`,
+                url: window.location.origin + url
+            });
+        } else {
+            navigator.clipboard.writeText(window.location.origin + url);
+            alert("Link copied to clipboard!");
+        }
+    }
+
+    function shareProfile(userId) {
+        const url = window.location.origin + `/user/${userId}/`;
+        if (navigator.share) {
+            navigator.share({
+                title: 'Check out this profile',
+                url: url
+            });
+        } else {
+            navigator.clipboard.writeText(url);
+            alert("Profile link copied to clipboard!");
+        }
+    }
 </script>
 
+<!-- Premium Builders Section (Sketch Design) -->
+<link rel="stylesheet" href="{% static 'css/premium_companies.css' %}">
 
-       </div>
-   
-    <!-- Welcome Section -->
-
-     <section>
-     <div class="container1">
-
-    <h2>Explore Categories</h2>
-
-    <div class="carousel-wrapper">
-      <div class="carousel-container">
-        <div class="carousel-track" id="carousel">
-
-          <!-- FLATS -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Flat' %}">
-              <div class="card">
-                <img src="{% static 'images/img/fa.jpeg' %}" />
-                <div class="card-title">Flats / Apartments</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- PLOTS -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Plot' %}">
-              <div class="card">
-                <img src="{% static 'images/img/lands.webp' %}" />
-                <div class="card-title">Plots</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- LANDS -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Lands' %}">
-              <div class="card">
-                <img src="{% static 'images/img/plots.jpeg' %}" />
-                <div class="card-title">Lands</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- DISPUTED LAND -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Disputelands' %}">
-              <div class="card">
-                <img src="{% static 'images/img/dlands.jpg' %}" />
-                <div class="card-title">Disputed Lands</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- DEVELOPMENT LAND -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Developmentlands' %}">
-              <div class="card">
-                <img src="{% static 'images/img/developlands.jpeg' %}" />
-                <div class="card-title">Development Lands</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- INDEPENDENT HOUSE -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'House' %}">
-              <div class="card">
-                <img src="{% static 'images/img/ih.png' %}" />
-                <div class="card-title">Independent Houses</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- FARM LAND -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Farm' %}">
-              <div class="card">
-                <img src="{% static 'images/img/fl.webp' %}" />
-                <div class="card-title">Farm Lands</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- VILLAS -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Villa' %}">
-              <div class="card">
-                <img src="{% static 'images/img/villa.jpeg' %}" />
-                <div class="card-title">Villas</div>
-              </div>
-            </a>
-          </div>
-
-          <!-- COMMERCIAL -->
-          <div class="carousel-item">
-            <a href="{% url 'prop:property_list' 'Commerciallands' %}">
-              <div class="card">
-                <img src="{% static 'images/img/commercials.jpg' %}" />
-                <div class="card-title">Commercials Lands</div>
-              </div>
-            </a>
-          </div>
-
-        </div>
-      </div>
+<div class="section-header">
+    <div class="section-titles">
+        <span>Premium Builders</span>
     </div>
-  </div>
-</section>
+    <a href="{% url 'prop:all_users' %}?role=COMPANY" class="see-all-btn">See All</a>
+</div>
+
+<div class="premium-companies-scroll-container">
+    <button class="feed-nav-btn prev" onclick="scrollBuilders(-1)" style="left: -10px;">&#10094;</button>
+    <div class="premium-companies-scroll" id="builders-track">
+        {% for c in featured_companies_premium %}
+            <div class="company-premium-card">
+                <!-- 1. Cover Photo -->
+                <div class="company-cover">
+                    {% if c.company_wallpaper_path %}
+                        <img src="{{ c.company_wallpaper_path.url }}" onerror="this.src='{% static 'default.jpg' %}'">
+                    {% else %}
+                        <img src="{% static 'default.jpg' %}">
+                    {% endif %}
+                </div>
+
+                <!-- 2. Header Row -->
+                <div class="company-header-row">
+                    <div class="logo-circle">
+                        {% if c.company_logo_path %}
+                            <img src="{{ c.company_logo_path.url }}" onerror="this.src='{% static 'default.jpg' %}'">
+                        {% else %}
+                            <img src="{% static 'default.jpg' %}">
+                        {% endif %}
+                    </div>
+                    <div class="header-info">
+                        <div class="name">{{ c.company_name|default:c.username }}</div>
+                        <div class="meta">
+                            <span class="verified"><i class="bi bi-patch-check-fill"></i> Verified</span>
+                            <span class="stars">
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i> (275)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Body Content -->
+                <div class="company-body">
+                    <div class="stats-block">
+                        <div class="stat-item">
+                            <i class="bi bi-building"></i>
+                            <div class="details">
+                                <span class="lbl">Established:</span>
+                                <span class="val">{{ c.created_at|date:"Y" }}</span>
+                            </div>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="stat-item">
+                            <i class="bi bi-graph-up"></i>
+                            <div class="details">
+                                <span class="lbl">Ongoing Projects:</span>
+                                <span class="val">{{ c.ongoing_projects|default:"0" }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="specialty-block">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <div class="info">
+                            <span class="label">Specialized In:</span>
+                            <span class="text">{{ c.company_category|default:"Categories" }}</span>
+                        </div>
+                    </div>
+
+                    <div class="description-text">
+                        {{ c.description|default:"We start our real estate project with a commitment to quality and transparency."|truncatechars:100 }}
+                    </div>
+                </div>
+
+                <!-- 4. Footer Actions (3 Pill Buttons) -->
+                <div class="company-footer">
+                    <a href="tel:{{ c.phone }}" class="pill-btn call">
+                        <i class="bi bi-telephone-fill"></i> Call
+                    </a>
+                    <div class="pill-btn share" onclick="shareProfile({{ c.id }})">
+                        <i class="bi bi-share-fill"></i> Share
+                    </div>
+                    <a href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' c.id %}{% else %}{% url 'prop:login' %}{% endif %}" class="pill-btn msg">
+                        <i class="bi bi-chat-dots-fill"></i> Message
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="feed-nav-btn next" onclick="scrollBuilders(1)" style="right: -10px;">&#10095;</button>
+</div>
+
+ 
 
 
 
 
 
 
-
-          <div class="carousel-buttons">
-            <button onclick="move(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <button onclick="move(1)"><i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-        </div>
-
-        <!--  MOBILE GRID -->
-        <div class="mobile-grid" >
-          <a href="{% url 'prop:property_list' 'Flat' %}?category=Flats" class="category-box">
-            <img src="{% static 'images/img/fa.jpeg' %}" />
-            <p>Flats / Apartments</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Plot' %}" class="category-box">
-            <img src="{% static 'images/img/lands.webp' %}" />
-            <p>Plots</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Lands' %}" class="category-box">
-            <img src="{% static 'images/img/plots.jpeg' %}" />
-            <p>Lands</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Disputelands' %}" class="category-box">
-            <img src="{% static 'images/img/dlands.jpg' %}" />
-            <p>Disputed Lands</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Developmentlands' %}"class="category-box">
-            <img src="{% static 'images/img/developlands.jpeg' %}" />
-            <p>Development Lands</p>
-          </a>
-
-          <a
-            href="{% url 'prop:property_list' 'House' %}" class="category-box"  >
-            <img src="{% static 'images/img/ih.png' %}" />
-            <p>Independent Houses</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Farm' %}" class="category-box"><img src="{% static 'images/img/fl.webp' %}" />
-            <p>Farm Lands</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Villa' %}" class="category-box">
-            <img src="{% static 'images/img/villa.jpeg' %}" />
-            <p>Villas</p>
-          </a>
-
-          <a href="{% url 'prop:property_list' 'Commerciallands' %}" class="category-box">
-            <img src="{% static 'images/img/commercials.jpg' %}" />
-            <p>Commercials Lands</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-
-    <br><br>
 <style>
-    .project {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 25px;
-        margin-top: 30px;
-        margin-left: 20px;
-        
-    }
-
-    .project-card {
-        background: white;
-       
-        padding: 5px;
-        border-radius: 20px;
-        box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
-        text-align: center;
-        transition: 0.3s;
-    }
-
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0px 6px 20px rgba(0,0,0,0.15);
-    }
-
-    .project-card img {
-        width: 200%;
-        height: 130px;
-       
-        object-fit: cover;
-        margin-top: -10px;
-        border: 4px solid #f0f0f0;
-    }
-
-    .card-details1 h3 {
-        margin-top: 9px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #222;
-    }
-
-   
-
-    .call-btn {
-        display: block;
-        margin: 18px auto 5px;
-        width: 60%;
-        padding: 8px;
-        background: #4c3eb6;
-        color: white;
-        border-radius: 12px;
-        text-decoration: none;
-        font-size: 12px;
-        font-weight: 500;
-        transition: 0.3s;
-    }
-
-    .call-btn:hover {
-        background: #3a2ea1;
-    }
-
-    .location-pin {
-        color: #e63946;
-        font-size: 18px;
-    }
-
-    .center-btn {
-        text-align: center;
-        margin: 20px 0;
-    }
-
-    .see-all-btn {
-        display: inline-block;
-        background: #3a2ea1;
-        color: white;
-        padding: 10px 20px;
-        text-decoration: none;
-        border-radius: 8px;
-        transition: 0.3s;
-    }
-
-    .see-all-btn:hover {
-        background: #c65b64;
-    }
-
-    /* MOBILE RESPONSIVE */
-    @media (max-width: 1024px) {
-        .project {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-    }
-     .card-details1 p {
-        margin: 3px 0;
-        font-weight:100;
-        font-size: 12px;
-        color: #444;
-    }
-
-/* MOBILE SLIDER STYLE */
-@media (max-width: 768px) {
-    .project {
-        display: flex;          /* horizontal scroll */
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        gap: 15px;
-        padding: 20px;
-    }
-
-    .project-card {
-        flex: 0 0 90%;          /* one card per viewport width */
-        scroll-snap-align: start;
-        margin: 0;              /* remove extra margin for flex layout */
-    }
-
-    .project-card img {
-       
-        height: 100px;
-    }
-  
-    .card-details1 h3 {
-        font-size: 18px;
-    }
-
-    .card-details1 p {
-        font-size: 12px;
-    }
-
-    .call-btn {
-        width: 90%;
-        font-size: 12px;
-    }
-}
-         
-
-@media (width: 768px){
-    .card-details p{
-             font-weight:100;
-          color: black;
-          font-size: 12px;
-         }
-
-     
-    
-}
-
-@media (max-width: 768px) {
-
-    .company-row {
-        padding: 6px 8px;
-    }
-
-    .company-logo {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
-    }
-
-    .company-name {
-        font-size: 12px;
-    }
-
-   
-    
-}
-
-
-
-.project::-webkit-scrollbar {
-  display: none;
-}
-.project {
-  scrollbar-width: none; /* Firefox */
-}
-.card-grid::-webkit-scrollbar {
-  display: none;
-}
-.card-grid {
-  scrollbar-width: none; /* Firefox */
-}
-
-</style>
-<style>
-
-.company-row {
+ /* ================= HEADER ================= */
+.section-header {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    width: 100%;
+    margin: 25px 0;
 }
 
-.company-row img{
-  width: 50px;
-  height: 50px;
-}
-.company-logo {
-    width: 10px;
-    height: 10px;
-    object-fit: cover;
-    border: 1px solid #ddd;
-    border-radius:50%;
+/* TITLE WITH LINES */
+.section-titles {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
 
-.company-name {
-    font-size: 13px;
+.section-titles::before,
+.section-titles::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+}
+
+.section-titles span {
+    padding: 0 15px;
+    font-size: 20px;
     font-weight: 500;
-    color: #222;
-    white-space: nowrap;       /* 🔥 single line */
-    overflow: hidden;
-    text-overflow: ellipsis;   /* 🔥 ... */
-    max-width: 100%;
+    white-space: nowrap;
 }
 
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    margin-left: 25px;
+/* SEE ALL BUTTON */
+.see-all-btn {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-/* CARD */
-.project-card {
+/* ================= SCROLL ================= */
+.premium-scroll {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding: 10px 5px;
+    scroll-behavior: smooth;
+
+    scrollbar-width: none;
+}
+
+.premium-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+/* ================= CARD ================= */
+.premium-card {
+    min-width: 260px;
+    max-width: 280px;
+    flex-shrink: 0;
+
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    border: 1px solid #ddd;
 }
 
-
-
-/* IMAGE */
-.image-wrapper {
+/* ================= IMAGE ================= */
+.card-image {
     position: relative;
 }
 
-.project-image {
+.card-image img {
     width: 100%;
     height: 180px;
     object-fit: cover;
 }
 
-/* PRICE OVER IMAGE */
-.price-tag {
+/* ================= TOP OVERLAY ================= */
+.top-overlay {
     position: absolute;
-    bottom: 10px;
+    top: 10px;
     left: 10px;
-    background: rgba(0,0,0,0.75);
-    color: #fff;
-    padding: 6px 10px;
-    font-size: 14px;
-    border-radius: 6px;
-}
 
-/* INFO */
-.project-info {
-    padding: 12px;
-    font-size:12px;
-}
-
-.project-info h3 {
-    margin: 0 0 5px;
-    font-size: 17px;
-}
-
-.meta {
-    font-size: 13px;
-    color: #555;
-}
-
-.location {
-    font-size: 13px;
-    color: #777;
-}
-
-/* ACTIONS */
-.project-actions {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
+    gap: 8px;
+
+    background: rgba(0,0,0,0.2);
+    padding: 5px 8px;
+    border-radius: 20px;
+    color: #fff;
+}
+
+.top-overlay .profile-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.top-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+}
+
+/* ================= BOTTOM OVERLAY ================= */
+.img-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     padding: 10px;
-    gap: 10px;
-    border-top: 1px solid #eee;
+
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    color: #fff;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
-.company-row {
-  display: flex;
-  align-items: center;
-  position: relative;
+.overlay-left h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
 }
 
-/* LEFT LOGO */
-.company-left {
-  flex: 0 0 auto;
+.overlay-left p {
+    margin: 2px 0 0;
+    font-size: 12px;
 }
 
-/* CENTER NAME (always center no matter text size) */
-.company-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  
-  max-width: 140px;
-  text-align: center;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* RIGHT CHAT BUTTON (always right) */
-.company-right {
-  margin-left: auto;
-  margin=bottom:8px;
-}
-
- 
-@media (max-width: 768px) {
-  .company-center {
-    max-width: 180px;
+/* PRICE */
+.overlay-right {
+    background: rgba(0,0,0,0.7);
+    padding: 5px 8px;
+    border-radius: 6px;
     font-size: 13px;
-  }
+    font-weight: 600;
 }
 
-
-
-</style>
-
-<!--company premium projects --> 
-<h2>Premium Projects</h2>
-<div class="project" style="overflow: scroll;">
-    {% for p in premium_projects %}
-    <div class="project-card">
-
-<div class="company-row">
-
-  <!-- LEFT: Logo -->
-  <a href="{% url 'prop:company_profile_with_id' p.user.id %}" class="company-left">
-    {% if p.user.company_logo_path %}
-      <img src="{{ p.user.company_logo_path.url }}" class="company-logo">
-    {% else %}
-      <img src="{% static 'default.jpg' %}" class="company-logo">
-    {% endif %}
-  </a>
-
-  <!-- CENTER: Company Name -->
-  <a href="{% url 'prop:company_profile_with_id' p.user.id %}" style="color: #000000; text-decoration: none;" class="company-center">
-    {{ p.user.company_name|default:"Company Name" }}
-  </a>
-
-  <!-- RIGHT: Chat Icon -->
-  <div class="company-right" style="margin-bottom:9px;">
-<a
-  href="{% if user.is_authenticated %}
-          {% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20project%20{{ p.project_name|urlencode }}.%0AProject%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:project_detail' p.id %}
-        {% else %}
-          {% url 'prop:login' %}
-        {% endif %}"
-  class="icon-btn"
-  title="Chat"
->
-  <i class="bi bi-chat-dots-fill"></i>
-</a>
-  </div>
-
-</div>
-         <div class="image-wrapper">
-        <a href="{% url 'prop:project_detail' p.id %}">
-            {% if p.image %}
-                <img src="{{ p.image.url }}" class="project-image">
-            {% else %}
-                <img src="{% static 'default.jpg' %}" class="project-image">
-            {% endif %}
-        </a>
-
-        <!-- PRICE OVER IMAGE -->
-        <div class="price-tag">
-            ₹ {{ p.pricing }}
-        </div>
-    </div>
-
-      <div class="p" style="display: flex; gap: 50px;padding-left: 30px;"> <h5>{{ p.project_name }}</h5>
-
-         </div>
-         
-       <style>
-      .project-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* ================= BUTTON ================= */
+.view-btn {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #f5f5f5;
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    border-top: 1px solid #ddd;
+    transition: 0.3s;
 }
 
+ 
+
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  .project-info {
-    gap: 12px;
-  }
-}
+    .premium-card {
+        min-width: 85%;
+    }
 
-
-        .project-info {
-  width: 100%;
-  text-align: left;
-}
-
-.project-info p,
-.project-info span {
-  margin: 0;
-}
-
-.nearby-wrapper {
-  overflow-x: auto; /* allow manual scroll */
-  margin-top: 6px;
-  position: relative;
-  -ms-overflow-style: none;  /* hide scrollbar IE */
-  scrollbar-width: none;     /* hide scrollbar Firefox */
-}
-
-.nearby-wrapper::-webkit-scrollbar {
-  display: none; /* hide scrollbar Chrome/Safari */
-}
-
-.nearby-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-
-.nearby-box {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: #f1f3f6;
-  color: #444;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
-}
-
- /* Company Name (center text) */
-.company-center {
-  max-width: 140px;   /* adjust width as needed */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Location */
-.project-info p:nth-child(1) {
-  max-width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (max-width: 768px) {
-  
-  .project-info p:nth-child(1) {
-    max-width: 300px;
-  }
- 
-  .company-center {
-    max-width: 170px;
-    margin-left: 10px;
-    margin-bottom: 5px;
-  }
- 
-}
-.nearby-pill {
-    display: inline-flex;      /* NOT block */
-    align-items: center;
-    width: auto;               /* prevent full width */
-    max-width: fit-content;
-    padding: 2px 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 12px;
-    color: #666;
-    white-space: nowrap;
-}
-
-
-.image-wrapper img{
-  height: 200px;
-  width:stretch;
-}
-
-       </style>
-       <div class="project-info">
-
-    <p>@ {{ p.project_address }}</p>
-
-    <p>{{ p.type_of_project }}</p>
-
-    <p>{{ p.get_position_display }}</p>
-
-{% if p.nearby_locations %}
-    <div class="nearby-wrapper">
-        <div class="nearby-container">
-            <strong style="font-size: 13px;">Nearby Places:</strong>
-
-            {% for place in p.nearby_locations %}
-                <span class="nearby-box">  {{ place }}</span>
-            {% endfor %}
-        </div>
-    </div>
-{% else %}
-    <span class="nearby-pill">No Nearby Places</span>
-{% endif %}
-
-</div>
-
-   
-
-    <!-- ACTIONS -->
-    <div class="project-actions">
-       
-     
-          <a  class="contact-btn-main" href="{% url 'prop:project_detail' p.id %}">View Details</a>
-      <button class="icon-btn"
-        title="Share"
-        onclick="shareProject(
-            '{{ p.project_name|escapejs }}',
-            '{{ p.project_address|escapejs }}',
-            '{{ p.pricing }}',
-            '{% url "prop:project_detail" p.id %}'
-        )">
-    <i class="bi bi-share-fill"></i>
-</button>
-
-       <button
-  class="icon-btn save-btn"
-  {% if user.is_authenticated %}
-     onclick="toggleProjectSave(event, {{ p.id }}, this)"
-  {% else %}
-    onclick="redirectToLogin()"
-  {% endif %}
->
-  <i class="bi bi-bookmark"></i>
-</button>
-
-    </div>
-
-    </div>
-{% empty %}
-<p>No project found.</p>
-{% endfor %}
- 
-
-    <div class="center-btn">
-    <a href="{% url 'prop:all_projects' %}?category=premium" class="see-all-btn" style="background-color: white;color: #000;border: 1px solid wheat;">See All </a>
-    </div>
-</div> 
- 
-
- <!-- premium companies -->
-<section class="featured-premium-section">
- 
-  <h2>Premium Companies</h2>
-  <p>Discover top-tier trusted builders and real estate brands</p>
-  <div class="slider-container">
-
-    <div class="card-grid" id="company-pro-slider">
-      {% for u in featured_companies_premium %}
-      
-      <div class="expert-card">
-        <a href="{% url 'prop:company_profile_with_id' u.id %}" style="text-decoration: none; color: inherit;">
-
-          <!--  Company Wallpaper -->
-          {% if u.company_wallpaper_path %}
-          <div class="banner"
-               style="background-image:url('{{ u.company_wallpaper_path.url }}');
-                      width:100%; height:100px;
-                      background-size:cover;
-                      background-position:center;
-                      border-radius:10px 10px 0 0;">
-          </div>
-          {% else %}
-          <div class="banner"
-               style="width:100%; height:100px;
-                      background:#eee;
-                      border-radius:10px 10px 0 0;
-                      margin-top:70px"></div>
-          {% endif %}
-
-          <!-- LOGO -->
-          {% if u.company_logo_path %}
-            <img src="{{ u.company_logo_path.url }}"
-                 class="profile-img"
-                 alt="{{ u.username }}"
-                 style="margin-top:5px;margin-left:-150px;"/>
-          {% else %}
-            <img src="{% static 'default.jpg' %}"
-                 class="profile-img"
-                 alt="No Logo"
-                 style="margin-top:-60px;"/>
-          {% endif %}
-          
-          <h5 style="margin-top:-50px ; margin-left: 30px;">{{ u.username }}</h5>
-          <p style='margin-top: 20px;' class="location">@ {{ u.location }}</p>
-          <hr class="divider-red" />
-
-        
-        <!-- DETAILS -->
-        <div class="card-details">
-          <p>
-            Established: <br>
-            <span class="value">{{ u.experience }}</span>
-          </p>
-
-          <p>
-            Ongoing projects:
-            <span class="value">{{ u.ongoing_projects }}</span>
-          </p>
-
-          <p>
-            Specialized in:
-            <span class="value">{{ u.category }}</span>
-          </p>
-        </div>
-
-        <p class="single-line" style="color:black">{{ u.description }}</p>
-
-        </a>
-          
-        <!-- ✅ ACTIONS -->
-        <div class="contact-actions">
-
-          <!-- CALL -->
-          <a
-            href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-            class="contact-btn-main"
-            {% if user.is_authenticated %}
-              onclick="profileLead(event, {{ u.id }})"
-            {% endif %}
-          >
-            <i class="bi bi-telephone-fill"></i>
-          </a>
-
-          <!-- SHARE -->
-          <button class="icon-btn" title="Share" onclick="shareCompanyProfile({{ u.id }})">
-            <i class="bi bi-share-fill"></i>
-          </button>
-         
-          <!-- CHAT -->
-          <a
-            href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' u.id %}{% else %}{% url 'prop:login' %}{% endif %}"
-            class="icon-btn"
-            title="Chat"
-          >
-            <i class="bi bi-chat-dots-fill"></i>
-          </a>
-
-        </div>
-
-      </div>
-      {% empty %}
-      <p>No premium companies found.</p>
-      {% endfor %}
-
-      <div class="center-btn">
-        <a href="/all-users?category=company_premium" class="see-all-btn" style="background-color: #fff; color: black; border: 1px solid #daa520;">
-          See All  
-        </a>
-      </div>
-
-    </div>
-  </div>
-</section>
-<style>
-    span.value {
-    line-height:18px ;
+    .section-titles span {
+        font-size: 18px;
+    }
 }
 </style>
-
-
-
-
-<!-- expert section -->
-<section class="experts-section">
-  <h2>Connect With Our Marketing Experts Premium</h2>
-  <p>Hear from our satisfied customers about their experiences</p>
-
-  <div class="slider-container">
-    <div class="card-grid" id="expert-slider">
-
-      {% for u in marketing_experts_premium|slice:":4" %}
-     <a href="{% url 'prop:user_detail' u.id %}" class="card-link" style="text-decoration: none;">
-        <div class="expert-card">
-          <div >
-          <!-- PROFILE IMAGE -->
-          <div style="display:flex; flex-direction: row; align-items: center;gap:10px ;height:70px " >
-          <span style="width 30px;height:30px"> 
-          <img src="{{ u.profile_image_path.url }}"  class="profile-img"/>
-          </span>
-           <span><h5 >{{ u.username |truncatechars:20}}</h5>
-   <p style="font-size:10px;">⭐⭐⭐⭐⭐</p>
-                    </span>
-          </div>
-          
-            <p class="location" style="color:black; font-size:12px">@ {{ u.location |truncatechars:25|lower|capfirst }}</p>
-             <hr class="divider-red" />
-        </div>
-          <!-- DETAILS -->
-          <div class="card-details">
-            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
-                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
-                            
-          </div>
-                                      <div class="expert-bio">
-  {{ u.description|default:"No description available"|truncatechars:35  }}
-</div>
-          <!-- CONTACT ACTIONS -->
-          <div class="contact-actions">
-
-            <!-- CALL -->
-            <a
-              href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-              class="contact-btn-main"
-              {% if user.is_authenticated %}
-                onclick="profileLead(event, {{ u.id }})"
-              {% endif %}
-            >
-              <i class="bi bi-telephone-fill"></i>
-            </a>
-
-            <!-- SHARE -->
-            <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
-              <i class="bi bi-share-fill"></i>
-            </button>
-
-            <!-- CHAT -->
-            <a
-              href="{% if user.is_authenticated %}
-                    {% url 'prop:start_chat_with_user' u.id %}
-                    {% else %}
-                    {% url 'prop:login' %}
-                    {% endif %}"
-              class="icon-btn"
-              title="Chat"
-            >
-              <i class="bi bi-chat-dots-fill"></i>
-            </a>
-
-          </div>
-
-</div>
  
-      {% empty %}
-      <p>There is no user found.</p>
-      {% endfor %}
-      
-      <!-- SEE ALL BUTTON -->
-      <div class="center-btn">
-        <a href="/all-users?category=marketer_premium" class="see-all-btn" style="background-color: white;color: #000;border: 1px solid wheat;">See All</a>
-      </div>
-
-      </div>
-  </div>
-</section>
-
-<!-- Company Pro Projects -->
-<h2>Latest  Projects</h2>
-<div class="project" style="overflow: scroll;">
-    {% for p in pro_projects %}
-    <div class="project-card">
-
-<div class="company-row">
-
-  <!-- LEFT -->
-  <a href="{% url 'prop:company_profile_with_id' p.user.id %}" class="company-left">
-    {% if p.user.company_logo_path %}
-      <img src="{{ p.user.company_logo_path.url }}" class="company-logo">
-    {% else %}
-      <img src="{% static 'default.jpg' %}" class="company-logo">
-    {% endif %}
-  </a>
-
-  <!-- CENTER -->
-  <a href="{% url 'prop:company_profile_with_id' p.user.id %}" class="company-center" style="    color: #000000;text-decoration: none;">
-    {{ p.user.company_name|default:"Company Name" }}
-  </a>
-
-  <!-- RIGHT -->
-  <div class="company-right">
-<a
-  href="{% if user.is_authenticated %}
-          {% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20project%20{{ p.project_name|urlencode }}.%0AProject%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:project_detail' p.id %}
-        {% else %}
-          {% url 'prop:login' %}
-        {% endif %}"
-  class="icon-btn"
-  title="Chat"
->
-  <i class="bi bi-chat-dots-fill"></i>
-</a>
-  </div>
-
-</div>
-         <div class="image-wrapper">
-        <a href="{% url 'prop:project_detail' p.id %}">
-            {% if p.image %}
-                <img src="{{ p.image.url }}" class="project-image">
-            {% else %}
-                <img src="{% static 'default.jpg' %}" class="project-image">
-            {% endif %}
-        </a>
-
-        <!-- PRICE OVER IMAGE -->
-        <div class="price-tag">
-            ₹ {{ p.pricing }}
-        </div>
-    </div>
-
-      <div class="p" style="display: flex; gap: 50px;padding-left: 30px;"> <h5>{{ p.project_name }}</h5>
-
-         </div>
-         
-       <style>
-      .project-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-@media (max-width: 768px) {
-  .project-info {
-    gap: 12px;
-  }
-}
-
-
-        .project-info {
-  width: 100%;
-  text-align: left;
-}
-
-.project-info p,
-.project-info span {
-  margin: 0;
-}
-
-
-.nearby-wrapper {
-  overflow-x: auto; /* allow manual scroll */
-  margin-top: 6px;
-  position: relative;
-  -ms-overflow-style: none;  /* hide scrollbar IE */
-  scrollbar-width: none;     /* hide scrollbar Firefox */
-}
-
-.nearby-wrapper::-webkit-scrollbar {
-  display: none; /* hide scrollbar Chrome/Safari */
-}
-
-.nearby-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-
-.nearby-box {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: #f1f3f6;
-  color: #444;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
-}
-
- /* Company Name (center text) */
-.company-center {
-  max-width: 140px;   /* adjust width as needed */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.nearby-pill {
-    display: inline-flex;      /* NOT block */
-    align-items: center;
-    width: auto;               /* prevent full width */
-    max-width: fit-content;
-    padding: 2px 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 12px;
-    color: #666;
-    white-space: nowrap;
-}
-
-
-.image-wrapper img{
-  height: 200px;
-  width:stretch;
-}
-.company-row {
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-
-/* LEFT LOGO */
-.company-left {
-  flex: 0 0 auto;
-}
-
- 
-
-/* RIGHT CHAT BUTTON (always right) */
-.company-right {
-  margin-left: auto;
-  margin-bottom:9px;
-}
- .project-info p:nth-child(1) {
-  max-width: 250px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (max-width: 768px) {
-  
-  .project-info p:nth-child(1) {
-    max-width: 300px;
-  }
-  
- 
-}
-
-       </style>
-       <div class="project-info">
-
-    <p>@ {{ p.project_address }}</p>
-
-    <p>{{ p.type_of_project }}</p>
-
-    <p>{{ p.get_position_display }}</p>
-
-{% if p.nearby_locations %}
-    <div class="nearby-wrapper">
-        <div class="nearby-container">
-            <strong style="font-size: 13px;">Nearby Places:</strong>
-
-            {% for place in p.nearby_locations %}
-                <span class="nearby-box">  {{ place }}</span>
-            {% endfor %}
-        </div>
-    </div>
-{% else %}
-    <span class="nearby-pill">No Nearby Places</span>
-{% endif %}
-
-</div>
-
-
-    <!-- ACTIONS -->
-    <div class="project-actions">
-       
-     
-          <a  class="contact-btn-main" href="{% url 'prop:project_detail' p.id %}">View Details</a>
-      <button class="icon-btn"
-        title="Share"
-        onclick="shareProject(
-            '{{ p.project_name|escapejs }}',
-            '{{ p.project_address|escapejs }}',
-            '{{ p.pricing }}',
-            '{% url "prop:project_detail" p.id %}'
-        )">
-    <i class="bi bi-share-fill"></i>
-</button>
-<a
-  href="javascript:void(0);"
-  class="icon-btn save-btn"
-  {% if user.is_authenticated %}
-     onclick="toggleProjectSave(event, {{ p.id }}, this)"
-  {% else %}
-    onclick="redirectToLogin()"
-  {% endif %}
->
-  <i class="bi bi-bookmark"></i>
-</a>
-
-    </div>
-
-  
-</div>
-{% empty %}
-<p>No project found.</p>
-{% endfor %}
-
-
-
-    <div class="center-btn">
-    <a href="{% url 'prop:all_projects' %}?category=pro" class="see-all-btn" style="background-color: white;color: #000;border: 1px solid wheat;">See All </a>
-    </div>
-    </div>
-    
-    <script>
-let startY = 0;
-let isRefreshing = false;
-
-document.addEventListener("touchstart", (e) => {
-    startY = e.touches[0].clientY;
-});
-
-document.addEventListener("touchmove", (e) => {
-    const currentY = e.touches[0].clientY;
-
-    // User pulled down 70px AND is at top of page
-    if (currentY - startY > 70 && !isRefreshing && window.scrollY === 0) {
-        isRefreshing = true;
-
-        const msg = document.getElementById("refreshMessage");
-        msg.style.display = "block";
-
-        setTimeout(() => {
-            location.reload();  // refresh the page
-        }, 200);
-    }
-});
-</script>
-
-<script>
-function shareProject(name, location, price, url) {
-
-    const fullUrl = window.location.origin + url;
-
-    const message =
-        "🏗 Project: " + name + "\n" +
-        "@ Location: " + location + "\n" +
-        "💰 Price: ₹" + price + "\n\n" +
-        "View Project 👇";
-
-    if (navigator.share) {
-        navigator.share({
-            title: name,
-            text: message,
-            url: fullUrl
-        }).catch(err => console.log(err));
-    } else {
-        navigator.clipboard.writeText(message + "\n" + fullUrl);
-        alert("Project link copied to clipboard");
-    }
-}
-</script>
-
-
-
-
-
-
-
-
-
-
-<style>
-  .single-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-</style>
- 
- 
- <!-- pro companies -->
-<section class="featured-pro-section">
-
-  <h2>Featured Companies</h2>
-  <p>Discover Pro-level trusted builders and real estate brands</p>
-  <div class="slider-container">
-
-    <div class="card-grid" id="company-pro-slider">
-      {% for u in featured_companies_pro %}
- 
-      <div class="expert-card">
- 
-        <a href="{% url 'prop:company_profile_with_id' u.id %}" 
-           style="text-decoration: none; color: inherit;">
-
-          <!-- Company Wallpaper -->
-          {% if u.company_wallpaper_path %}
-          <div class="banner"
-               style="background-image:url('{{ u.company_wallpaper_path.url }}');
-                      width:100%; height:100px;
-                      background-size:cover;
-                      background-position:center;
-                      border-radius:10px 10px 0 0;">
-          </div>
-          {% else %} 
-
-          <div class="banner"
-               style="width:100%; height:100px;
-                      background:#eee;
-                      border-radius:10px 10px 0 0;
-                      margin-top:70px"></div>
-          {% endif %}
-
-          <!-- LOGO -->
-          {% if u.company_logo_path %}
-            <img src="{{ u.company_logo_path.url }}"
-                 class="profile-img"
-                 alt="{{ u.username }}"
-                 style="margin-top:5px;margin-left:-150px;"/>
-          {% else %}
-            <img src="{% static 'default.jpg' %}"
-                 class="profile-img"
-                 alt="No Logo"
-                 style="margin-top:-60px;"/>
-          {% endif %}
-
-          <h5 style="margin-top:-50px ; margin-left: 30px;">
-            {{ u.username }}
-          </h5>
-
-          <p class="location" style='    margin-top: 20px;' >
-            @ {{ u.location }}
-          </p>
-
-          <hr class="divider-red" />
-
-
-        <style>
-          @media (max-width: 768px) {
-            .card-details p {
-              margin-bottom: 0px;
-            }
-
-            .card-details .value {
-              display: block;
-              margin-top: 6px;
-              line-height: 18px;
-            }
-          }
-        </style>
-
-        <!-- DETAILS -->
-        <div class="card-details">
-          <p>
-            Established: <br>
-            <span class="value">{{ u.experience }}</span>
-          </p>
-
-          <p>
-            Ongoing projects:
-            <span class="value">{{ u.ongoing_projects }}</span>
-          </p>
-
-          <p>
-            Specialized in:
-            <span class="value">{{ u.category }}</span>
-          </p>
-        </div>
-
-        <p class="single-line" style="color:black">
-          {{ u.description }}
-        </p>
-
-        </a>
-        
-        <!-- ACTIONS -->
-        <div class="contact-actions">
-
-          <a
-            href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-            class="contact-btn-main"
-            {% if user.is_authenticated %}
-              onclick="profileLead(event, {{ u.id }})"
-            {% endif %}
-          >
-            <i class="bi bi-telephone-fill"></i>
-          </a>
-
-          <button class="icon-btn" title="Share"
-                  onclick="shareCompanyProfile({{ u.id }})">
-            <i class="bi bi-share-fill"></i>
-          </button>
-
-          <a
-            href="{% if user.is_authenticated %}
-                  {% url 'prop:start_chat_with_user' u.id %}
-                  {% else %}
-                  {% url 'prop:login' %}
-                  {% endif %}"
-            class="icon-btn"
-            title="Chat"
-          >
-            <i class="bi bi-chat-dots-fill"></i>
-          </a>
-
-        </div>
-
- </div> 
-
-      {% empty %}
-      <p>There is no user found.</p>
-      {% endfor %}
-     
-      <div class="center-btn">
-        <a href="/all-users?category=company_pro"
-           class="see-all-btn"
-           style="background-color: white;color: #000;border: 1px solid wheat;">
-          See All
-        </a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-
-<!-- expert pro -->
-<section class="experts-pro-section">
-  <h2>Connect With Our Marketing Experts Pro</h2>
-  <p>Hear from our pro-level marketing experts</p>
-
-  <div class="slider-container">
-    <div class="card-grid" id="expert-pro-slider">
-      {% for u in marketing_experts_pro|slice:":4" %}
-       <a href="{% url 'prop:user_detail' u.id %}" class="card-link" style="text-decoration: none;">
-        <div class="expert-card">
-          <div >
-          <!-- PROFILE IMAGE -->
-          <div style="display:flex; flex-direction: row; align-items: center;gap:10px ;height:70px " >
-          <span style="width 30px;height:30px"> 
-          <img src="{{ u.profile_image_path.url }}"  class="profile-img"/>
-          </span>
-           <span><h5 >{{ u.username |truncatechars:20}}</h5>
-                    <p style="font-size:10px;">⭐⭐⭐⭐</p>
-                    </span>
-          </div>
-          
-            <p class="location" style="color:black; font-size:12px">@{{ u.location |truncatechars:25|lower|capfirst }}</p>
-             <hr class="divider-red" />
-        </div>
-          <!-- DETAILS -->
-          <div class="card-details">
-            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience </p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
-                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
-                            
-          </div>
-                                      <div class="expert-bio">
-  {{ u.description|default:"No description available"|truncatechars:35  }}
-</div>
-          <!-- CONTACT ACTIONS -->
-          <div class="contact-actions">
-
-            <!-- CALL -->
-            <a
-              href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-              class="contact-btn-main"
-              {% if user.is_authenticated %}
-                onclick="profileLead(event, {{ u.id }})"
-              {% endif %}
-            >
-              <i class="bi bi-telephone-fill"></i>
-            </a>
-
-            <!-- SHARE -->
-            <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
-              <i class="bi bi-share-fill"></i>
-            </button>
-
-            <!-- CHAT -->
-            <a
-              href="{% if user.is_authenticated %}
-                    {% url 'prop:start_chat_with_user' u.id %}
-                    {% else %}
-                    {% url 'prop:login' %}
-                    {% endif %}"
-              class="icon-btn"
-              title="Chat"
-            >
-              <i class="bi bi-chat-dots-fill"></i>
-            </a>
-
-          </div>
-
-      </div>
-     
-      {% empty %}
-      <p>There is no user found.</p>
-      {% endfor %}
-  
-      <div class="center-btn">
-        <a href="/all-users?category=marketer_pro" class="see-all-btn" style="background-color: white;color: #000;border: 1px solid wheat;">See All</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-    <!-- Section 1 -->
-    <div class="sec">
-      <div class="section1">
-        <img src="{% static 'images/pickers.avif' %}" alt="Move Image" />
-        <div class="section1-content">
-          <h2>Move Smart, Move Safe</h2>
-          <p>
-            From packing to unpacking, our trusted movers ensure a smooth, safe,
-            and hassle-free relocation experience so you can focus on settling
-            into your new home.
-          </p>
-          <a href="{% url 'prop:move_form' %}"><button>Get In Touch</button></a>
-        </div>
-      </div>
-
-      <!-- Section 2 -->
-      <div class="section1">
-        <img src="{% static 'images/constraction.jpg' %}" alt="Build Image" />
-        <div class="section1-content">
-          <h2>Build with Confidence</h2>
-          <p>
-            Our expert builders deliver quality construction services tailored
-            to your vision — reliable, affordable, and modern.
-          </p>
-          <a href="{% url 'prop:contact_form' %}"><button>Get In Touch </button></a>
-        </div>
-      </div>
-
-      <!-- Section 3 -->
-      <div class="section1">
-        <img src="{% static 'images/loan.jpg' %}" alt="Loan Image" />
-        <div class="section1-content">
-          <h2>Easy Home Loans</h2>
-          <p>
-            Get quick and hassle-free housing loans with low interest rates and
-            flexible EMIs — making home ownership closer than ever.
-          </p>
-                <a href="{% url 'prop:loan_form' %}"><button>Apply Home Loan </button></a>
-        </div>
-        </div>
-      </div>
-    </div>
-
-<br>
-<br>
-
- 
- 
-<!-- Company Normal Projects -->
-<h2>Latest Projects</h2>
-
-<div class="project" style="overflow: scroll;">
-{% for p in normal_projects %}
-
-<div class="project-card">
-
-  <!-- COMPANY ROW (SAME AS PRO) -->
-  <div class="company-row">
-
-    <!-- LEFT -->
-    <a href="{% url 'prop:company_profile_with_id' p.user.id %}" class="company-left">
-      {% if p.user.company_logo_path %}
-        <img src="{{ p.user.company_logo_path.url }}" class="company-logo">
-      {% else %}
-        <img src="{% static 'default.jpg' %}" class="company-logo">
-      {% endif %}
-    </a>
-
-    <!-- CENTER -->
-    <a href="{% url 'prop:company_profile_with_id' p.user.id %}"
-       class="company-center"
-       style="color:#000; text-decoration:none;">
-       {{ p.user.company_name|default:"Company Name" }}
-    </a>
-
-    <!-- RIGHT (CHAT like pro) -->
-    <div class="company-right">
-<a
-  href="{% if user.is_authenticated %}
-          {% url 'prop:start_chat_with_user' p.user.id %}?pre_message=Hi%20{{ p.user.username|urlencode }},%20I'm%20interested%20in%20your%20project%20{{ p.project_name|urlencode }}.%0AProject%20Link:%20{{ request.scheme }}://{{ request.get_host }}{% url 'prop:project_detail' p.id %}
-        {% else %}
-          {% url 'prop:login' %}
-        {% endif %}"
-  class="icon-btn"
-  title="Chat"
->
-  <i class="bi bi-chat-dots-fill"></i>
-</a>
-    </div>
-
-  </div>
-
-  <!-- IMAGE -->
-  <div class="image-wrapper">
-    <a href="{% url 'prop:project_detail' p.id %}">
-      {% if p.image %}
-        <img src="{{ p.image.url }}" class="project-image">
-      {% else %}
-        <img src="{% static 'default.jpg' %}" class="project-image">
-      {% endif %}
-    </a>
-
-    <div class="price-tag">
-      ₹ {{ p.pricing }}
-    </div>
-  </div>
-
-  <!-- TITLE -->
-  <div style="display:flex; gap:50px; padding-left:30px;">
-    <h5>{{ p.project_name }}</h5>
-  </div>
-
-  <!-- STYLE (same as pro) -->
-  <style>
-    .project-info {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 100%;
-      text-align: left;
-    }
-
-    .project-info p,
-    .project-info span {
-      margin: 0;
-    }
-
-
-.nearby-wrapper {
-  overflow-x: auto; /* allow manual scroll */
-  margin-top: 6px;
-  position: relative;
-  -ms-overflow-style: none;  /* hide scrollbar IE */
-  scrollbar-width: none;     /* hide scrollbar Firefox */
-}
-
-.nearby-wrapper::-webkit-scrollbar {
-  display: none; /* hide scrollbar Chrome/Safari */
-}
-
-.nearby-container {
-  display: flex;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-
-.nearby-box {
-  padding: 4px 8px;
-  font-size: 12px;
-  background: #f1f3f6;
-  color: #444;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  white-space: nowrap;
-}
-
- /* Company Name (center text) */
-.company-center {
-  max-width: 140px;   /* adjust width as needed */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-    .nearby-pill {
-      display: inline-flex;
-      padding: 2px 10px;
-      background: #f5f5f5;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 12px;
-      color: #666;
-    }
-
-    .image-wrapper img {
-      height: 200px;
-      width: 100%;
-      object-fit: cover;
-    }
-
-    .company-row {
-      display: flex;
-      align-items: center;
-    }
-
-    .company-right {
-      margin-left: auto;
-      margin-bottom: 9px;
-    }
-
-    .project-info p:nth-child(1) {
-      max-width: 250px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  </style>
-
-  <!-- INFO -->
-  <div class="project-info">
-    <p>@ {{ p.project_address }}</p>
-    <p>{{ p.type_of_project }}</p>
-    <p>{{ p.get_position_display }}</p>
-
-{% if p.nearby_locations %}
-    <div class="nearby-wrapper">
-        <div class="nearby-container">
-            <strong style="font-size: 13px;">Nearby Places:</strong>
-
-            {% for place in p.nearby_locations %}
-                <span class="nearby-box">{{ place }}</span>
-            {% endfor %}
-        </div>
-    </div>
-{% else %}
-    <span class="nearby-pill">No Nearby Places</span>
-{% endif %}
-  </div>
-
-  <!-- ACTIONS (same as pro + save) -->
-  <div class="project-actions">
-
-    <a class="contact-btn-main"
-       href="{% url 'prop:project_detail' p.id %}">
-       View Details
-    </a>
-
-    <button class="icon-btn"
-      title="Share"
-      onclick="shareProject(
-        '{{ p.project_name|escapejs }}',
-        '{{ p.project_address|escapejs }}',
-        '{{ p.pricing }}',
-        '{% url "prop:project_detail" p.id %}'
-      )">
-      <i class="bi bi-share-fill"></i>
-    </button>
-
-    <a
-      href="#"
-      class="icon-btn save-btn"
-      {% if user.is_authenticated %}
-         onclick="toggleProjectSave(event, {{ p.id }}, this)"
-      {% else %}
-        onclick="redirectToLogin()"
-      {% endif %}
-    >
-      <i class="bi {% if p.is_saved %}bi-bookmark-fill text-primary{% else %}bi-bookmark{% endif %}"></i>
-    </a>
-
-  </div>
-
-</div>
-
-{% empty %}
-<p>No project found.</p>
-{% endfor %}
-
-<div class="center-btn">
-  <a href="{% url 'prop:all_projects' %}?category=normal"
-     class="see-all-btn"
-     style="background:white; color:#000; border:1px solid wheat;">
-     See All
-  </a>
-</div>
-
-</div>
-
- <script>
-  function toggleProjectSave(event, id, btn) {
-  event.preventDefault();
-
-  fetch(`/save-project/${id}/`)
-    .then(res => res.json())
-    .then(data => {
-
-      let icon = btn.querySelector("i");
-
-      if (data.status === "saved") {
-        icon.classList.remove("bi-bookmark");
-        icon.classList.add("bi-bookmark-fill");
-      } else {
-        icon.classList.remove("bi-bookmark-fill");
-        icon.classList.add("bi-bookmark");
-      }
-
-    });
-}
- </script>
-
- <!-- normal companies -->
-<section class="featured-pro-section">
-
-  <h2> Companies</h2>
-  <p>Discover Pro-level trusted builders and real estate brands</p>
-  <div class="slider-container">
-
-    <div class="card-grid" id="company-pro-slider">
-      {% for u in featured_companies %}
- 
-      <div class="expert-card">
- 
-        <a href="{% url 'prop:company_profile_with_id' u.id %}" 
-           style="text-decoration: none; color: inherit;">
-
-          <!-- Company Wallpaper -->
-          {% if u.company_wallpaper_path %}
-          <div class="banner"
-               style="background-image:url('{{ u.company_wallpaper_path.url }}');
-                      width:100%; height:100px;
-                      background-size:cover;
-                      background-position:center;
-                      border-radius:10px 10px 0 0;">
-          </div>
-          {% else %} 
-
-          <div class="banner"
-               style="width:100%; height:100px;
-                      background:#eee;
-                      border-radius:10px 10px 0 0;
-                      margin-top:70px"></div>
-          {% endif %}
-
-          <!-- LOGO -->
-          {% if u.company_logo_path %}
-            <img src="{{ u.company_logo_path.url }}"
-                 class="profile-img"
-                 alt="{{ u.username }}"
-                 style="margin-top:5px;margin-left:-150px;"/>
-          {% else %}
-            <img src="{% static 'default.jpg' %}"
-                 class="profile-img"
-                 alt="No Logo"
-                 style="margin-top:-60px;"/>
-          {% endif %}
-
-          <h5 style="margin-top:-50px ; margin-left: 30px;">
-            {{ u.username }}
-          </h5>
-
-          <p class="location" style='margin-top: 20px;' >
-            @ {{ u.location }}
-          </p>
-
-          <hr class="divider-red" />
-
-          <!-- DETAILS -->
-          <div class="card-details">
-            <p>
-              Established: <br>
-              <span class="value">{{ u.experience }}</span>
-            </p>
-
-            <p>
-              Ongoing projects:
-              <span class="value">{{ u.ongoing_projects }}</span>
-            </p>
-
-            <p>
-              Specialized in:
-              <span class="value">{{ u.category }}</span>
-            </p>
-          </div>
-
-          <p class="single-line" style="color:black">
-            {{ u.description }}
-          </p>
-
-        </a> 
-
-        <div class="contact-actions">
-
-          <a
-            href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-            class="contact-btn-main"
-            {% if user.is_authenticated %}
-              onclick="profileLead(event, {{ u.id }})"
-            {% endif %}
-          >
-            <i class="bi bi-telephone-fill"></i>
-          </a>
-
-          <button class="icon-btn" title="Share"
-                  onclick="shareCompanyProfile({{ u.id }})">
-            <i class="bi bi-share-fill"></i>
-          </button>
-           
-          <a
-            href="{% if user.is_authenticated %}
-                  {% url 'prop:start_chat_with_user' u.id %}
-                  {% else %}
-                  {% url 'prop:login' %}
-                  {% endif %}"
-            class="icon-btn"
-            title="Chat"
-          >
-            <i class="bi bi-chat-dots-fill"></i>
-          </a>
-
-        </div>
-
- </div> 
-
-      {% empty %}
-      <p>There is no user found.</p>
-      {% endfor %}
-     
-      <div class="center-btn">
-        <a href="/all-users?category=company"
-           class="see-all-btn"
-           style="background-color: white;color: #000;border: 1px solid wheat;">
-          See All
-        </a>
-      </div>
-
-    </div>
-  </div>
- 
-</section>
-
-
-<!-- expert section -->
-<section class="experts-section">
-  <h2>Connect With Our Marketing Experts</h2>
-  <p>Hear from our satisfied customers about their experiences</p>
-
-  <div class="slider-container">
-    <div class="card-grid" id="expert-slider">
-
-      {% for u in marketing_experts|slice:":4" %}
-     <a href="{% url 'prop:user_detail' u.id %}" class="card-link" style="text-decoration: none;">
-        <div class="expert-card">
-          <div >
-          <!-- PROFILE IMAGE -->
-          <div style="display:flex; flex-direction: row; align-items: center;gap:10px ;height:70px " >
-          <span style="width 30px;height:30px"> 
-          <img src="{{ u.profile_image_path.url }}"  class="profile-img"/>
-          </span>
-           <span><h5 >{{ u.username |truncatechars:20}}</h5>
-                    <p style="font-size:10px;">⭐⭐⭐</p>
-                    </span>
-          </div>
-          
-            <p class="location" style="color:black; font-size:12px">@ {{ u.location |truncatechars:25|lower|capfirst }}</p>
-             <hr class="divider-red" />
-        </div>
-          <!-- DETAILS -->
-          <div class="card-details">
-            <div style="line-height:8px;"><p style="margin-left:15px;"> <p style="color:#444" >Experience</p><p style="margin-left:15px;">{{ u.experience }} years</p></div>
-                             <div style="line-height:8px;"> <p style="color:#444">Expert in</p> <p style="margin-left:15px;">{{ u.marketer_category }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Customers </p> <p style="margin-left:25px;">{{ u.deals }}</p></div>
-                            <div style="line-height:8px;"> <p style="color:#444">Properties </p> <p style="margin-left:25px;">{{ u.properties.count|default:0 }}</p></div>
-                            
-          </div>
-                                      <div class="expert-bio">
-  {{ u.description|default:"No description available"|truncatechars:35  }}
-</div>
-          <!-- CONTACT ACTIONS -->
-          <div class="contact-actions">
-
-            <!-- CALL -->
-            <a
-              href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-              class="contact-btn-main"
-              {% if user.is_authenticated %}
-                onclick="profileLead(event, {{ u.id }})"
-              {% endif %}
-            >
-              <i class="bi bi-telephone-fill"></i>
-            </a>
-
-            <!-- SHARE -->
-            <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
-              <i class="bi bi-share-fill"></i>
-            </button>
-
-            <!-- CHAT -->
-            <a
-              href="{% if user.is_authenticated %}
-                    {% url 'prop:start_chat_with_user' u.id %}
-                    {% else %}
-                    {% url 'prop:login' %}
-                    {% endif %}"
-              class="icon-btn"
-              title="Chat"
-            >
-              <i class="bi bi-chat-dots-fill"></i>
-            </a>
-
-          </div>
-
-        </div>
-      </a>
-      {% empty %}
-      <p>There is no user found.</p>
-      {% endfor %}
-
-      <!-- SEE ALL BUTTON -->
-      <div class="center-btn">
-        <a href="/all-users?category=marketer" class="see-all-btn" style="background-color: white;color: #000;border: 1px solid wheat;">See All</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<section class="construction-section">
-  <h2>Connect With Construction Professionals</h2>
-  <p>One top-rated professional from each category</p>
-
-  <div class="slider-container">
-    <div class="card-grid" id="pro-slider">
-
-      {% for u in professionals %}
-      <a href="{% url 'prop:user_detail' u.id %}" class="card-link" style="text-decoration: none;">
-        <div class="expert-card">
-
-          <!-- PROFILE HEADER -->
-          <div class="profile-header" style="display:flex; align-items:center; gap:10px; height:70px;">
-            <img src="{{ u.profile_image_path.url }}" class="profile-img" alt="{{ u.username }}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; margin:10px;">
-            <div class="profile-info">
-              <h5 style="margin:0;">{{ u.username|truncatechars:20 }}</h5>
-              <small style="color:black;">{{ u.category|default:"No category" }}</small>
-            </div>
-          </div>
-
-          <!-- LOCATION -->
-          <p class="location" style="color:black; font-size:12px; margin:5px 0;">
-            @{{ u.location|truncatechars:25|lower|capfirst }}
-          </p>
-          <hr class="divider-red" />
-
-          <!-- DETAILS -->
-          <div class="card-details" style="display:flex; justify-content:space-between; gap:20px;">
-            <div class="experience" style="line-height:1.2;">
-              <p style="color:#444;">Experience</p>
-              <p>{{ u.experience }} years</p>
-            </div>
-            <div class="customers" style="line-height:1.2;">
-              <p style="color:#444;">Customers</p>
-              <p>{{ u.deals }}</p>
-            </div>
-          </div>
-                                               <div class="expert-bio">
-  {{ u.description|default:"No description available"|truncatechars:35  }}
-</div>
-          <!-- CONTACT ACTIONS -->
-          <div class="contact-actions" style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px; padding-right:15px;">
-            
-            <!-- CALL -->
-            <a
-              href="{% if user.is_authenticated %}tel:{{ u.phone }}{% else %}{% url 'prop:login' %}{% endif %}"
-              class="contact-btn-main"
-              {% if user.is_authenticated %}
-              onclick="profileLead(event, {{ u.id }})"
-              {% endif %}
-            >
-              <i class="bi bi-telephone-fill"></i>
-            </a>
-
-            <!-- SHARE -->
-            <button class="icon-btn" title="Share" onclick="shareProfile({{ u.id }})">
-              <i class="bi bi-share-fill"></i>
-            </button>
-
-            <!-- CHAT -->
-            <a
-              href="{% if user.is_authenticated %}{% url 'prop:start_chat_with_user' u.id %}{% else %}{% url 'prop:login' %}{% endif %}"
-              class="icon-btn"
-              title="Chat"
-            >
-              <i class="bi bi-chat-dots-fill"></i>
-            </a>
-
-          </div>
-        </div>
-      </a>
-      {% empty %}
-      <p style="text-align:center; width:100%; margin-top:20px;">There is no user found.</p>
-      {% endfor %}
-
-
-
-    <!-- SEE ALL BUTTON -->
-    <div class="center-btn" style="text-align:center; margin-top:20px;">
-      <a href="/all-users?category=professional" class="see-all-btn" style="background-color:white; color:#000; border:1px solid wheat; padding:10px 20px; border-radius:5px; text-decoration:none;">
-        See All
-      </a>
-    </div>
-    </div>
-  </div>
-</section>
-
-<!-- **********expert section end ******** -->
-
-
-    <section class="biz-wrapper" style="padding:20px;">
-      <div class="biz-card">
-        <!-- LEFT TEXT -->
-        <div class="biz-content">
-          <h2>
-            Own A Business,<br />
-            Shape Your Future
-          </h2>
-          <p>
-            Submit Your Inquiry And Explore Top Franchise Opportunities
-            Hassle-Free
-          </p>
-
-          <a href="{% url 'prop:franchise'%}" class="biz-btn">Get Franchise</a>
-        </div>
-
-        <!-- RIGHT IMAGE -->
-        <div class="biz-image">
-          <img
-            src="{% static 'images/img/banner.jpg' %}"
-            alt="Business Meeting"
-          />
-        </div>
-      </div>
-    </section>
-    {% if user.role != "PROFESSIONAL" %}
-<section class="cta-card-section">
-  <div class="cta-card">
-
-    <div class="cta-text-slider">
-      <div class="cta-slide active">
-        Post your property and reach potential buyers instantly.
-      </div>
-
-      <div class="cta-slide">
-        Add your property to our platform and attract new clients.
-      </div>
-
-      <div class="cta-slide">
-        Publish your property and expand your reach today.
-      </div>
-    </div>
-
-    <a class="bize-btn" href="/add-property/">
-      Post Your Property
-    </a>
-
-  </div>
-</section>
-{% endif %}
-<style> 
-.cta-card-section {
-  padding:20px; 
-}
-.search-box{
-    width:auto;
-}
-.cta-card {
-  max-width: 1000px;
-  margin: auto;
-  background: linear-gradient(135deg, #4c3eb6, #0d6efd);
-  padding:40px 30px;
-  border-radius: 20px;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.09);
-  text-align: center;
-}
-.bize-btn {
-    display: inline-block;
-  padding: 12px 28px;
-  background: white;  
-  color: black;  
-  font-weight: 600;
-  border-radius: 10px;
-  text-decoration: none;
-  transition: 0.3s ease;
-}
-
-/* Slider */
-.cta-text-slider {
-  position: relative;
-  height: 30px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cta-slide {
-  position: absolute;
-  width: 100%;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  font-size: 22px;
-  font-weight: 600;
-  color: white;
-}
-
-.cta-slide.active {
-  opacity: 1;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .cta-card {
-    padding: 20px;
-  }
-
-  .cta-slide {
-    font-size: 16px;
-  }
-}
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const slides = document.querySelectorAll(".cta-slide");
-  let index = 0;
-
-  if (slides.length > 0) {
-    setInterval(function () {
-      slides[index].classList.remove("active");
-      index = (index + 1) % slides.length;
-      slides[index].classList.add("active");
-    }, 3000);
-  }
-
-});
-</script>
-
-    <section class="requirement" style="padding:20px 20px;">
-      <div class="require">
-        <h2>
-          If you do not find your requirements, please let us know your
-          requirements.
-        </h2>
-        <a href="{% url 'prop:require' %}" class="biz-btn">My Requirements</a>
-      </div>
-    </section>
-<hr style="background-color:#1e5af9; margin: 20px 5%; " >
-    <h1 style="margin-bottom:10px;">What We Serve Our Sellers and Buyers</h1>
-    <div class="w">
-      <p>We offer complete assistance for smooth real estate transactions.</p>
-    </div>
-
-    <div class="cards-container">
-      <!-- Row 1 -->
-      <div class="card-item">
-        <img
-          src="{% static 'images/verification.jpg' %}"
-          alt="Document Verification"
-        />
-        <h1>Document Verification</h1>
-        <p>
-          We check the legality in the documentation and how the property has
-          inherited the past.
-        </p>
-      </div>
-
-      <div class="card-item">
-        <img
-          src="{% static 'images/property.jpg' %}"
-          alt="Property Qualifying"
-        />
-        <h1>Property Qualifying</h1>
-        <p>
-          We verify the property’s physical position and boundaries according to
-          the documents.
-        </p>
-      </div>
-
-      <div class="card-item">
-        <img src="{% static 'images/cleaned.jpg' %}" alt="Property Cleaning" />
-        <h1>Property Cleaning</h1>
-        <p>
-          We clean and hand over the property to the buyer — washing, clearing
-          trees, or plants as needed.
-        </p>
-      </div>
-
-      <!-- Row 2 -->
-      <div class="card-item">
-        <img src="{% static 'images/boundary.jpg' %}" alt="Property Boundary" />
-        <h1>Property Boundary</h1>
-        <p>
-          We provide clear boundaries for open plots using cement or stone
-          pillars for accurate marking.
-        </p>
-      </div>
-
-      <div class="card-item">
-        <img src="{% static 'images/document.jpg' %}" alt="Document Drafting" />
-        <h1>Document Drafting</h1>
-        <p>
-          We handle new document preparation, safe registration, and related
-          documentation charges.
-        </p>
-      </div>
-
-      <div class="card-item">
-        <img src="{% static 'images/packers.jpg' %}" alt="Packers and Movers" />
-        <h1>Packers and Movers</h1>
-        <p>
-          We offer packers and movers service to both sellers and buyers once
-          during their transaction.
-        </p>
-      </div>
-
-      <!-- Row 3 -->
-      <div class="card-item" style="grid-column: 1 / span 1">
-        <img
-          src="{% static 'images/invistement.jpg' %}"
-          alt="Investment Security"
-        />
-        <h1>Investment Security</h1>
-        <p>
-          We provide investment security — if any legal issues arise, we take
-          responsibility and reimburse as per market value.
-        </p>
-      </div>
-    </div>
-
-   
-   
-    {% include 'footer.html' %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const select = document.querySelector(".search-box select");
-        const catButtons = document.querySelectorAll(".cat-buttons button");
-
-        // When category button is clicked, update the dropdown only
-        catButtons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const value = btn.textContent.trim();
-            select.value = value; // update dropdown only
-          });
-        });
-      });
-
-      let index = 0;
-      const track = document.getElementById("carousel");
-      const totalItems = track.children.length;
-      let itemsPerView = 1;
-
-      function checkWidth() {
-        if (window.innerWidth >= 1100) itemsPerView = 3;
-        else if (window.innerWidth >= 768) itemsPerView = 2;
-        else itemsPerView = 1;
-      }
-
-      function move(dir) {
-        const width = track.children[0].offsetWidth;
-        const maxIndex = totalItems - itemsPerView;
-        index += dir;
-        if (index < 0) index = maxIndex;
-        if (index > maxIndex) index = 0;
-        track.style.transform = `translateX(-${index * width}px)`;
-      }
-
-  
-      window.addEventListener("resize", () => {
-        checkWidth();
-        move(0);
-      });
-      checkWidth();
-    </script>
-
-
-  <script src="{% static 'js/Leads.js' %}"></script>
-
-<script>
-function shareCompanyProfile(id){
-    if (navigator.share) {
-          navigator.share({
-            title: "User Profile",
-            text: "Check out this profile",
-            url: window.location.href+`company/profile/${id}`,
-          });
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          alert("Profile link copied!");
-        }
-
-}
-      function shareProfile(id) {
-        
-        if (navigator.share) {
-          navigator.share({
-            title: "User Profile",
-            text: "Check out this profile",
-            url: window.location.href+`user/${id}`,
-          });
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          alert("Profile link copied!");
-        }
-      }
-      </script>
- 
-   
-{% if messages %}
-<div style="position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:9999; display:flex; flex-direction:column; align-items:center;">
-  {% for message in messages %}
-    <div style="
-      background:#4CAF50;
-      color:white;
-      padding:12px 18px;
-      margin-bottom:10px;
-      border-radius:8px;
-      box-shadow:0 5px 15px rgba(0,0,0,0.2);
-      min-width:200px;
-      text-align:center;
-    ">
-      {{ message }}
-    </div>
-  {% endfor %}
-</div>
-{% endif %}
-<script>
-  setTimeout(() => {
-    document.querySelectorAll('[style*="background:#4CAF50"]').forEach(el => {
-      el.style.display = 'none';
-    });
-  }, 3000);
-</script>
-  </body>
-</html>
